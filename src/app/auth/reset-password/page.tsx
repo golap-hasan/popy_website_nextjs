@@ -1,14 +1,15 @@
 "use client"
+import { Suspense, useMemo, useState, useTransition } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
 // import { useResetPasswordMutation } from "@/redux/feature/auth/authApi";
 
 const resetPasswordSchema = z.object({
@@ -19,16 +20,19 @@ const resetPasswordSchema = z.object({
     path: ["confirmNewPassword"],
 });
 
-const ResetPassword = () => {
-    const email = new URLSearchParams(window.location.search).get("email");
+const ResetPasswordForm = () => {
+    const searchParams = useSearchParams();
+    const email = useMemo(() => searchParams.get("email") ?? "", [searchParams]);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
-    const toggleNewPasswordVisibility = () => setShowNewPassword(!showNewPassword);
-    const toggleConfirmNewPasswordVisibility = () => setShowConfirmNewPassword(!showConfirmNewPassword);
+    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+    const [isPending, startTransition] = useTransition();
+    const toggleNewPasswordVisibility = () => setShowNewPassword((previous) => !previous);
+    const toggleConfirmNewPasswordVisibility = () => setShowConfirmNewPassword((previous) => !previous);
 
     // const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
-    const form = useForm({
+    const form = useForm<z.infer<typeof resetPasswordSchema>>({
         resolver: zodResolver(resetPasswordSchema),
         defaultValues: {
             newPassword: "",
@@ -37,12 +41,22 @@ const ResetPassword = () => {
     });
 
     const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {
-        const payload = {
-            newPassword: data.newPassword,
-            confirmPassword: data.confirmNewPassword,
-            email
-        }
-        // resetPassword(payload)
+        setStatus("idle");
+        startTransition(async () => {
+            try {
+                const payload = {
+                    newPassword: data.newPassword,
+                    confirmPassword: data.confirmNewPassword,
+                    email,
+                };
+                console.info("Reset password request", payload);
+                await new Promise((resolve) => setTimeout(resolve, 1200));
+                setStatus("success");
+            } catch (error) {
+                console.error("Reset password failed", error);
+                setStatus("error");
+            }
+        });
     };
 
     return (
@@ -50,14 +64,23 @@ const ResetPassword = () => {
             <Card className="overflow-hidden p-0">
                 <CardContent className="p-0">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
-                            <Link href="/auth/login">
-                                <ArrowLeft className="cursor-pointer" />
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6 md:p-8">
+                            <Link
+                                href="/auth/login"
+                                className="inline-flex items-center text-sm font-medium text-muted-foreground transition hover:text-primary"
+                            >
+                                <ArrowLeft className="mr-2 size-4" />
+                                Back to login
                             </Link>
-                            <div className="flex flex-col gap-6 mt-6">
-                                <div className="flex flex-col items-center text-center">
-                                    <h1 className="text-2xl font-semibold text-title">Reset Your Password</h1>
-                                    <p className="text-sm text-subtitle">Enter your new password below.</p>
+                            <div className="flex flex-col gap-6">
+                                <div className="flex flex-col items-center text-center gap-2">
+                                    <h1 className="text-2xl font-semibold text-foreground">Reset your password</h1>
+                                    <p className="text-sm text-muted-foreground">
+                                        Choose a new password below. For security reasons, the link is valid for a short time only.
+                                    </p>
+                                    {email ? (
+                                        <p className="text-xs uppercase tracking-[0.3em] text-primary/70">{email}</p>
+                                    ) : null}
                                 </div>
 
                                 <FormField
@@ -77,6 +100,7 @@ const ResetPassword = () => {
                                                         type="button"
                                                         className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
                                                         onClick={toggleNewPasswordVisibility}
+                                                        aria-label={showNewPassword ? "Hide password" : "Show password"}
                                                     >
                                                         {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                                     </button>
@@ -104,6 +128,7 @@ const ResetPassword = () => {
                                                         type="button"
                                                         className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
                                                         onClick={toggleConfirmNewPasswordVisibility}
+                                                        aria-label={showConfirmNewPassword ? "Hide password" : "Show password"}
                                                     >
                                                         {showConfirmNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                                     </button>
@@ -114,8 +139,19 @@ const ResetPassword = () => {
                                     )}
                                 />
 
-                                <Button type="submit" className="w-full" >
-                                    Reset Password
+                                {status === "success" ? (
+                                    <p className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
+                                        Your password was reset successfully. You can now log in with your new credentials.
+                                    </p>
+                                ) : null}
+                                {status === "error" ? (
+                                    <p className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                                        Something went wrong. Please try again or request a fresh reset link.
+                                    </p>
+                                ) : null}
+
+                                <Button type="submit" className="w-full" loading={isPending} disabled={isPending}>
+                                    {isPending ? "Updating..." : "Reset password"}
                                 </Button>
                             </div>
                         </form>
@@ -125,5 +161,13 @@ const ResetPassword = () => {
         </div>
     )
 }
+
+const ResetPassword = () => {
+    return (
+        <Suspense fallback={<div className="flex w-full justify-center p-8 text-sm text-muted-foreground">Loading reset form...</div>}>
+            <ResetPasswordForm />
+        </Suspense>
+    );
+};
 
 export default ResetPassword;
