@@ -1,227 +1,152 @@
 "use client";
-import {
-  Search,
-  BookOpen,
-  Award,
-  Star,
-  ShoppingCart,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { useEffect, useRef, useState } from "react";
-import type { CarouselApi } from "@/components/ui/carousel";
+import Image from "next/image";
+import Link from "next/link";
 import PageLayout from "@/tools/PageLayout";
+import { Button } from "@/components/ui/button";
+import { Award, BookOpen, Sparkles, Star } from "lucide-react";
+
+const categories = [
+  {
+    name: "Academic mastery",
+    count: "1,200+ textbooks",
+    icon: <BookOpen className="size-5" />,
+  },
+  {
+    name: "Bangla literature",
+    count: "850+ classics",
+    icon: <Award className="size-5" />,
+  },
+  {
+    name: "Best sellers",
+    count: "500+ favourites",
+    icon: <Star className="size-5" />,
+  },
+  {
+    name: "Creative reads",
+    count: "400+ picks",
+    icon: <Sparkles className="size-5" />,
+  },
+];
+
+const bookCovers = [
+  { src: "/english.png", alt: "Popy English for Today cover" },
+  { src: "/gonit.png", alt: "Popy Mathematics guide cover" },
+  { src: "/biggan.png", alt: "Popy Science companion cover" },
+  { src: "/podartho.png", alt: "Popy Physics guide cover" },
+  { src: "/banking.png", alt: "Banking reference book cover" },
+  { src: "/tottho.png", alt: "Information technology guide cover" },
+];
+
+const readerFavourites = [
+  {
+    title: "Popy English For Today",
+    author: "Popy Publications",
+    price: "৳575",
+  },
+  {
+    title: "পপি মাধ্যমিক বিজ্ঞান",
+    author: "Popy Publications",
+    price: "৳416",
+  },
+  {
+    title: "পপি মাধ্যমিক গণিত",
+    author: "Popy Publications",
+    price: "৳648",
+  },
+];
+
+const trustSignals = [
+  { label: "Happy readers", value: "58K+", helper: "Across Bangladesh" },
+  { label: "Curated titles", value: "12K+", helper: "Print & digital" },
+  { label: "Delivery speed", value: "48h", helper: "Inside Dhaka" },
+  { label: "Support hours", value: "9am–10pm", helper: "Everyday" },
+];
 
 const Hero = () => {
-  const categories = [
-    {
-      name: "Academic",
-      count: "1,200+ Books",
-      icon: <BookOpen className="w-5 h-5" />,
-    },
-    {
-      name: "Bangla Literature",
-      count: "850+ Books",
-      icon: <Award className="w-5 h-5" />,
-    },
-    {
-      name: "Best Sellers",
-      count: "500+ Books",
-      icon: <Star className="w-5 h-5" />,
-    },
-  ];
-
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
-  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (!carouselApi) return;
-    setCount(carouselApi.scrollSnapList().length);
-    setCurrent(carouselApi.selectedScrollSnap());
-
-    const onSelect = () => setCurrent(carouselApi.selectedScrollSnap());
-    carouselApi.on("select", onSelect);
-    carouselApi.on("reInit", onSelect);
-
-    return () => {
-      carouselApi.off("select", onSelect);
-      carouselApi.off("reInit", onSelect);
-    };
-  }, [carouselApi]);
-
-  useEffect(() => {
-    if (!carouselApi) return;
-    if (autoplayRef.current) clearInterval(autoplayRef.current);
-    autoplayRef.current = setInterval(() => {
-      if (!carouselApi) return;
-      if (carouselApi.canScrollNext()) carouselApi.scrollNext();
-      else carouselApi.scrollTo(0);
-    }, 3000);
-    return () => {
-      if (autoplayRef.current) clearInterval(autoplayRef.current);
-    };
-  }, [carouselApi]);
-
-  const featuredBooks = [
-    {
-      title: "Popy English For Today { A Helping Book}",
-      author: "Popy Publications",
-      price: "৳575",
-    },
-    {
-      title: "পপি মাধ্যমিক বিজ্ঞান",
-      author: "Popy Publications",
-      price: "৳416",
-    },
-    {
-      title: "পপি মাধ্যমিক গনিত",
-      author: "Popy Publications",
-      price: "৳648",
-    },
-    {
-      title: "The Namesake",
-      author: "Jhumpa Lahiri",
-      price: "৳350",
-    },
-  ];
-
   return (
-    <section className="flex flex-col justify-center items-center relative bg-linear-to-r from-background to-muted/50 overflow-hidden h-[calc(100vh-81px)]">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10 dark:opacity-5">
-        <div className="absolute inset-0 bg-[url('/pattern.png')] bg-repeat opacity-5" />
+    <section className="relative overflow-hidden bg-linear-to-br from-background via-muted/40 to-background">
+      <div className="absolute inset-0 opacity-[0.12]">
+        <div className="absolute inset-0 bg-[url('/pattern.png')] bg-repeat opacity-30" />
       </div>
-      <div className="pointer-events-none absolute -top-24 -left-24 size-96 rounded-full bg-primary/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -right-24 size-96 rounded-full bg-secondary/15 blur-3xl" />
 
-      <PageLayout className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left content */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Discover Your Next{" "}
-              <span className="bg-linear-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
-                Favorite Book
-              </span>{" "}
-              in Bangladesh
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0">
-              Explore thousands of books from Bangladeshi authors and
-              publishers. Get your favorite books delivered to your doorstep.
-            </p>
-
-            {/* Search bar */}
-            <div className="relative max-w-2xl mx-auto lg:mx-0">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search for books, authors, or categories..."
-                className="pl-12 pr-36 py-6 rounded-full border border-border/60 focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background/70 backdrop-blur supports-backdrop-filter:backdrop-saturate-150 shadow-sm"
-              />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-2">
-                <Button
-                  size="lg"
-                  className="rounded-full px-6 h-10 bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Search
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full px-6 h-10"
-                >
-                  Browse
-                </Button>
-              </div>
+      <PageLayout className="relative z-10 py-20">
+        <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div className="space-y-8 text-center lg:text-left">
+            <div className="space-y-4">
+              <span className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+                Read beyond the syllabus
+              </span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                Discover curated learning journeys for every Bangladeshi reader
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
+                From exam-ready study guides to inspiring novels, the Popy shelves are stocked with expert-approved picks
+                you can browse online and receive anywhere in the country.
+              </p>
             </div>
 
-            {/* Categories */}
-            <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-3">
-              {categories.map((category, index) => (
+            <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
+              <Button size="lg" className="px-6" >
+                <Link href="/collections">Browse collections</Link>
+              </Button>
+              <Button variant="ghost" size="lg" className="px-6" >
+                <Link href="/about">Meet the librarians</Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {categories.map((category) => (
                 <div
-                  key={index}
-                  className="flex items-center gap-2 bg-card text-card-foreground px-4 py-2 rounded-full shadow-sm border hover:shadow-md hover:scale-105 transition-all duration-200 cursor-pointer"
+                  key={category.name}
+                  className="group rounded-2xl border border-border/50 bg-background/80 p-4 text-left transition-all hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <span className="text-primary">{category.icon}</span>
-                  <div className="text-left">
-                    <p className="text-sm font-medium">
-                      {category.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {category.count}
-                    </p>
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <span className="flex size-9 items-center justify-center rounded-full border border-border/40 bg-muted/40 text-primary">
+                      {category.icon}
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{category.name}</p>
+                      <p className="text-xs text-muted-foreground">{category.count}</p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right content - Book showcase */}
-          <div className="relative hidden lg:block">
-            <div className="relative w-full h-[560px]">
-              <div className="absolute -right-10 -top-10 w-72 h-96 bg-primary/10 rounded-3xl blur-xl" />
-              <div className="absolute -left-12 -bottom-12 w-80 h-96 bg-secondary/10 rounded-3xl blur-xl" />
-              <div className="relative w-full h-full flex items-center justify-center">
-                <Carousel
-                  className="w-full max-w-3xl"
-                  opts={{ loop: true, align: "center" }}
-                  setApi={setCarouselApi}
-                >
-                  <CarouselContent>
-                    {featuredBooks.map((book, index) => (
-                      <CarouselItem key={index} className="basis-auto">
-                        <div className="relative rounded-[28px] p-0.5 bg-linear-to-br from-primary/40 via-primary/10 to-transparent">
-                          <div className="w-[420px] h-[460px] max-w-full bg-card text-card-foreground rounded-[26px] shadow-xl overflow-hidden transition-all duration-300 ring-1 ring-border/60 hover:ring-primary/40 hover:shadow-2xl">
-                            <div className="h-[62%] bg-linear-to-br from-primary/15 via-primary/25 to-secondary/20 relative overflow-hidden">
-                              <div className="absolute inset-0 bg-[url('/book-pattern.png')] opacity-5" />
-                              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-4/5 h-1 bg-white/40 rounded-full" />
-                            </div>
-                            <div className="p-6 flex flex-col gap-3">
-                              <h3 className="text-xl font-semibold text-foreground line-clamp-2">
-                                {book.title}
-                              </h3>
-                              <p className="text-sm text-muted-foreground">
-                                {book.author}
-                              </p>
-                              <div className="mt-auto flex items-center justify-between">
-                                <span className="text-2xl font-bold text-primary">
-                                  {book.price}
-                                </span>
-                                <Button size="sm" className="rounded-full px-4">
-                                  <ShoppingCart className="h-4 w-4 mr-1" />
-                                  Add
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  {/* <CarouselPrevious className="left-6 size-11 border-border/60 bg-background/90 backdrop-blur hover:bg-background" />
-                  <CarouselNext className="right-6 size-11 border-border/60 bg-background/90 backdrop-blur hover:bg-background" /> */}
-                </Carousel>
-                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex gap-3">
-                  {Array.from({ length: count }).map((_, i) => (
-                    <button
-                      key={i}
-                      aria-label={`Go to slide ${i + 1}`}
-                      onClick={() => carouselApi?.scrollTo(i)}
-                      className={
-                        "h-3 w-3 rounded-full transition-all " +
-                        (i === current ? "bg-primary w-8" : "bg-muted-foreground/30")
-                      }
-                    />
+          <div className="relative">
+            <div className="absolute -inset-6 hidden rounded-[48px] bg-linear-to-tr from-primary/15 via-primary/5 to-transparent blur-3xl lg:block" />
+            <div className="relative overflow-hidden rounded-[42px] border border-border/40 bg-background/90 p-6 shadow-xl backdrop-blur">
+              <div className="grid gap-4 sm:grid-cols-3">
+                {bookCovers.map((book, index) => (
+                  <div
+                    key={book.src}
+                    className={`relative aspect-3/4 overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm transition-transform duration-300 ${
+                      index % 3 === 0 ? "translate-y-4" : index % 3 === 1 ? "-translate-y-2" : "translate-y-6"
+                    }`}
+                  >
+                    <Image src={book.src} alt={book.alt} fill sizes="(min-width: 1024px) 220px, 45vw" className="object-cover" />
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 space-y-4 rounded-2xl border border-border/40 bg-background/95 p-6 text-sm text-muted-foreground shadow-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+                    Reader favourites
+                  </span>
+                  <Link href="/collections" className="text-xs font-semibold text-primary hover:underline">
+                    See all
+                  </Link>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {readerFavourites.map((book) => (
+                    <div key={book.title} className="space-y-1">
+                      <p className="text-sm font-semibold text-foreground line-clamp-2">{book.title}</p>
+                      <p className="text-xs text-muted-foreground">{book.author}</p>
+                      <p className="text-sm font-semibold text-primary">{book.price}</p>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -229,40 +154,14 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Trust indicators */}
-        <div className="mt-16 pt-8 border-t border-border">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <h3 className="text-3xl font-bold text-primary">
-                10K+
-              </h3>
-              <p className="text-muted-foreground">Happy Readers</p>
+        <div className="mt-16 grid gap-4 rounded-3xl border border-border/40 bg-background/90 p-6 shadow-sm md:grid-cols-2 lg:grid-cols-4">
+          {trustSignals.map((signal) => (
+            <div key={signal.label} className="rounded-2xl border border-border/40 bg-background/70 p-5 text-center">
+              <p className="text-3xl font-bold text-primary">{signal.value}</p>
+              <p className="text-sm font-semibold text-foreground">{signal.label}</p>
+              <p className="text-xs text-muted-foreground">{signal.helper}</p>
             </div>
-            <div>
-              <h3 className="text-3xl font-bold text-primary">
-                50K+
-              </h3>
-              <p className="text-muted-foreground">
-                Books Available
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-primary">
-                100%
-              </h3>
-              <p className="text-muted-foreground">
-                Authentic Books
-              </p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-primary">
-                24/7
-              </h3>
-              <p className="text-muted-foreground">
-                Customer Support
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </PageLayout>
     </section>

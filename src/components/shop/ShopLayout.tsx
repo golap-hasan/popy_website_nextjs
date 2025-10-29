@@ -1,8 +1,36 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import PageLayout from "@/tools/PageLayout";
 import FiltersSidebar from "./FiltersSidebar";
-import ShopProducts from "./ShopProducts";
+import ShopProducts, { SortOption } from "./ShopProducts";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ShopLayout = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState<SortOption>("popularity");
+  const [resultsCount, setResultsCount] = useState<number>(0);
+
+  const sortLabel = useMemo(() => {
+    switch (sortOption) {
+      case "newest":
+        return "Newest";
+      case "price_low_high":
+        return "Price: Low to High";
+      case "popularity":
+      default:
+        return "Popularity";
+    }
+  }, [sortOption]);
+
   return (
     <PageLayout>
       <div className="grid gap-10 lg:grid-cols-[320px_1fr]">
@@ -11,27 +39,50 @@ const ShopLayout = () => {
         </div>
         <div className="space-y-10">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
+            <div className="space-y-2">
               <h2 className="text-xl font-semibold text-foreground">All books</h2>
               <p className="text-sm text-muted-foreground">
-                734 titles found—tune the filters to match your reading goals.
+                {resultsCount > 0
+                  ? `${resultsCount} titles found — refine your search to get even closer to what you need.`
+                  : "Browse curated books and refine with filters to match your reading goals."}
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-3 text-sm">
-              <span className="text-muted-foreground">Sort by:</span>
-              <button className="rounded-full border border-border/60 px-4 py-2 text-foreground shadow-sm transition hover:border-primary hover:text-primary">
-                Popularity
-              </button>
-              <button className="rounded-full border border-border/60 px-4 py-2 text-muted-foreground shadow-sm transition hover:border-primary hover:text-primary">
-                Newest
-              </button>
-              <button className="rounded-full border border-border/60 px-4 py-2 text-muted-foreground shadow-sm transition hover:border-primary hover:text-primary">
-                Price: Low to High
-              </button>
+            <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:justify-end">
+              <div className="flex w-full flex-col gap-1 md:w-64">
+                <Label htmlFor="shop-search" className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                  Search
+                </Label>
+                <Input
+                  id="shop-search"
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder="Search by title, author, or tag"
+                  className="rounded-full"
+                />
+              </div>
+              <div className="flex w-full flex-col gap-1 md:w-48">
+                <Label className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                  Sort by
+                </Label>
+                <Select value={sortOption} onValueChange={(value: SortOption) => setSortOption(value)}>
+                  <SelectTrigger className="rounded-full text-sm">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent align="end" className="text-sm">
+                    <SelectItem value="popularity">Popularity</SelectItem>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="price_low_high">Price: Low to High</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
-          <ShopProducts />
+          <ShopProducts
+            searchTerm={searchTerm}
+            sortOption={sortOption}
+            onResultsChange={setResultsCount}
+          />
         </div>
       </div>
     </PageLayout>

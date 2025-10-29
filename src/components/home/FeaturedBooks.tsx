@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import PageLayout from "@/tools/PageLayout";
 import { ShoppingCart } from "lucide-react";
@@ -9,6 +10,7 @@ const featuredBooks = [
     price: "৳575",
     tag: "New",
     description: "A complete guide aligned with the latest NCTB syllabus.",
+    image: "/english.png",
   },
   {
     title: "পপি মাধ্যমিক বিজ্ঞান",
@@ -16,6 +18,7 @@ const featuredBooks = [
     price: "৳416",
     tag: "Best Seller",
     description: "Step-by-step explanations and exam-focused notes for class 9-10.",
+    image: "/biggan.png",
   },
   {
     title: "পপি মাধ্যমিক গণিত",
@@ -23,6 +26,7 @@ const featuredBooks = [
     price: "৳648",
     tag: "Top Rated",
     description: "Concept-driven problem sets with solved model tests.",
+    image: "/gonit.png",
   },
   {
     title: "The Rural Diaries",
@@ -30,6 +34,7 @@ const featuredBooks = [
     price: "৳880",
     tag: "Imported",
     description: "Heartwarming stories that celebrate simple living and community.",
+    image: "/banking.png",
   },
 ];
 
@@ -54,9 +59,19 @@ const FeaturedBooks = () => {
               key={book.title}
               className="group relative flex h-full flex-col gap-4 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <span className="inline-flex w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                {book.tag}
-              </span>
+              <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
+                <Image
+                  src={book.image}
+                  alt={`${book.title} cover`}
+                  width={260}
+                  height={340}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(min-width: 1280px) 220px, (min-width: 768px) 240px, 80vw"
+                />
+                <span className="absolute left-3 top-3 inline-flex rounded-full bg-primary/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary-foreground">
+                  {book.tag}
+                </span>
+              </div>
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-foreground">
                   {book.title}
