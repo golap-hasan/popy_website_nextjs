@@ -19,7 +19,7 @@ import Image from "next/image";
 import MobileMenu from "./MobileMenu";
 import MobileDropdown from "./MobileDropdown";
 import DesktopDropdown from "./DesktopDropdown";
-import { InfoToast } from "@/lib/utils";
+import { cn, InfoToast } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import PageLayout from "@/tools/PageLayout";
@@ -101,16 +101,27 @@ const Navbar = () => {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
               {navigationItems.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive = item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`text-sm font-medium transition-colors hover:text-foreground ${
-                      isActive ? "text-foreground" : "text-muted-foreground"
-                    }`}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "group relative inline-flex items-center justify-center text-sm font-semibold transition-colors",
+                      isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                    )}
                   >
-                    {item.name}
+                    <span className="relative z-10 px-1 py-0.5">{item.name}</span>
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "absolute inset-x-1 -bottom-1 h-1 rounded-full bg-primary transition-all duration-300",
+                        isActive ? "opacity-100" : "opacity-0 group-hover:opacity-60"
+                      )}
+                    />
                   </Link>
                 );
               })}
