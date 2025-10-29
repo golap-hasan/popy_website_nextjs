@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator";
 import type { CartItem } from "./cart-data";
 import { calculateCartTotals } from "./cart-data";
+import Link from "next/link";
 
 interface CartSummaryCardProps {
   items: CartItem[];
@@ -36,12 +37,11 @@ const CartSummaryCard = ({ items }: CartSummaryCardProps) => {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-3">
-        <Button className="w-full" disabled={items.length === 0}>
+        <Link className="w-full" href="/checkout">
+         <Button className="w-full" disabled={items.length === 0}>
           Proceed to checkout
         </Button>
-        <Button variant="outline" className="w-full" disabled={items.length === 0}>
-          Checkout with bKash
-        </Button>
+        </Link>
         <p className="text-center text-xs text-muted-foreground">
           Secure payment powered by SSL Commerz. Estimated delivery within 2-3 business days.
         </p>
