@@ -173,6 +173,9 @@ const Footer = () => {
           <div className="container mx-auto max-w-7xl px-4 py-6 text-sm text-muted-foreground">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p>© {new Date().getFullYear()} Popy Library. All rights reserved.</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/80">
+                Developed by <span className="font-semibold text-foreground">SmartEdge Technologies</span>
+              </p>
               <div className="flex gap-4">
                 <Link href="/privacy" className="transition-colors hover:text-primary">
                   Privacy Policy

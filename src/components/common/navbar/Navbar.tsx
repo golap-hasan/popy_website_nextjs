@@ -2,16 +2,15 @@
 
 import { useState, useEffect } from "react";
 import {
-  Heart,
   Home,
   Store,
   Sparkles,
-  BookOpen,
   Moon,
   Sun,
   Mail,
   ShoppingCartIcon,
   Info,
+  Bookmark,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -161,7 +160,7 @@ const Navbar = () => {
             )}
             {/* Heart Icon */}
             <Link
-              href="/profile/my-favourite"
+              href="/favorite"
               onClick={(e) => {
                 if (!isLoggedIn) {
                   e.preventDefault();
@@ -174,7 +173,7 @@ const Navbar = () => {
                 size="icon"
                 className="hidden rounded-full md:flex"
               >
-                <Heart className="h-5 w-5" />
+                <Bookmark className="h-5 w-5" />
                 <span className="sr-only">Favorites</span>
               </Button>
             </Link>
