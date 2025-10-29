@@ -37,8 +37,7 @@ export const generateMetadata = async ({
 };
 
 const ShopDetailPage = async ({ params }: ShopDetailPageProps) => {
-  // const { id } = await params;
-  const id = 1;
+  const { id } = await params;
   const detail = bookDetails[id];
 
   if (!detail) {

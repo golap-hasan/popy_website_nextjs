@@ -176,7 +176,7 @@ const ShopProducts = ({ searchTerm, sortOption, onResultsChange }: ShopProductsP
             className="group relative flex h-full flex-col gap-5 rounded-3xl border border-border/40 bg-background/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
             <Link
-              href={`/shop/${book.id}`}
+              href={`/shop/1`}
               className="flex flex-1 flex-col gap-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
               aria-label={`View details for ${book.title}`}
             >
