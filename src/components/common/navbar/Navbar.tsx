@@ -4,15 +4,14 @@ import { useState, useEffect } from "react";
 import {
   Heart,
   Home,
-  Book,
-  Calendar,
-  ShoppingCart,
-  Star,
-  Info,
+  Store,
+  Sparkles,
+  BookOpen,
   Moon,
   Sun,
   Mail,
   ShoppingCartIcon,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -23,20 +22,14 @@ import DesktopDropdown from "./DesktopDropdown";
 import { InfoToast } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import PageLayout from "@/tools/PageLayout";
 
 const navigationItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Recipes", href: "/recipes", icon: Book, isProtected: true },
-  {
-    name: "Meal Planner",
-    href: "/meal-planner",
-    icon: Calendar,
-    isProtected: true,
-  },
-  { name: "Grocery", href: "/grocery", icon: ShoppingCart, isProtected: true },
-  { name: "Featured", href: "/featured", icon: Star, isProtected: false },
-  { name: "About", href: "/about", icon: Info, isProtected: false },
-  { name: "Contact", href: "/contact", icon: Mail, isProtected: false },
+  { name: "Shop", href: "/shop", icon: Store },
+  { name: "Collections", href: "/collections", icon: Sparkles },
+  { name: "About", href: "/about", icon: Info },
+  { name: "Contact", href: "/contact", icon: Mail },
 ];
 
 const Navbar = () => {
@@ -77,24 +70,6 @@ const Navbar = () => {
     profile_image: "/images/avatar.png",
   } as const;
 
-  // Filter protected routes
-  const protectedRoutes = navigationItems
-    .filter((item) => item.isProtected)
-    .map((item) => item.href);
-
-  // Handle protected navigation
-  const handleProtectedNav = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
-  ) => {
-    if (protectedRoutes.includes(href) && !isLoggedIn) {
-      e.preventDefault();
-      InfoToast("Please login to access this page");
-      return false;
-    }
-    return true;
-  };
-
   // logout function
   const handleLogout = () => {
     // fake logout
@@ -107,18 +82,18 @@ const Navbar = () => {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="container max-w-7xl mx-auto px-4 xl:px-0">
+      <PageLayout paddingSize="none">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-8">
             <Link href="/">
-              <div className="relative h-12 md:h-14 w-auto overflow-hidden">
+              <div className="relative h-12 md:h-14 w-32 md:w-40 overflow-hidden">
                 <Image
-                  src={"/logo.png"}
+                  src="/logo.png"
                   alt="Logo"
                   fill
                   priority
-                  className="object-contain dark:brightness-150"
+                  className="object-contain object-left dark:brightness-150"
                 />
               </div>
             </Link>
@@ -131,13 +106,6 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     href={item.href}
-                    onClick={(e) =>
-                      item.isProtected &&
-                      handleProtectedNav(
-                        e as unknown as React.MouseEvent<HTMLAnchorElement>,
-                        item.href
-                      )
-                    }
                     className={`text-sm font-medium transition-colors hover:text-foreground ${
                       isActive ? "text-foreground" : "text-muted-foreground"
                     }`}
@@ -201,7 +169,7 @@ const Navbar = () => {
             </Link>
             {/* Cart Icon */}
             <Link
-              href="/profile/my-cart"
+              href="/cart"
               onClick={(e) => {
                 if (!isLoggedIn) {
                   e.preventDefault();
@@ -237,7 +205,7 @@ const Navbar = () => {
             <MobileMenu {...{ navigationItems, user }} />
           </div>
         </div>
-      </div>
+      </PageLayout>
     </nav>
   );
 };
