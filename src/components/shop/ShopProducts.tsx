@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star } from "lucide-react";
 
@@ -174,34 +175,41 @@ const ShopProducts = ({ searchTerm, sortOption, onResultsChange }: ShopProductsP
             key={book.id}
             className="group relative flex h-full flex-col gap-5 rounded-3xl border border-border/40 bg-background/90 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
-            <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
-              <Image
-                src={book.image}
-                alt={`${book.title} cover`}
-                width={260}
-                height={340}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(min-width: 1280px) 220px, (min-width: 768px) 240px, 80vw"
-              />
-              <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-primary/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary-foreground">
-                {book.badge}
-              </span>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-foreground line-clamp-1">
-                {book.title}
-              </h3>
-              <p className="text-sm text-muted-foreground">{book.author}</p>
-              <p className="text-sm text-muted-foreground/90">{book.description}</p>
-            </div>
-
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <div className="inline-flex items-center gap-1 rounded-full bg-primary/5 px-3 py-1 text-primary">
-                <Star className="size-4 fill-current" />
-                {book.rating}
+            <Link
+              href={`/shop/${book.id}`}
+              className="flex flex-1 flex-col gap-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              aria-label={`View details for ${book.title}`}
+            >
+              <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
+                <Image
+                  src={book.image}
+                  alt={`${book.title} cover`}
+                  width={260}
+                  height={340}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(min-width: 1280px) 220px, (min-width: 768px) 240px, 80vw"
+                />
+                <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-primary/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary-foreground">
+                  {book.badge}
+                </span>
               </div>
-              <span className="text-lg font-semibold text-primary">{book.price}</span>
-            </div>
+
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-foreground line-clamp-1">
+                  {book.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">{book.author}</p>
+                <p className="text-sm text-muted-foreground/90">{book.description}</p>
+              </div>
+
+              <div className="mt-auto flex items-center justify-between text-sm text-muted-foreground">
+                <div className="inline-flex items-center gap-1 rounded-full bg-primary/5 px-3 py-1 text-primary">
+                  <Star className="size-4 fill-current" />
+                  {book.rating}
+                </div>
+                <span className="text-lg font-semibold text-primary">{book.price}</span>
+              </div>
+            </Link>
 
             <Button className="rounded-full" size="sm">
               <ShoppingCart className="mr-2 size-4" />
