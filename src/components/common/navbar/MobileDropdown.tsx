@@ -56,21 +56,9 @@ const MobileDropdown = ({ isLoading, isLoggedIn, user, handleLogout }: Props) =>
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <Link href="/profile/my-favourite" className="w-full flex items-center">
+                                    <Link href="/favorite" className="w-full flex items-center">
                                         <Heart size={16} className="opacity-60 mr-2" aria-hidden="true" />
                                         <span>Favourite</span>
-                                    </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem asChild>
-                                    <Link href="/profile/my-recipes" className="w-full flex items-center">
-                                        <Heart size={16} className="opacity-60 mr-2" aria-hidden="true" />
-                                        <span>My Recipe</span>
-                                    </Link>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem asChild>
-                                    <Link href="/profile/add-recipe" className="w-full flex items-center">
-                                        <Heart size={16} className="opacity-60 mr-2" aria-hidden="true" />
-                                        <span>Add Recipe</span>
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
