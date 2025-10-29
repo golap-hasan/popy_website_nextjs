@@ -1,30 +1,19 @@
-"use client"
+'use client'
+
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuGroup, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Heart, LogIn, LogOutIcon, Moon, Sun, User, UserPlus } from "lucide-react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
-// import { getInitials } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
-type MobileDropdownUser = {
-    name?: string;
-    email?: string;
-    image?: string;
-    profile_image?: string;
-};
+type UserType = { name?: string; email?: string; profile_image?: string };
+interface Props { isLoading: boolean; isLoggedIn: boolean; user?: UserType; handleLogout: () => void }
 
-type MobileDropdownProps = {
-    isLoading: boolean;
-    isLoggedIn: boolean;
-    user?: MobileDropdownUser | null;
-    handleLogout: () => void;
-};
-
-const MobileDropdown = ({ isLoading, isLoggedIn, user, handleLogout }: MobileDropdownProps) => {
+const MobileDropdown = ({ isLoading, isLoggedIn, user, handleLogout }: Props) => {
     const { setTheme, theme } = useTheme();
-    const currentTheme = theme ?? "system";
     return (
         <>
             <DropdownMenu>
@@ -33,8 +22,8 @@ const MobileDropdown = ({ isLoading, isLoggedIn, user, handleLogout }: MobileDro
                         <Skeleton className="h-10 w-10 rounded-full" />
                     ) : isLoggedIn ? (
                         <Avatar className="h-10 w-10 border">
-                            <AvatarImage src={user?.image ?? user?.profile_image ?? ""} alt={user?.name || "User avatar"} />
-                            <AvatarFallback>{user?.name}</AvatarFallback>
+                            <AvatarImage src={user?.profile_image || ""} alt={user?.name || "User avatar"} />
+                            <AvatarFallback>{getInitials(user?.name || "User")}</AvatarFallback>
                         </Avatar>
                     ) : (
                         <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
@@ -84,9 +73,9 @@ const MobileDropdown = ({ isLoading, isLoggedIn, user, handleLogout }: MobileDro
                                         <span>Add Recipe</span>
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}>
-                                    {currentTheme === 'dark' ? <Sun size={16} className="opacity-60 mr-2" /> : <Moon size={16} className="opacity-60 mr-2" />}
-                                    <span>{currentTheme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+                                <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                                    {theme === 'dark' ? <Sun size={16} className="opacity-60 mr-2" /> : <Moon size={16} className="opacity-60 mr-2" />}
+                                    <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
@@ -110,9 +99,9 @@ const MobileDropdown = ({ isLoading, isLoggedIn, user, handleLogout }: MobileDro
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}>
-                                {currentTheme === 'dark' ? <Sun size={16} className="opacity-60 mr-2" /> : <Moon size={16} className="opacity-60 mr-2" />}
-                                <span>{currentTheme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+                            <DropdownMenuItem onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                                {theme === 'dark' ? <Sun size={16} className="opacity-60 mr-2" /> : <Moon size={16} className="opacity-60 mr-2" />}
+                                <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                     )}
