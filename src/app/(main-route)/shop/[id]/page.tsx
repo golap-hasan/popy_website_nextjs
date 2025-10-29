@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import PageLayout from "@/tools/PageLayout";
 import SummarySection from "@/components/shop/details/SummarySection";
-import HighlightsSpecs from "@/components/shop/details/HighlightsSpecs";
-import AboutAuthor from "@/components/shop/details/AboutAuthor";
-import ReviewsSection from "@/components/shop/details/ReviewsSection";
-import SupportInfo from "@/components/shop/details/SupportInfo";
+import DetailTabs from "@/components/shop/details/DetailTabs";
 import RelatedBooks from "@/components/shop/details/RelatedBooks";
 import { bookDetails } from "@/components/shop/details/book-details-data";
 import { notFound } from "next/navigation";
@@ -48,13 +45,10 @@ const ShopDetailPage = async ({ params }: ShopDetailPageProps) => {
   }
 
   return (
-    <PageLayout>
+    <PageLayout paddingSize="small">
       <div className="space-y-12">
         <SummarySection detail={detail} />
-        <HighlightsSpecs detail={detail} />
-        <AboutAuthor detail={detail} />
-        <ReviewsSection detail={detail} />
-        <SupportInfo detail={detail} />
+        <DetailTabs detail={detail} />
         <RelatedBooks detail={detail} />
       </div>
     </PageLayout>
