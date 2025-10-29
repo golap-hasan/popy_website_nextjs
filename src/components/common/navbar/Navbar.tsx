@@ -12,6 +12,7 @@ import {
   Moon,
   Sun,
   Mail,
+  ShoppingCartIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -196,6 +197,25 @@ const Navbar = () => {
               >
                 <Heart className="h-5 w-5" />
                 <span className="sr-only">Favorites</span>
+              </Button>
+            </Link>
+            {/* Cart Icon */}
+            <Link
+              href="/profile/my-cart"
+              onClick={(e) => {
+                if (!isLoggedIn) {
+                  e.preventDefault();
+                  InfoToast("Please login to view cart");
+                }
+              }}
+            >
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden rounded-full md:flex"
+              >
+                <ShoppingCartIcon className="h-5 w-5" />
+                <span className="sr-only">Cart</span>
               </Button>
             </Link>
 
