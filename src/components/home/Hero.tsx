@@ -117,18 +117,28 @@ const Hero = () => {
 
           <div className="relative">
             <div className="absolute -inset-6 hidden rounded-[48px] bg-linear-to-tr from-primary/15 via-primary/5 to-transparent blur-3xl lg:block" />
-            <div className="relative overflow-hidden rounded-[42px] border border-border/40 bg-background/90 p-6 shadow-xl backdrop-blur">
-              <div className="grid gap-4 sm:grid-cols-3">
-                {bookCovers.map((book, index) => (
-                  <div
-                    key={book.src}
-                    className={`relative aspect-3/4 overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm transition-transform duration-300 ${
-                      index % 3 === 0 ? "translate-y-4" : index % 3 === 1 ? "-translate-y-2" : "translate-y-6"
-                    }`}
-                  >
-                    <Image src={book.src} alt={book.alt} fill sizes="(min-width: 1024px) 220px, 45vw" className="object-cover" />
-                  </div>
-                ))}
+            <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/90 p-4 shadow-xl backdrop-blur sm:rounded-[42px] sm:p-6">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {bookCovers.map((book, index) => {
+                  const desktopOffsets = ["sm:translate-y-4", "sm:-translate-y-2", "sm:translate-y-6"];
+                  const offsetClass = desktopOffsets[index % desktopOffsets.length];
+
+                  return (
+                    <div
+                      key={book.src}
+                      className={`relative aspect-3/4 w-full max-w-[140px] justify-self-center overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm transition-transform duration-300 ${offsetClass}`}
+                    >
+                      <Image
+                        src={book.src}
+                        alt={book.alt}
+                        fill
+                        sizes="(min-width: 1024px) 220px, (min-width: 768px) 33vw, 50vw"
+                        className="object-contain sm:object-cover"
+                        priority={index === 0}
+                      />
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="mt-8 space-y-4 rounded-2xl border border-border/40 bg-background/95 p-6 text-sm text-muted-foreground shadow-sm">
