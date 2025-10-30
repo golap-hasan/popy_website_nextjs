@@ -62,7 +62,7 @@ const Navbar = () => {
 
   // Fake auth/user state (replace with real Next.js auth integration later)
   const isLoading = false;
-  const isLoggedIn = true; // toggle for demo
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const user = {
     name: "Jane Doe",
     email: "jane@example.com",
@@ -72,6 +72,7 @@ const Navbar = () => {
   // logout function
   const handleLogout = () => {
     // fake logout
+    setIsLoggedIn(false);
     router.push("/");
   };
 
