@@ -6,6 +6,7 @@ import FiltersSidebar from "./FiltersSidebar";
 import ShopProducts, { SortOption } from "./ShopProducts";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,6 +14,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Filter } from "lucide-react";
+
+const MobileFilters = () => {
+  return (
+    <div className="md:hidden">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            className="flex w-full items-center justify-center gap-2 rounded-full"
+          >
+            <Filter className="size-4" />
+            Filters
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[80%] gap-0 p-0 sm:max-w-md">
+          <SheetHeader className="border-b border-border px-6 pb-4 pt-6">
+            <SheetTitle className="text-base font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+              Filters
+            </SheetTitle>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-3 pb-10 pt-5">
+            <FiltersSidebar />
+          </div>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+};
 
 const ShopLayout = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,8 +70,8 @@ const ShopLayout = () => {
 
   return (
     <PageLayout>
-      <div className="grid gap-10 lg:grid-cols-[320px_1fr]">
-        <div className="lg:sticky lg:top-28 lg:h-fit">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[320px_1fr]">
+        <div className="hidden lg:block lg:sticky lg:top-28 lg:h-fit">
           <FiltersSidebar />
         </div>
         <div className="space-y-10">
@@ -48,6 +85,7 @@ const ShopLayout = () => {
               </p>
             </div>
             <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:justify-end">
+              <MobileFilters />
               <div className="flex w-full flex-col gap-1 md:w-64">
                 <Label htmlFor="shop-search" className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                   Search
