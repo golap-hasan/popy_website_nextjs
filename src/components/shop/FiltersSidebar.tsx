@@ -40,59 +40,45 @@ const publisherFilters = [
 const levelFilters = [
   {
     label: "Play Group",
-    children: ["Picture books", "Activity kits", "Learning cards"],
   },
   {
     label: "Nursery",
-    children: ["Alphabet", "Coloring", "Early maths"],
   },
   {
     label: "KG",
-    children: ["Phonics", "Story time", "Crafts"],
   },
   {
     label: "Class One",
-    children: ["English", "Bangla", "Math", "Science"],
   },
   {
     label: "Class Two",
-    children: ["English", "Bangla", "Math", "General knowledge"],
   },
   {
     label: "Class Three",
-    children: ["English", "Bangla", "Math", "Science"],
   },
   {
     label: "Class Four",
-    children: ["English", "Bangla", "Math", "Science"],
   },
   {
     label: "Class Five",
-    children: ["PSC prep", "English", "Bangla", "Math"],
   },
   {
     label: "Class Six",
-    children: ["Textbooks", "Guide books", "Model tests"],
   },
   {
     label: "Class Seven",
-    children: ["Textbooks", "Guide books", "Workbooks"],
   },
   {
     label: "Class Eight",
-    children: ["JSC prep", "Science", "Bangla", "Math"],
   },
   {
     label: "Class Nine",
-    children: ["NCTB", "Model tests", "Guide books"],
   },
   {
     label: "SSC",
-    children: ["Board questions", "Model tests", "Guide books"],
   },
   {
     label: "HSC",
-    children: ["Board questions", "Suggestion", "Admission prep"],
   },
 ];
 
@@ -101,6 +87,7 @@ const FiltersSidebar = () => {
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
   const [selectedPublishers, setSelectedPublishers] = useState<string[]>([]);
+  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
 
   const handlePriceChange = (values: number[]) => {
     if (values.length === 1) {
@@ -128,6 +115,15 @@ const FiltersSidebar = () => {
     });
   };
 
+  const handleLevelSelection = (label: string, checked: boolean) => {
+    setSelectedLevels((previous) => {
+      if (checked) {
+        return previous.includes(label) ? previous : [...previous, label];
+      }
+      return previous.filter((item) => item !== label);
+    });
+  };
+
   return (
     <aside className="space-y-8 rounded-3xl border border-border/40 bg-background/80 p-6 shadow-sm backdrop-blur">
       <div className="space-y-8">
@@ -136,47 +132,40 @@ const FiltersSidebar = () => {
             <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-muted-foreground">
               Book levels
             </h3>
-            <Accordion type="single" collapsible className="w-full space-y-1">
-              {levelFilters.map((item) => (
-                <AccordionItem
-                  key={item.label}
-                  value={item.label}
-                  className="rounded-xl border border-border/50 bg-background/60 px-3"
-                >
-                  <AccordionTrigger className="rounded-xl px-0 py-3 text-sm font-medium text-foreground [&>svg]:size-4">
-                    <span className="flex items-center gap-2">
-                      <span className="text-primary">›</span>
-                      {item.label}
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-4">
-                    <p className="mb-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                      {item.label} focuses
-                    </p>
-                    <div className="space-y-2">
-                      {item.children.map((child) => (
-                        <Button
-                          key={child}
-                          variant="ghost"
-                          size="sm"
-                          className="w-full justify-between rounded-lg bg-muted/30 px-3 py-2 text-sm text-foreground hover:bg-muted"
-                        >
-                          <span>{child}</span>
-                          <span className="text-xs text-muted-foreground">
-                            Browse
-                          </span>
-                        </Button>
-                      ))}
+            <div className="space-y-2">
+              {levelFilters.map((item) => {
+                const levelId = `level-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
+                const isChecked = selectedLevels.includes(item.label);
+
+                return (
+                  <label
+                    key={item.label}
+                    htmlFor={levelId}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-sm text-foreground transition hover:bg-muted"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Checkbox
+                        id={levelId}
+                        checked={isChecked}
+                        onCheckedChange={(checked) =>
+                          handleLevelSelection(item.label, checked === true)
+                        }
+                        className="rounded"
+                      />
+                      <span>{item.label}</span>
                     </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+                    <span className="text-xs text-muted-foreground">
+                      {isChecked ? "Selected" : "Select"}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
           </div>
           <ScrollBar orientation="vertical" />
         </ScrollArea>
 
-        <Accordion type="multiple" className="space-y-3">
+        <Accordion type="multiple" defaultValue={["price", "rating"]} className="space-y-3">
           <AccordionItem
             value="authors"
             className="rounded-2xl border border-border/50 bg-background/60 px-4"
@@ -277,7 +266,7 @@ const FiltersSidebar = () => {
                 </div>
                 <Slider
                   min={200}
-                  max={1200}
+                  max={2000}
                   step={10}
                   value={priceRange}
                   onValueChange={handlePriceChange}
@@ -327,7 +316,7 @@ const FiltersSidebar = () => {
             </AccordionContent>
           </AccordionItem>
 
-          <AccordionItem
+          {/* <AccordionItem
             value="tags"
             className="rounded-2xl border border-border/50 bg-background/60 px-4"
           >
@@ -347,7 +336,7 @@ const FiltersSidebar = () => {
                 ))}
               </div>
             </AccordionContent>
-          </AccordionItem>
+          </AccordionItem> */}
         </Accordion>
       </div>
     </aside>

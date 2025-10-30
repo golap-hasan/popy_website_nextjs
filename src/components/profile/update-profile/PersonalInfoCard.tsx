@@ -62,7 +62,7 @@ const PersonalInfoCard = () => {
         </div>
       </CardContent>
       <CardAction className="px-6">
-        <Button type="submit" variant="outline" className="w-full rounded-full sm:w-auto">
+        <Button type="submit" className="w-full rounded-full sm:w-auto">
           Save personal info
         </Button>
       </CardAction>
