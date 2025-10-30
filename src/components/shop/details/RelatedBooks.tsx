@@ -40,7 +40,7 @@ const RelatedBooks = ({ detail }: { detail: BookDetail }) => {
                         className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
                       />
                       <div className="absolute left-3 top-3 flex items-center gap-2">
-                        <Badge className="rounded-full bg-primary/90 text-primary-foreground shadow-sm">Featured</Badge>
+                        <Badge className="rounded-full bg-primary/90 text-primary-foreground ">Featured</Badge>
                       </div>
                     </div>
                     <div className="space-y-2">
@@ -57,11 +57,11 @@ const RelatedBooks = ({ detail }: { detail: BookDetail }) => {
             ))}
           </CarouselContent>
           <div className="hidden items-center gap-3 py-6 lg:flex">
-            <CarouselPrevious className="size-10 rounded-full border border-border/60 bg-background/80 text-foreground shadow-sm transition hover:bg-primary hover:text-primary-foreground" />
-            <CarouselNext className="size-10 rounded-full border border-border/60 bg-background/80 text-foreground shadow-sm transition hover:bg-primary hover:text-primary-foreground" />
+            <CarouselPrevious className="size-10 rounded-full border border-border/60 bg-background/80 text-foreground  transition hover:bg-primary hover:text-primary-foreground" />
+            <CarouselNext className="size-10 rounded-full border border-border/60 bg-background/80 text-foreground  transition hover:bg-primary hover:text-primary-foreground" />
           </div>
-          <CarouselPrevious className="-left-4 top-1/2 flex size-10 -translate-y-1/2 rounded-full border border-border/60 bg-background/80 text-foreground shadow-sm transition hover:bg-primary hover:text-primary-foreground lg:hidden" />
-          <CarouselNext className="-right-4 top-1/2 flex size-10 -translate-y-1/2 rounded-full border border-border/60 bg-background/80 text-foreground shadow-sm transition hover:bg-primary hover:text-primary-foreground lg:hidden" />
+          <CarouselPrevious className="-left-4 top-1/2 flex size-10 -translate-y-1/2 rounded-full border border-border/60 bg-background/80 text-foreground  transition hover:bg-primary hover:text-primary-foreground lg:hidden" />
+          <CarouselNext className="-right-4 top-1/2 flex size-10 -translate-y-1/2 rounded-full border border-border/60 bg-background/80 text-foreground  transition hover:bg-primary hover:text-primary-foreground lg:hidden" />
         </div>
       </Carousel>
     </section>

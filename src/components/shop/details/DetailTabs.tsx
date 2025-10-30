@@ -11,21 +11,11 @@ import {
 
 const DetailTabs = ({ detail }: { detail: BookDetail }) => {
   return (
-    <section className="space-y-6 rounded-3xl bg-background/95 shadow-sm">
+    <section className="space-y-6 bg-background/95 ">
       <Tabs defaultValue="description" className="space-y-8">
-        <TabsList className="grid w-full grid-cols-2 rounded-full bg-muted/40 p-1">
-          <TabsTrigger
-            value="description"
-            className="rounded-full text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-foreground"
-          >
-            Description
-          </TabsTrigger>
-          <TabsTrigger
-            value="reviews"
-            className="rounded-full text-sm font-semibold data-[state=active]:bg-background data-[state=active]:text-foreground"
-          >
-            Reviews
-          </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="description">Description</TabsTrigger>
+          <TabsTrigger value="reviews">Reviews</TabsTrigger>
         </TabsList>
 
         <TabsContent value="description" className="space-y-10">
