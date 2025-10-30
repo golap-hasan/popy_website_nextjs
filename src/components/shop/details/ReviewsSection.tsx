@@ -29,11 +29,11 @@ const ReviewsSection = ({ detail }: { detail: BookDetail }) => {
           <CardContent className="space-y-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
-                <div className="grid size-16 place-items-center rounded-full bg-primary/10 text-3xl font-semibold text-primary">
+                <div className="grid size-24 place-items-center rounded-full bg-primary/10 text-3xl font-semibold text-primary">
                   {detail.rating.toFixed(1)}
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold text-foreground">Overall rating</p>
+                  <p className="text-xl font-semibold text-foreground">Overall rating</p>
                   <div className="flex items-center gap-1 text-primary">{renderStars(detail.rating)}</div>
                   <p className="text-xs text-muted-foreground">
                     Based on {detail.reviewsCount} reviews from students, teachers, and parents

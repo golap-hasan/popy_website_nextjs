@@ -11,7 +11,7 @@ import {
 
 const DetailTabs = ({ detail }: { detail: BookDetail }) => {
   return (
-    <section className="space-y-6 rounded-3xl border border-border/60 bg-background/95 p-6 shadow-sm md:p-8">
+    <section className="space-y-6 rounded-3xl bg-background/95 shadow-sm">
       <Tabs defaultValue="description" className="space-y-8">
         <TabsList className="grid w-full grid-cols-2 rounded-full bg-muted/40 p-1">
           <TabsTrigger

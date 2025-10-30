@@ -20,7 +20,7 @@ const SummarySection = ({ detail }: { detail: BookDetail }) => {
     : null;
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-border/60 bg-background/95 p-8 shadow-sm">
+    <section className="relative overflow-hidden bg-background/95 shadow-sm">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <div className="space-y-6">
           <Badge variant="secondary" className="w-fit bg-primary/15 text-primary">
