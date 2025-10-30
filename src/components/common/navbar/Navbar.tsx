@@ -81,7 +81,7 @@ const Navbar = () => {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="px-4 lg:px-0">
+      <div className="px-4 xl:px-0">
         <PageLayout paddingSize="none">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}

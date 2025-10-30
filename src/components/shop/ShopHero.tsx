@@ -17,7 +17,7 @@ const highlights = [
 
 const ShopHero = () => {
   return (
-    <section className="relative overflow-hidden bg-linear-to-br from-secondary/20 via-background to-background py-6 px-4 lg:px-0">
+    <section className="relative overflow-hidden bg-linear-to-br from-secondary/20 via-background to-background py-6 px-4 xl:px-0">
       <div className="absolute -left-10 top-10 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
       <div className="absolute -right-20 bottom-0 h-64 w-64 rounded-full bg-secondary/30 blur-3xl" />
 
