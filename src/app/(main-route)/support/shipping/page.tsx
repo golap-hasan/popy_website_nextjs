@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import PageLayout from "@/tools/PageLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+
+export const metadata: Metadata = {
+  title: "Shipping & Delivery | Popy Library",
+  description: "Learn about delivery timelines, charges, and coverage for Popy Library orders.",
+};
 
 const ShippingPage = () => {
   return (

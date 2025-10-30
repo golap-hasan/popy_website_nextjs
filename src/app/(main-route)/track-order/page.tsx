@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import PageLayout from "@/tools/PageLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "Track Order | Popy Library",
+  description: "Check the latest status of your Popy Library order using your order ID and email.",
+};
 
 const TrackOrderPage = () => {
   return (

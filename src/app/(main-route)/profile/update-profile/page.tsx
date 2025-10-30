@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { ArrowLeft, Save } from "lucide-react";
 
 import PageLayout from "@/tools/PageLayout";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import PersonalInfoCard from "@/components/profile/update-profile/PersonalInfoCard";
 import PasswordUpdateCard from "@/components/profile/update-profile/PasswordUpdateCard";
 import DeliveryPreferencesCard from "@/components/profile/update-profile/DeliveryPreferencesCard";

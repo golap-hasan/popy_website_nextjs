@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import PageLayout from "@/tools/PageLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+
+export const metadata: Metadata = {
+  title: "Returns & Refunds | Popy Library",
+  description: "Understand Popy Library's return policy and how to request a refund.",
+};
 
 const ReturnsPage = () => {
   return (

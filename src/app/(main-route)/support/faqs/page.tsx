@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import PageLayout from "@/tools/PageLayout";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
+
+export const metadata: Metadata = {
+  title: "FAQs | Popy Library Help Center",
+  description: "Find answers to common questions about orders, shipping, returns, and using Popy Library.",
+};
 
 const FAQsPage = () => {
   return (
