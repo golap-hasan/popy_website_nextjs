@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Popy | Home",
-  description: "Popy - Home",
+  description: "Purchase books online from Popy Library.",
 };
 
 export default function RootLayout({

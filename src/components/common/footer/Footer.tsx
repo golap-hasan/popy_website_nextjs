@@ -17,17 +17,17 @@ const quickLinks = [
 ];
 
 const companyLinks = [
+  { label: "Help", href: "/help" },
   { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
-  { label: "Events", href: "/events" },
-  { label: "Contact", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms & Conditions", href: "/terms" },
 ];
 
 const supportLinks = [
   { label: "FAQs", href: "/support/faqs" },
-  { label: "Shipping & Delivery", href: "/support/shipping" },
-  { label: "Returns & Refunds", href: "/support/returns" },
   { label: "Track Order", href: "/track-order" },
+  { label: "Returns & Refunds", href: "/support/returns" },
+  { label: "Shipping & Delivery", href: "/support/shipping" },
 ];
 
 const socials = [
@@ -59,7 +59,7 @@ const contactDetails = [
 
 const Footer = () => {
   return (
-    <footer className="relative mt-20 bg-muted/40">
+    <footer className="relative bg-muted/40">
       <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-secondary/10" />
       <div className="relative">
         <div className="container mx-auto max-w-7xl px-4 py-16">

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import {
   Home,
   Store,
-  Sparkles,
   Moon,
   Sun,
   Mail,
@@ -26,7 +25,6 @@ import PageLayout from "@/tools/PageLayout";
 const navigationItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Shop", href: "/shop", icon: Store },
-  { name: "Collections", href: "/collections", icon: Sparkles },
   { name: "About", href: "/about", icon: Info },
   { name: "Contact", href: "/contact", icon: Mail },
 ];

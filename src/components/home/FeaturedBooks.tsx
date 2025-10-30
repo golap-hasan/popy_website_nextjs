@@ -57,7 +57,7 @@ const FeaturedBooks = () => {
           {featuredBooks.map((book) => (
             <div
               key={book.title}
-              className="group relative flex h-full flex-col gap-4 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="group relative flex h-full flex-col gap-4 rounded-3xl border border-border/50 bg-background/80 p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl overflow-hidden"
             >
               <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
                 <Image
