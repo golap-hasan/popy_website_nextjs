@@ -61,17 +61,5 @@ export const curatedLists: FavoriteCuratedList[] = [
     description: "See what fellow readers are saving this week across languages and classes.",
     ctaLabel: "Browse new releases",
     href: "/shop?sort=newest",
-  },
-  {
-    title: "Staff picks",
-    description: "Handpicked study companions trusted by our librarians for exam season.",
-    ctaLabel: "View staff picks",
-    href: "/collections",
-  },
-  {
-    title: "Reading goals",
-    description: "Build a balanced stack with literature, problem-solving, and creative reads.",
-    ctaLabel: "Set goals",
-    href: "/collections?tab=goals",
-  },
+  }
 ];

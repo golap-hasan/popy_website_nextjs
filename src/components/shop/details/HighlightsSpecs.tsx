@@ -4,7 +4,7 @@ import type { BookDetail } from "./book-details-data";
 
 const HighlightsSpecs = ({ detail }: { detail: BookDetail }) => {
   return (
-    <section className="space-y-6 rounded-3xl border border-border/60 bg-background/95 p-8 shadow-sm">
+    <section className="space-y-6 rounded-3xl bg-background/95 shadow-sm">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/80">What's inside</p>
@@ -16,8 +16,8 @@ const HighlightsSpecs = ({ detail }: { detail: BookDetail }) => {
         </div>
       </div>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-        <Card className="border-border/50 bg-background/90">
-          <CardContent className="space-y-4 p-6">
+        <div className="bg-background/90 p-0">
+          <div className="space-y-4">
             <p className="text-sm font-semibold text-foreground">Key highlights</p>
             <ul className="space-y-3 text-sm text-muted-foreground">
               {detail.highlights.map((highlight) => (
@@ -26,9 +26,10 @@ const HighlightsSpecs = ({ detail }: { detail: BookDetail }) => {
                 </li>
               ))}
             </ul>
-          </CardContent>
-        </Card>
-        <Card className="border-border/50 bg-background/90">
+          </div>
+        </div>
+        <div>
+          <Card className="border-border/50 bg-background/90">
           <CardContent className="space-y-4 p-6">
             <p className="text-sm font-semibold text-foreground">Product specs</p>
             <div className="space-y-3">
@@ -44,6 +45,7 @@ const HighlightsSpecs = ({ detail }: { detail: BookDetail }) => {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </section>
   );

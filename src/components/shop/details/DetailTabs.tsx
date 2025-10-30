@@ -1,5 +1,4 @@
 import HighlightsSpecs from "./HighlightsSpecs";
-import AboutAuthor from "./AboutAuthor";
 import ReviewsSection from "./ReviewsSection";
 import SupportInfo from "./SupportInfo";
 import type { BookDetail } from "./book-details-data";
@@ -31,7 +30,6 @@ const DetailTabs = ({ detail }: { detail: BookDetail }) => {
 
         <TabsContent value="description" className="space-y-10">
           <HighlightsSpecs detail={detail} />
-          <AboutAuthor detail={detail} />
           <SupportInfo detail={detail} />
         </TabsContent>
 

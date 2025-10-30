@@ -7,7 +7,7 @@ const SupportInfo = ({ detail }: { detail: BookDetail }) => {
   return (
     <section className="grid gap-6 md:grid-cols-2">
       <Card className="border-border/50 bg-background/95">
-        <CardContent className="space-y-4 p-6">
+        <CardContent className="space-y-4">
           <div className="flex items-center gap-3">
             <div className="grid size-12 place-items-center rounded-full bg-primary/10 text-primary">
               <Truck className="size-5" />
@@ -28,7 +28,7 @@ const SupportInfo = ({ detail }: { detail: BookDetail }) => {
         </CardContent>
       </Card>
       <Card className="border-border/50 bg-background/95">
-        <CardContent className="space-y-4 p-6">
+        <CardContent className="space-y-4">
           <div className="flex items-center gap-3">
             <div className="grid size-12 place-items-center rounded-full bg-secondary/10 text-secondary">
               <MessageCircle className="size-5" />

@@ -142,7 +142,7 @@ const FavoritePage = () => {
 
         <section className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
           <Card className="border-border/60 bg-background/95">
-            <CardContent className="space-y-6 p-6 md:p-8">
+            <CardContent className="space-y-6">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <BookmarkCheck className="size-4 text-primary" />
@@ -197,12 +197,12 @@ const FavoritePage = () => {
                   </p>
                 </div>
                 <div className="grid gap-3">
-                  <Button variant="secondary" className="justify-start gap-3 rounded-2xl px-4 py-3 text-left">
-                    <BookOpen className="size-4" /> Continue where you left off
-                  </Button>
-                  <Button variant="outline" className="justify-start gap-3 rounded-2xl px-4 py-3 text-left">
-                    <BookmarkCheck className="size-4" /> Create a reading routine
-                  </Button>
+                  <div className="flex items-center gap-3 rounded-2xl border border-border/40 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
+                    <BookOpen className="size-4 text-primary" /> Continue where you left off
+                  </div>
+                  <div className="flex items-center gap-3 rounded-2xl border border-border/40 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
+                    <BookmarkCheck className="size-4 text-primary" /> Create a reading routine
+                  </div>
                 </div>
               </CardContent>
             </Card>

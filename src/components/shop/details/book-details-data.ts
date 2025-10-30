@@ -96,6 +96,24 @@ export const bookDetails: Record<string, BookDetail> = {
         content:
           "The pacing charts and worksheet banks mean I no longer need separate prep. Students love the reflective prompts after each prose piece.",
       },
+      {
+        reviewer: "Md. Mostafizur Rahman",
+        role: "SSC Candidate, Rajshahi Collegiate",
+        rating: 5,
+        date: "May 2025",
+        summary: "Finally a guide that makes grammar click",
+        content:
+          "Every unit blends real-life examples with exam drills. The QR speaking practice helped me score a full band in the oral exam for the first time.",
+      },
+      {
+        reviewer: "Md. Touhid A.",
+        role: "English Teacher, Govt. Laboratory School",
+        rating: 4.5,
+        date: "April 2025",
+        summary: "Structured for effortless lesson planning",
+        content:
+          "The pacing charts and worksheet banks mean I no longer need separate prep. Students love the reflective prompts after each prose piece.",
+      },
     ],
     shippingNotes: [
       "Same-day dispatch within Dhaka if ordered before 2pm",
