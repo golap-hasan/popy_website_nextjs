@@ -8,6 +8,7 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import PageLayout from "@/tools/PageLayout";
 
 const quickLinks = [
   { label: "Shop", href: "/shop" },
@@ -62,7 +63,7 @@ const Footer = () => {
     <footer className="relative bg-muted/40">
       <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-secondary/10" />
       <div className="relative">
-        <div className="container mx-auto max-w-7xl px-4 py-16">
+        <PageLayout>
           <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
             <div className="space-y-6">
               <div>
@@ -167,10 +168,10 @@ const Footer = () => {
               </div>
             ))}
           </div>
-        </div>
+        </PageLayout>
 
         <div className="border-t border-border/50">
-          <div className="container mx-auto max-w-7xl px-4 py-6 text-sm text-muted-foreground">
+          <PageLayout paddingSize="small" className="text-muted-foreground">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p>© {new Date().getFullYear()} Popy Library. All rights reserved.</p>
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/80">
@@ -188,7 +189,7 @@ const Footer = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </PageLayout>
         </div>
       </div>
     </footer>

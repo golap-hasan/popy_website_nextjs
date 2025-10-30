@@ -184,7 +184,7 @@ const FavoritePage = () => {
 
           <div className="space-y-6">
             <Card className="border-border/60 bg-background/95">
-              <CardContent className="space-y-4 p-6 md:p-8">
+              <CardContent className="space-y-4">
                 <div className="flex flex-col gap-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/80">
                     Quick actions
@@ -208,7 +208,7 @@ const FavoritePage = () => {
             </Card>
 
             <Card className="border-border/60 bg-background/95">
-              <CardContent className="space-y-5 p-6 md:p-8">
+              <CardContent className="space-y-5">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
                     <h3 className="text-lg font-semibold text-foreground">Curated for you</h3>

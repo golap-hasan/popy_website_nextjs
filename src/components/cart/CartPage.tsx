@@ -44,7 +44,7 @@ const CartPage = () => {
   };
 
   return (
-    <PageLayout paddingSize="small">
+    <PageLayout paddingSize="small" className="screen-height">
       <div className="space-y-10">
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-3">

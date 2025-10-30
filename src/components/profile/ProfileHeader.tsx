@@ -33,7 +33,9 @@ const ProfileHeader = () => {
           >
             Edit profile
           </Link>
-          <Button className="rounded-full px-6">Manage orders</Button>
+          <Button className="rounded-full px-6">
+            <Link href="/track-order">Manage orders</Link>
+          </Button>
         </div>
       </div>
     </section>

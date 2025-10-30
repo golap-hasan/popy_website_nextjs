@@ -88,7 +88,7 @@ const Hero = () => {
 
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               <Button size="lg" className="px-6" >
-                <Link href="/collections">Browse collections</Link>
+                <Link href="/shop">Browse collections</Link>
               </Button>
               <Button variant="ghost" size="lg" className="px-6" >
                 <Link href="/about">Meet the librarians</Link>

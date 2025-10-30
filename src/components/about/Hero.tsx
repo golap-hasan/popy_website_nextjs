@@ -36,7 +36,7 @@ const AboutHero = () => {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <Button size="lg">
-                <Link href="/collections">Explore collections</Link>
+                <Link href="/shop">Explore collections</Link>
               </Button>
               <Button variant="ghost" size="lg">
                 <Link href="/contact">
