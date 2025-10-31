@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import PageLayout from "@/tools/PageLayout";
-import SummarySection from "@/components/shop/details/SummarySection";
-import DetailTabs from "@/components/shop/details/DetailTabs";
-import RelatedBooks from "@/components/shop/details/RelatedBooks";
-import { bookDetails } from "@/components/shop/details/book-details-data";
-import { notFound } from "next/navigation";
+import type { Metadata } from 'next';
+import PageLayout from '@/tools/PageLayout';
+import SummarySection from '@/components/shop/details/SummarySection';
+import DetailTabs from '@/components/shop/details/DetailTabs';
+import RelatedBooks from '@/components/shop/details/RelatedBooks';
+import { books } from '@/components/shop/details/book-details-data';
+import { notFound } from 'next/navigation';
 
 type ShopDetailPageParams = Promise<{
   id: string;
@@ -18,38 +18,38 @@ export const generateMetadata = async ({
   params,
 }: ShopDetailPageProps): Promise<Metadata> => {
   const { id } = await params;
-  const detail = bookDetails[id];
+  const book = books.find(book => book.id === id);
 
-  if (!detail) {
+  if (!book) {
     return {
-      title: "Book not found · Popy Library",
+      title: 'Book not found · Popy Library',
     };
   }
 
   return {
-    title: `${detail.title} · Popy Library`,
-    description: detail.description,
+    title: `${book.title} · Popy Library`,
+    description: book.description,
     openGraph: {
-      title: detail.title,
-      description: detail.description,
+      title: book.title,
+      description: book.description,
     },
   };
 };
 
 const ShopDetailPage = async ({ params }: ShopDetailPageProps) => {
   const { id } = await params;
-  const detail = bookDetails[id];
+  const book = books.find(book => book.id === id);
 
-  if (!detail) {
+  if (!book) {
     notFound();
   }
 
   return (
     <PageLayout paddingSize="small">
       <div className="space-y-12">
-        <SummarySection detail={detail} /> 
-        <DetailTabs detail={detail} />
-        <RelatedBooks detail={detail} />
+        <SummarySection book={book} />
+        <DetailTabs book={book} />
+        <RelatedBooks book={book} />
       </div>
     </PageLayout>
   );

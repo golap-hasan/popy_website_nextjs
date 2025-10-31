@@ -1,15 +1,10 @@
-import HighlightsSpecs from "./HighlightsSpecs";
-import ReviewsSection from "./ReviewsSection";
-import SupportInfo from "./SupportInfo";
-import type { BookDetail } from "./book-details-data";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import HighlightsSpecs from './HighlightsSpecs';
+import ReviewsSection from './ReviewsSection';
+import SupportInfo from './SupportInfo';
+import type { Book } from './book-details-data';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const DetailTabs = ({ detail }: { detail: BookDetail }) => {
+const DetailTabs = ({ book }: { book: Book }) => {
   return (
     <section className="space-y-6 bg-background/95 ">
       <Tabs defaultValue="description" className="space-y-8">
@@ -19,12 +14,12 @@ const DetailTabs = ({ detail }: { detail: BookDetail }) => {
         </TabsList>
 
         <TabsContent value="description" className="space-y-10">
-          <HighlightsSpecs detail={detail} />
-          <SupportInfo detail={detail} />
+          <HighlightsSpecs detail={book} />
+          <SupportInfo detail={book} />
         </TabsContent>
 
         <TabsContent value="reviews" className="space-y-10">
-          <ReviewsSection detail={detail} />
+          <ReviewsSection detail={book} />
         </TabsContent>
       </Tabs>
     </section>

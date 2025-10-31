@@ -1,9 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Truck, MessageCircle, Clock8 } from "lucide-react";
-import type { BookDetail } from "./book-details-data";
+import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { Truck, MessageCircle, Clock8 } from 'lucide-react';
+import type { Book } from './book-details-data';
 
-const SupportInfo = ({ detail }: { detail: BookDetail }) => {
+const SupportInfo = ({ detail }: { detail: Book }) => {
   return (
     <section className="grid gap-6 md:grid-cols-2">
       <Card className="border-border/50 bg-background/95">
@@ -13,14 +13,21 @@ const SupportInfo = ({ detail }: { detail: BookDetail }) => {
               <Truck className="size-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Shipping & delivery</p>
-              <p className="text-xs text-muted-foreground">Fast, reliable fulfilment across Bangladesh</p>
+              <p className="text-sm font-semibold text-foreground">
+                Shipping & delivery
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Fast, reliable fulfilment across Bangladesh
+              </p>
             </div>
           </div>
           <Separator />
           <ul className="space-y-2 text-sm text-muted-foreground">
-            {detail.shippingNotes.map((note) => (
-              <li key={note} className="rounded-2xl border border-border/40 bg-muted/20 p-4">
+            {detail.shippingNotes.map(note => (
+              <li
+                key={note}
+                className="rounded-2xl border border-border/40 bg-muted/20 p-4"
+              >
                 {note}
               </li>
             ))}
@@ -34,14 +41,21 @@ const SupportInfo = ({ detail }: { detail: BookDetail }) => {
               <MessageCircle className="size-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Study support</p>
-              <p className="text-xs text-muted-foreground">Stay on track with responsive mentors</p>
+              <p className="text-sm font-semibold text-foreground">
+                Study support
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Stay on track with responsive mentors
+              </p>
             </div>
           </div>
           <Separator />
           <ul className="space-y-2 text-sm text-muted-foreground">
-            {detail.supportNotes.map((note) => (
-              <li key={note} className="rounded-2xl border border-border/40 bg-muted/20 p-4">
+            {detail.supportNotes.map(note => (
+              <li
+                key={note}
+                className="rounded-2xl border border-border/40 bg-muted/20 p-4"
+              >
                 {note}
               </li>
             ))}
