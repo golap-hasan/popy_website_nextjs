@@ -46,11 +46,8 @@ const LoginForm = () => {
       <PageLayout className="relative z-10 flex min-h-screen items-center py-20">
         <div className="grid w-full items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="flex w-full flex-col items-center gap-6 rounded-4xl border border-primary/20 bg-primary/5 p-4 text-center shadow-inner lg:items-start lg:text-left">
-            {/* <Badge variant="outline" className="rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
-              Member access
-            </Badge> */}
+
             <div className="relative w-full max-w-[540px] rounded-4xl p-6">
-              {/* <div className="pointer-events-none absolute inset-4 rounded-3xl border border-primary/10" /> */}
               <Lottie
                 animationData={loginAnimation}
                 loop
@@ -58,9 +55,6 @@ const LoginForm = () => {
                 aria-label="Login illustration"
               />
             </div>
-            {/* <div className="max-w-lg text-sm text-muted-foreground">
-              Sign in to access saved orders, curated study feeds, and personalised exam prep tools for Play Group through HSC.
-            </div> */}
           </div>
 
           <Card className="relative overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
