@@ -12,19 +12,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import {
   ArrowLeft,
   BookOpenCheck,
-  Chrome,
   Eye,
   EyeOff,
-  Facebook,
   GraduationCap,
   ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
-// import { useLoginMutation } from "@/redux/feature/auth/authApi";
 
 const loginSchema = z.object({
   email: z.email({ message: "Invalid email address." }),
@@ -49,15 +45,9 @@ const highlights: { title: string; description: string; icon: LucideIcon }[] = [
   },
 ];
 
-const socials = [
-  { label: "Continue with Google", icon: Chrome },
-  { label: "Continue with Facebook", icon: Facebook },
-];
-
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  // const [login, { isLoading }] = useLoginMutation();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -69,11 +59,10 @@ const LoginForm = () => {
 
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     console.log(data);
-    // login(data);
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-background via-primary/5 to-background">
+    <div className="relative w-full min-h-screen overflow-hidden bg-linear-to-br from-background via-primary/5 to-background">
       <div className="pointer-events-none absolute -left-32 top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-[420px] w-[420px] translate-x-1/3 translate-y-1/3 rounded-full bg-secondary/20 blur-[140px]" />
 
@@ -122,7 +111,7 @@ const LoginForm = () => {
 
           <Card className="relative overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
             <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
-            <CardContent className="relative z-10 p-8 sm:p-10">
+            <CardContent className="relative z-10">
               <div className="flex items-center justify-between">
                 <Button variant="ghost" size="icon" className="rounded-full" >
                   <Link href="/">
@@ -208,22 +197,6 @@ const LoginForm = () => {
                   </Button>
                 </form>
               </Form>
-
-              <Separator className="my-8" />
-
-              <div className="space-y-3">
-                {socials.map(({ label, icon: Icon }) => (
-                  <Button
-                    key={label}
-                    type="button"
-                    variant="outline"
-                    className="w-full items-center justify-center gap-3 rounded-full border-border/50 py-5 text-sm"
-                  >
-                    <Icon className="size-5" />
-                    {label}
-                  </Button>
-                ))}
-              </div>
 
               <p className="mt-8 text-center text-sm text-muted-foreground">
                 Don&apos;t have an account?{" "}

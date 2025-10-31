@@ -5,24 +5,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
-  CalendarIcon,
-  Chrome,
   Eye,
   EyeOff,
-  Facebook,
   GraduationCap,
   HeartHandshake,
   ShieldCheck,
@@ -33,7 +25,8 @@ import {
 const registerSchema = z.object({
   fullname: z.string().min(1, { message: "Full name is required." }),
   email: z.string().min(1, { message: "Email is required." }).email({ message: "Invalid email address." }),
-  dob: z.date({ error: "Please select your date of birth." }),
+  phone: z.string().min(1, { message: "Phone number is required." }),
+  address: z.string().min(1, { message: "Address is required." }),
   password: z.string().min(6, { message: "Password must be at least 6 characters." }),
 });
 
@@ -59,12 +52,6 @@ const highlights: { title: string; description: string; icon: LucideIcon }[] = [
     icon: GraduationCap,
   },
 ];
-
-const socials = [
-  { label: "Continue with Google", icon: Chrome },
-  { label: "Continue with Facebook", icon: Facebook },
-];
-
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((previous) => !previous);
@@ -74,7 +61,8 @@ const Register = () => {
     defaultValues: {
       fullname: "",
       email: "",
-      dob: undefined,
+      phone: "",
+      address: "",
       password: "",
     },
   });
@@ -84,7 +72,8 @@ const Register = () => {
       name: data.fullname,
       role: "USER",
       email: data.email,
-      date_of_birth: format(data.dob, "dd-MM-yyyy"),
+      phone: data.phone,
+      address: data.address,
       password: data.password,
       confirmPassword: data.password,
     };
@@ -93,7 +82,7 @@ const Register = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-linear-to-br from-background via-secondary/10 to-background">
+    <div className="relative w-full overflow-hidden bg-linear-to-br from-background via-secondary/10 to-background">
       <div className="pointer-events-none absolute -left-32 top-32 h-96 w-96 rounded-full bg-primary/15 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-[460px] w-[460px] translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[160px]" />
 
@@ -141,7 +130,7 @@ const Register = () => {
 
         <Card className="relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
           <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
-          <CardContent className="relative z-10 p-8 sm:p-10">
+          <CardContent className="relative z-10">
             <div className="flex items-center justify-between">
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Link href="/auth/login">
@@ -169,7 +158,7 @@ const Register = () => {
                   control={form.control}
                   name="fullname"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Full name
                       </FormLabel>
@@ -189,7 +178,7 @@ const Register = () => {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Email
                       </FormLabel>
@@ -208,38 +197,40 @@ const Register = () => {
 
                 <FormField
                   control={form.control}
-                  name="dob"
+                  name="phone"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Date of birth
+                        Phone number
                       </FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "flex w-full items-center justify-between rounded-2xl border-border/40 bg-background/95 px-4 py-5 text-left",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? format(field.value, "PPP") : "Pick a date"}
-                              <CalendarIcon className="size-4 text-muted-foreground" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto rounded-2xl border-border/50 bg-background/95 p-0 shadow-lg" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            fromYear={1950}
-                            toYear={new Date().getFullYear()}
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <FormControl>
+                        <Input
+                          type="tel"
+                          placeholder="01XXXXXXXXX"
+                          className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                        Address
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="House, road, city"
+                          className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
+                          {...field}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -249,7 +240,7 @@ const Register = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Password
                       </FormLabel>
@@ -281,22 +272,6 @@ const Register = () => {
                 </Button>
               </form>
             </Form>
-
-            <Separator className="my-8" />
-
-            <div className="space-y-3">
-              {socials.map(({ label, icon: Icon }) => (
-                <Button
-                  key={label}
-                  type="button"
-                  variant="outline"
-                  className="w-full items-center justify-center gap-3 rounded-full border-border/50 py-5 text-sm"
-                >
-                  <Icon className="size-5" />
-                  {label}
-                </Button>
-              ))}
-            </div>
 
             <p className="mt-8 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
