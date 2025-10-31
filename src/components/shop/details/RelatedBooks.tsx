@@ -60,9 +60,18 @@ const RelatedBooks = ({ book }: { book: Book }) => {
                       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
                         {relatedBook.author}
                       </p>
-                      <p className="text-sm font-semibold text-primary">
+                      {/* <p className="text-sm font-semibold text-primary">
                         {relatedBook.price}
-                      </p>
+                      </p> */}
+
+                      <div className="flex items-end gap-2 text-2xl font-semibold text-primary">
+                        <span>{relatedBook.price}</span>
+                        {relatedBook.originalPrice ? (
+                          <span className="text-base font-normal text-muted-foreground line-through">
+                            {relatedBook.originalPrice}
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
                     <Button
                       size="sm"
