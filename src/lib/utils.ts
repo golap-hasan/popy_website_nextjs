@@ -83,7 +83,7 @@ export const formatDate = (dateString: string) => {
 };
 
 // Get Image URL
-// export const getImageUrl = (imagePath) => {
+// export const getImageUrl = (imagePath: string) => {
 //   if (!imagePath) return '';
 //   return imagePath.startsWith('/') ? `${IMAGE_BASE_URL}${imagePath}` : `${IMAGE_BASE_URL}/${imagePath}`;
 // };
