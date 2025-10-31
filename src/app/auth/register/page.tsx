@@ -1,5 +1,6 @@
 "use client";
 
+import Lottie from "lottie-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,16 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  ArrowLeft,
-  Eye,
-  EyeOff,
-  GraduationCap,
-  HeartHandshake,
-  ShieldCheck,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+
+import registerAnimation from "../../../../public/lottie/register.json";
 
 const registerSchema = z.object({
   fullname: z.string().min(1, { message: "Full name is required." }),
@@ -30,28 +24,6 @@ const registerSchema = z.object({
   password: z.string().min(6, { message: "Password must be at least 6 characters." }),
 });
 
-const highlights: { title: string; description: string; icon: LucideIcon }[] = [
-  {
-    title: "Tailored study plans",
-    description: "Unlock syllabi-aligned reading lists for every class year.",
-    icon: Sparkles,
-  },
-  {
-    title: "Collaborate with mentors",
-    description: "Share progress with teachers and get curated workbook suggestions.",
-    icon: HeartHandshake,
-  },
-  {
-    title: "Secure family library",
-    description: "Manage multiple learners with OTP-secured checkout and reminders.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Scholarship updates",
-    description: "Receive alerts for national exams, Olympiads, and scholarship prep.",
-    icon: GraduationCap,
-  },
-];
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((previous) => !previous);
@@ -87,48 +59,25 @@ const Register = () => {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[460px] w-[460px] translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[160px]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:gap-12 xl:px-8">
-        <div className="w-full space-y-10 text-center lg:text-left">
-          <Badge variant="outline" className="mx-auto rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary lg:mx-0">
-            Join the community
+        <div className="flex w-full p-4 rounded-4xl border flex-col items-center gap-6 text-center lg:items-start lg:text-left">
+          <Badge variant="outline" className="rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            Join Popy Library
           </Badge>
-          <div className="space-y-4">
-            <h1 className="text-4xl font-semibold leading-tight text-foreground md:text-5xl">
-              Create your Popy Library account
-            </h1>
-            <p className="mx-auto max-w-2xl text-base text-muted-foreground lg:mx-0 lg:text-lg">
-              Set up your learner profile to sync wishlists, track deliveries, and receive curated study support across Play Group to HSC.
-            </p>
+          <div className="relative w-full max-w-[620px] rounded-4xl border border-primary/20 bg-primary/5 p-6 shadow-inner">
+            <div className="pointer-events-none absolute inset-5 rounded-[40px] border border-primary/10" />
+            <Lottie
+              animationData={registerAnimation}
+              loop
+              className="relative z-10 w-full max-h-[540px]"
+              aria-label="Register illustration"
+            />
           </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {highlights.map(({ title, description, icon: Icon }) => (
-              <div
-                key={title}
-                className="rounded-3xl border border-border/50 bg-background/80 p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="inline-flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="size-5" />
-                </div>
-                <div className="mt-3 space-y-1">
-                  <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-                  <p className="text-xs text-muted-foreground">{description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mx-auto max-w-xl rounded-3xl border border-border/50 bg-background/85 p-6 text-left shadow-lg backdrop-blur lg:mx-0">
-            <p className="text-sm italic text-muted-foreground">
-              “Registering our students on Popy Library made it effortless to keep every department stocked with the latest NCTB updates.”
-            </p>
-            <div className="mt-4 flex flex-col gap-1 text-xs uppercase tracking-[0.3em] text-muted-foreground/80 sm:flex-row sm:items-center sm:justify-between">
-              <span className="text-sm font-semibold normal-case tracking-normal text-foreground">Sharmeen Haque</span>
-              <span>Academic Coordinator · Rajshahi Collegiate</span>
-            </div>
+          <div className="max-w-lg rounded-4xl border p-4 text-sm text-muted-foreground">
+            Create your account to sync wishlists, manage deliveries, and keep every learner in your family stocked with the latest syllabus-ready titles.
           </div>
         </div>
 
-        <Card className="relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
+        <Card className="rounded-4xl relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
           <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
           <CardContent className="relative z-10">
             <div className="flex items-center justify-between">
