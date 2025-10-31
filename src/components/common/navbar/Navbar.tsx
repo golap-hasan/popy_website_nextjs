@@ -92,7 +92,7 @@ const Navbar = () => {
                   alt="Logo"
                   fill
                   priority
-                  className="object-contain object-left dark:brightness-150"
+                  className="object-contain object-left"
                 />
               </div>
             </Link>

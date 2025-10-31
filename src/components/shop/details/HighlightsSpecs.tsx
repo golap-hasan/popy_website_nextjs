@@ -4,7 +4,7 @@ import type { BookDetail } from "./book-details-data";
 
 const HighlightsSpecs = ({ detail }: { detail: BookDetail }) => {
   return (
-    <section className="space-y-6 rounded-3xl bg-background/95 shadow-sm">
+    <section className="space-y-6 rounded-3xl bg-background/95">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/80">What's inside</p>

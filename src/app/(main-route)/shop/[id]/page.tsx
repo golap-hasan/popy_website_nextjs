@@ -47,7 +47,7 @@ const ShopDetailPage = async ({ params }: ShopDetailPageProps) => {
   return (
     <PageLayout paddingSize="small">
       <div className="space-y-12">
-        <SummarySection detail={detail} />
+        <SummarySection detail={detail} /> 
         <DetailTabs detail={detail} />
         <RelatedBooks detail={detail} />
       </div>

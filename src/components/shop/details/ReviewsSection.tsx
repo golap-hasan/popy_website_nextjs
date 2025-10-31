@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Star } from "lucide-react";
 import type { BookDetail } from "./book-details-data";
 
@@ -13,7 +12,7 @@ const renderStars = (rating: number) => {
 
 const ReviewsSection = ({ detail }: { detail: BookDetail }) => {
   return (
-    <section id="reviews" className="space-y-6 bg-background/95 shadow-sm">
+    <section id="reviews" className="space-y-6 bg-background/95">
       <div className="flex flex-col gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/80">Community voices</p>
         <h2 className="text-2xl font-semibold text-foreground md:text-3xl">
@@ -25,7 +24,7 @@ const ReviewsSection = ({ detail }: { detail: BookDetail }) => {
         </p>
       </div>
       <div className="space-y-6">
-        <Card className="border-border/50 bg-background/92">
+        <Card className="border-border/50 bg-background/92 shadow-none">
           <CardContent className="space-y-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">

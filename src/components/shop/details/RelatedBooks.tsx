@@ -26,10 +26,10 @@ const RelatedBooks = ({ detail }: { detail: BookDetail }) => {
       </div>
       <Carousel opts={{ align: "start", slidesToScroll: 1 }}>
         <div className="relative">
-          <CarouselContent className="-ml-4">
+          <CarouselContent>
             {detail.related.map((relatedBook) => (
-              <CarouselItem key={relatedBook.id} className="pl-4 basis-[80%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                <Card className="group h-full overflow-hidden rounded-3xl border-border/50 bg-background/92 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl">
+              <CarouselItem key={relatedBook.id} className="basis-[80%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                <Card className="group h-full overflow-hidden rounded-3xl border-border/50 bg-background/92 transition-all duration-500 hover:-translate-y-1.5">
                   <CardContent className="flex h-full flex-col gap-5">
                     <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background">
                       <Image

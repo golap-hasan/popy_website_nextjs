@@ -146,7 +146,7 @@ const Hero = () => {
                   <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
                     Reader favourites
                   </span>
-                  <Link href="/collections" className="text-xs font-semibold text-primary hover:underline">
+                  <Link href="/shop" className="text-xs font-semibold text-primary hover:underline">
                     See all
                   </Link>
                 </div>
