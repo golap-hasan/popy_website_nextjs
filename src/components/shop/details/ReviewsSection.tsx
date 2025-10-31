@@ -17,7 +17,7 @@ const renderStars = (rating: number) => {
   });
 };
 
-const ReviewsSection = ({ detail }: { detail: Book }) => {
+const ReviewsSection = ({ book }: { book: Book }) => {
   return (
     <section id="reviews" className="space-y-6 bg-background/95">
       <div className="flex flex-col gap-2">
@@ -25,7 +25,7 @@ const ReviewsSection = ({ detail }: { detail: Book }) => {
           Community voices
         </p>
         <h2 className="text-2xl font-semibold text-foreground md:text-3xl">
-          {detail.reviewsCount}+ learners are growing with this guide
+          {book.reviewsCount}+ learners are growing with this guide
         </h2>
         <p className="max-w-3xl text-sm text-muted-foreground">
           Honest reflections curated from recent buyers and educators. Each
@@ -38,17 +38,17 @@ const ReviewsSection = ({ detail }: { detail: Book }) => {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                 <div className="grid size-24 place-items-center rounded-full bg-primary/10 text-3xl font-semibold text-primary">
-                  {detail.rating.toFixed(1)}
+                  {book.rating.toFixed(1)}
                 </div>
                 <div className="space-y-1">
                   <p className="text-xl font-semibold text-foreground">
                     Overall rating
                   </p>
                   <div className="flex items-center gap-1 text-primary">
-                    {renderStars(detail.rating)}
+                    {renderStars(book.rating)}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Based on {detail.reviewsCount} reviews from students,
+                    Based on {book.reviewsCount} reviews from students,
                     teachers, and parents
                   </p>
                 </div>
@@ -78,7 +78,7 @@ const ReviewsSection = ({ detail }: { detail: Book }) => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {detail.reviews.map(review => (
+            {book.reviews.map(review => (
               <Card
                 key={`${review.reviewer}-${review.date}`}
                 className="border-border/50 bg-background/92 p-0"

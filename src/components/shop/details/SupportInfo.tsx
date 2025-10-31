@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import { Truck, MessageCircle, Clock8 } from 'lucide-react';
 import type { Book } from './book-details-data';
 
-const SupportInfo = ({ detail }: { detail: Book }) => {
+const SupportInfo = () => {
   return (
     <section className="grid gap-6 md:grid-cols-2">
       <Card className="border-border/50 bg-background/95">
@@ -23,7 +23,11 @@ const SupportInfo = ({ detail }: { detail: Book }) => {
           </div>
           <Separator />
           <ul className="space-y-2 text-sm text-muted-foreground">
-            {detail.shippingNotes.map(note => (
+            {[
+              'Free courier inside Dhaka city',
+              'Bundled discounts when paired with mock viva sessions',
+              'Ships with complementary sticky-note set',
+            ]?.map(note => (
               <li
                 key={note}
                 className="rounded-2xl border border-border/40 bg-muted/20 p-4"
@@ -51,7 +55,11 @@ const SupportInfo = ({ detail }: { detail: Book }) => {
           </div>
           <Separator />
           <ul className="space-y-2 text-sm text-muted-foreground">
-            {detail.supportNotes.map(note => (
+            {[
+              'Access to BCS Telegram group with daily MCQs',
+              'Weekly accountability emails from Popy mentors',
+              'On-demand analytics for mock scores',
+            ]?.map(note => (
               <li
                 key={note}
                 className="rounded-2xl border border-border/40 bg-muted/20 p-4"

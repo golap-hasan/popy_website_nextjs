@@ -30,12 +30,11 @@ export type Book = {
     hometown?: string;
   };
   reviews: BookReview[];
-  shippingNotes: string[];
-  supportNotes: string[];
   related: {
     id: string;
     title: string;
     author: string;
+    originalPrice?: string;
     price: string;
     coverImage: string;
   }[];
@@ -115,22 +114,13 @@ export const books: Book[] = [
           'The pacing charts and worksheet banks mean I no longer need separate prep. Students love the reflective prompts after each prose piece.',
       },
     ],
-    shippingNotes: [
-      'Same-day dispatch within Dhaka if ordered before 2pm',
-      'Cash on delivery available nationwide',
-      'Eco-friendly recycled packaging for all metro deliveries',
-    ],
-    supportNotes: [
-      'Dedicated study coach support via Messenger',
-      'Live grammar clinics every Saturday evening',
-      'Worksheet request line: support@popylibrary.com',
-    ],
     related: [
       {
         id: '2',
         title: 'HSC Bangla Literature Anthology',
         author: 'Dr. Muhammed Zafar Iqbal',
         price: '৳420',
+        originalPrice: '৳575',
         coverImage: '/tottho.png',
       },
       {
@@ -138,6 +128,7 @@ export const books: Book[] = [
         title: 'Science Olympiad Playbook',
         author: 'Chotoder Biggan',
         price: '৳480',
+        originalPrice: '৳520',
         coverImage: '/biggan.png',
       },
       {
@@ -145,6 +136,7 @@ export const books: Book[] = [
         title: 'Story-Driven Programming',
         author: 'Tasnia Raihan',
         price: '৳450',
+        originalPrice: '৳500',
         coverImage: '/gonit.png',
       },
     ],
@@ -202,22 +194,13 @@ export const books: Book[] = [
           'Every section starts with a mindset reset and a 7-day micro plan. Clients feel less anxious because they know exactly what to do next.',
       },
     ],
-    shippingNotes: [
-      'Free courier inside Dhaka city',
-      'Bundled discounts when paired with mock viva sessions',
-      'Ships with complementary sticky-note set',
-    ],
-    supportNotes: [
-      'Access to BCS Telegram group with daily MCQs',
-      'Weekly accountability emails from Popy mentors',
-      'On-demand analytics for mock scores',
-    ],
     related: [
       {
         id: '1',
         title: 'Popy English For Today',
         author: 'Popy Publications',
         price: '৳575',
+        originalPrice: '৳675',
         coverImage: '/english.png',
       },
       {
@@ -225,6 +208,7 @@ export const books: Book[] = [
         title: 'Science Olympiad Playbook',
         author: 'Chotoder Biggan',
         price: '৳480',
+        originalPrice: '৳600',
         coverImage: '/biggan.png',
       },
       {
@@ -232,6 +216,7 @@ export const books: Book[] = [
         title: 'IELTS Writing Masterclass',
         author: 'Redowan Hasan',
         price: '৳520',
+        originalPrice: '৳620',
         coverImage: '/english.png',
       },
     ],

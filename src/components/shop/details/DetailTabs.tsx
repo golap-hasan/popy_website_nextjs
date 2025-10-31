@@ -14,12 +14,12 @@ const DetailTabs = ({ book }: { book: Book }) => {
         </TabsList>
 
         <TabsContent value="description" className="space-y-10">
-          <HighlightsSpecs detail={book} />
-          <SupportInfo detail={book} />
+          <HighlightsSpecs book={book} />
+          <SupportInfo />
         </TabsContent>
 
         <TabsContent value="reviews" className="space-y-10">
-          <ReviewsSection detail={book} />
+          <ReviewsSection book={book} />
         </TabsContent>
       </Tabs>
     </section>
