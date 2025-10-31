@@ -142,7 +142,7 @@ export const books: Book[] = [
     ],
   },
   {
-    id: '3',
+    id: '2',
     title: 'BCS Question Bank',
     subtitle: 'Solving strategies for cadres in the making',
     author: 'Notion Press',
