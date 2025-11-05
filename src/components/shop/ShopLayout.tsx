@@ -56,7 +56,7 @@ const ShopLayout = () => {
   const [sortOption, setSortOption] = useState<SortOption>("popularity");
   const [resultsCount, setResultsCount] = useState<number>(0);
 
-  const sortLabel = useMemo(() => {
+  useMemo(() => {
     switch (sortOption) {
       case "newest":
         return "Newest";

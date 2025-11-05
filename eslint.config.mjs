@@ -1,107 +1,39 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import globals from "globals";
-import js from "@eslint/js";
-import importPlugin from "eslint-plugin-import";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  js.configs.recommended,
-  ...compat.extends("next/core-web-vitals"),
-  ...compat.extends("next/typescript"),
-  // {
-  //   files: ["**/*.js", "**/*.jsx"],
-  //   plugins: {
-  //     import: importPlugin,
-  //   },
-  //   rules: {
-  //     "no-unused-vars": ["error", { args: "after-used", ignoreRestSiblings: true }],
-  //     "no-undef": "error",
-  //     // "import/no-unresolved": ["error", { commonjs: true, amd: true }],
-  //     "import/named": "error",
-  //     "import/default": "error",
-  //     "import/namespace": "error",
-  //     "import/no-duplicates": "error",
-  //     "no-unreachable": "error",
-  //     // "no-console": "warn",
-  //     "no-debugger": "error",
-  //     "no-extra-semi": "error",
-  //     "no-var": "error",
-  //     "object-shorthand": "warn",
-  //     "prefer-arrow-callback": "warn",
-  //   },
-  //   languageOptions: {
-  //     globals: {
-  //       ...globals.node,
-  //     },
-  //     parserOptions: {
-  //       ecmaVersion: 2021,
-  //       sourceType: "module",
-  //       ecmaFeatures: {
-  //         jsx: true,
-  //       },
-  //     },
-  //   },
-  //   settings: {
-  //     react: {
-  //       version: "detect",
-  //     },
-  //     "import/resolver": {
-  //       node: {
-  //         extensions: [".js", ".jsx"],
-  //       },
-  //     },
-  //   },
-  // },
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
   {
-    files: ["**/*.ts", "**/*.tsx"],
-    plugins: {
-      import: importPlugin,
-    },
     rules: {
-      "no-unused-vars": ["error", { args: "after-used", ignoreRestSiblings: true }],
-      "no-undef": "error",
-      // "import/no-unresolved": ["error", { commonjs: true, amd: true }],
-      "import/named": "error",
-      "import/default": "error",
-      "import/namespace": "error",
-      "import/no-duplicates": "error",
-      "no-unreachable": "error",
-      // "no-console": "warn",
-      "no-debugger": "error",
-      "no-extra-semi": "error",
+      "no-unused-vars": ["error", { "args": "none" }],
+      "no-console": "warn",
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "@next/next/no-img-element": "off",
+      "prefer-const": "warn",
       "no-var": "error",
-      "object-shorthand": "warn",
-      "prefer-arrow-callback": "warn",
-    },
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.browser,
-      },
-      parserOptions: {
-        ecmaVersion: 2021,
-        sourceType: "module",
-        ecmaFeatures: { jsx: true },
-        // Enable type-aware linting if a tsconfig is present
-        project: true,
-      },
-    },
-    settings: {
-      react: { version: "detect" },
-      "import/resolver": {
-        node: { extensions: [".ts", ".tsx", ".d.ts", ".js", ".jsx"] },
-      },
-    },
+      "eqeqeq": ["error", "always"],
+      // "curly": ["error", "all"],
+      "no-multiple-empty-lines": ["warn", { "max": 1, "maxEOF": 1 }],
+      "object-curly-spacing": ["warn", "always"],
+      "array-bracket-spacing": ["warn", "never"],
+      "comma-spacing": ["warn", { "before": false, "after": true }],
+      // "semi": ["warn", "always"],
+      // "quotes": ["warn", "double"],
+      "indent": ["warn", 2, { "SwitchCase": 1 }],
+    }
   },
-];
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
 
 export default eslintConfig;
-
