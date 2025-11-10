@@ -4,9 +4,6 @@ import {
   Instagram,
   Linkedin,
   Youtube,
-  Phone,
-  Mail,
-  MapPin,
 } from "lucide-react";
 import PageLayout from "@/tools/PageLayout";
 
@@ -36,26 +33,6 @@ const socials = [
   { label: "Instagram", href: "https://instagram.com", icon: Instagram },
   { label: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
   { label: "YouTube", href: "https://youtube.com", icon: Youtube },
-];
-
-const contactDetails = [
-  {
-    icon: Phone,
-    label: "Hotline",
-    value: "+880 1234-567890",
-    href: "tel:+8801234567890",
-  },
-  {
-    icon: Mail,
-    label: "Support",
-    value: "hello@popybooks.com",
-    href: "mailto:hello@popybooks.com",
-  },
-  {
-    icon: MapPin,
-    label: "Address",
-    value: "House 56, Road 4, Dhanmondi, Dhaka",
-  },
 ];
 
 const Footer = () => {
@@ -142,31 +119,6 @@ const Footer = () => {
                 ))}
               </ul>
             </div>
-          </div>
-
-          <div className="mt-16 grid gap-6 border-t border-border/50 pt-10 sm:grid-cols-2 lg:grid-cols-3">
-            {contactDetails.map(({ icon: Icon, label, value, href }) => (
-              <div key={label} className="flex items-start gap-4">
-                <div className="mt-1 inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="size-5" />
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                    {label}
-                  </p>
-                  {href ? (
-                    <Link
-                      href={href}
-                      className="block text-sm font-semibold text-foreground transition-colors hover:text-primary"
-                    >
-                      {value}
-                    </Link>
-                  ) : (
-                    <p className="text-sm font-semibold text-foreground">{value}</p>
-                  )}
-                </div>
-              </div>
-            ))}
           </div>
         </PageLayout>
 
