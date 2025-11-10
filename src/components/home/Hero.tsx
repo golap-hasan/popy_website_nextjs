@@ -1,9 +1,18 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PageLayout from "@/tools/PageLayout";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import { Award, BookOpen, Sparkles, Star } from "lucide-react";
 
 const categories = [
@@ -64,13 +73,20 @@ const trustSignals = [
 ];
 
 const Hero = () => {
+  const autoplayPlugin = React.useRef(
+    Autoplay({
+      delay: 3200,
+      stopOnInteraction: false,
+    })
+  );
+
   return (
-    <section className="relative overflow-hidden bg-linear-to-br from-background via-muted/40 to-background">
+    <section className="relative overflow-hidden bg-linear-to-br from-background via-muted/40 to-background md:px-20">
       <div className="absolute inset-0 opacity-[0.12]">
         <div className="absolute inset-0 bg-[url('/pattern.png')] bg-repeat opacity-30" />
       </div>
 
-      <PageLayout className="relative z-10 py-20">
+      <PageLayout className="relative max-w-full">
         <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="space-y-8 text-center lg:text-left">
             <div className="space-y-4">
@@ -118,28 +134,48 @@ const Hero = () => {
           <div className="relative">
             <div className="absolute -inset-6 hidden rounded-[48px] bg-linear-to-tr from-primary/15 via-primary/5 to-transparent blur-3xl lg:block" />
             <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/90 p-4 shadow-xl backdrop-blur sm:rounded-[42px] sm:p-6">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {bookCovers.map((book, index) => {
-                  const desktopOffsets = ["sm:translate-y-4", "sm:-translate-y-2", "sm:translate-y-6"];
-                  const offsetClass = desktopOffsets[index % desktopOffsets.length];
+              <Carousel
+                opts={{
+                  align: "center",
+                  loop: true,
+                  slidesToScroll: 1,
+                }}
+                plugins={[autoplayPlugin.current]}
+                onMouseEnter={autoplayPlugin.current.stop}
+                onMouseLeave={autoplayPlugin.current.reset}
+              >
+                <div className="relative">
+                  <CarouselContent className="pb-6 pt-4">
+                    {bookCovers.map((book, index) => {
 
-                  return (
-                    <div
-                      key={book.src}
-                      className={`relative aspect-3/4 w-full max-w-[140px] justify-self-center overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm transition-transform duration-300 ${offsetClass}`}
-                    >
-                      <Image
-                        src={book.src}
-                        alt={book.alt}
-                        fill
-                        sizes="(min-width: 1024px) 220px, (min-width: 768px) 33vw, 50vw"
-                        className="object-contain sm:object-cover"
-                        priority={index === 0}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+                      return (
+                        <CarouselItem
+                          key={book.src}
+                          className="basis-3/4 sm:basis-1/2 lg:basis-1/3"
+                        >
+                          <div className={`relative flex justify-center transition-transform duration-300`}>
+                            <div className="relative aspect-3/4 w-full max-w-[210px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm">
+                              <Image
+                                src={book.src}
+                                alt={book.alt}
+                                fill
+                                sizes="(min-width: 1280px) 260px, (min-width: 1024px) 26vw, (min-width: 768px) 36vw, 70vw"
+                                className="object-contain sm:object-cover"
+                                priority={index === 0}
+                              />
+                            </div>
+                          </div>
+                        </CarouselItem>
+                      );
+                    })}
+                  </CarouselContent>
+
+                  <div className="mt-4 flex items-center justify-center gap-3 md:hidden">
+                    <CarouselPrevious className="relative size-10 rounded-full border border-border/60 bg-background/80 text-foreground shadow transition hover:bg-primary hover:text-primary-foreground" />
+                    <CarouselNext className="relative size-10 rounded-full border border-border/60 bg-background/80 text-foreground shadow transition hover:bg-primary hover:text-primary-foreground" />
+                  </div>
+                </div>
+              </Carousel>
 
               <div className="mt-8 space-y-4 rounded-2xl border border-border/40 bg-background/95 p-6 text-sm text-muted-foreground shadow-sm">
                 <div className="flex items-center justify-between">

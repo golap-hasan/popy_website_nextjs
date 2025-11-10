@@ -59,7 +59,7 @@ const Register = () => {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[460px] w-[460px] translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[160px]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:gap-12 xl:px-8">
-        <div className="flex w-full p-4 rounded-4xl border flex-col items-center gap-6 text-center lg:items-start lg:text-left">
+        <div className="hidden md:flex w-full p-4 rounded-4xl border flex-col items-center gap-6 text-center lg:items-start lg:text-left">
           <Badge variant="outline" className="rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
             Join Popy Library
           </Badge>
