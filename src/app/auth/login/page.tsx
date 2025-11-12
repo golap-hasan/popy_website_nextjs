@@ -1,11 +1,11 @@
 'use client';
 
+import Lottie from "lottie-react";
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-
 import PageLayout from '@/tools/PageLayout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,7 @@ import { signInUser } from '@/services/Auth';
 import { ErrorToast, SuccessToast } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
+import loginAnimation from "../../../../public/lottie/login.json";
 
 const loginSchema = z.object({
   email: z.email({ message: 'Invalid email address.' }),
@@ -70,7 +71,6 @@ const LoginForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
   const { setIsLoading } = useUser();
 
   const form = useForm({
@@ -104,7 +104,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-background via-primary/5 to-background">
+    <div className="relative w-full min-h-screen overflow-hidden bg-linear-to-br from-background via-primary/5 to-background">
       <div className="pointer-events-none absolute -left-32 top-24 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-[420px] w-[420px] translate-x-1/3 translate-y-1/3 rounded-full bg-secondary/20 blur-[140px]" />
 
@@ -161,12 +161,21 @@ const LoginForm = () => {
                 </span>
                 <span>Coordinator · Khulna Model School</span>
               </div>
+          <div className="flex w-full flex-col items-center gap-6 rounded-4xl border border-primary/20 bg-primary/5 p-4 text-center shadow-inner lg:items-start lg:text-left">
+
+            <div className="relative w-full max-w-[540px] rounded-4xl p-6">
+              <Lottie
+                animationData={loginAnimation}
+                loop
+                className="relative z-10 w-full max-h-[420px]"
+                aria-label="Login illustration"
+              />
             </div>
           </div>
 
           <Card className="relative overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
             <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
-            <CardContent className="relative z-10 p-8 sm:p-10">
+            <CardContent className="relative z-10">
               <div className="flex items-center justify-between">
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <Link href="/">

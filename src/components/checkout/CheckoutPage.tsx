@@ -247,7 +247,7 @@ const CheckoutPage = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border/60 bg-background/80 shadow-sm">
+            {/* <Card className="border-border/60 bg-background/80 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-lg">Delivery method</CardTitle>
               </CardHeader>
@@ -294,7 +294,7 @@ const CheckoutPage = () => {
                   ))}
                 </RadioGroup>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
 
           <div className="space-y-6">
@@ -348,7 +348,7 @@ const CheckoutPage = () => {
             </Card>
 
             <Card className="border-dashed border-border/60 bg-background/60 shadow-none">
-              <CardContent className="space-y-3 p-6 text-sm text-muted-foreground">
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <p className="text-sm font-semibold text-foreground">Need assistance?</p>
                 <p>
                   Our support team is available 9am-10pm daily. Call

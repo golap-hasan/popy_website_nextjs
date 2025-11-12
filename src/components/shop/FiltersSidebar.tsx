@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Slider } from "@/components/ui/slider";
 import { StarRating } from "@/tools/StarRating";
 import { Button } from "@/components/ui/button";

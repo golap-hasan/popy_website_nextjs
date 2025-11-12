@@ -1,5 +1,6 @@
 'use client';
 
+import Lottie from "lottie-react";
 import Link from 'next/link';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -17,7 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
 import { Separator } from '@/components/ui/separator';
 import {
   ArrowLeft,
@@ -34,6 +34,7 @@ import {
 import { signUpUser } from '@/services/Auth';
 import { ErrorToast, SuccessToast } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import registerAnimation from "../../../../public/lottie/register.json";
 
 const registrationValidationSchema = z.object({
   name: z.string().min(1, { message: 'Full name is required.' }),
@@ -148,7 +149,7 @@ const Register = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-linear-to-br from-background via-secondary/10 to-background">
+    <div className="relative w-full overflow-hidden bg-linear-to-br from-background via-secondary/10 to-background">
       <div className="pointer-events-none absolute -left-32 top-32 h-96 w-96 rounded-full bg-primary/15 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-[460px] w-[460px] translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[160px]" />
 
@@ -200,12 +201,27 @@ const Register = () => {
               </span>
               <span>Academic Coordinator · Rajshahi Collegiate</span>
             </div>
+        <div className="hidden md:flex w-full p-4 rounded-4xl border flex-col items-center gap-6 text-center lg:items-start lg:text-left">
+          <Badge variant="outline" className="rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            Join Popy Library
+          </Badge>
+          <div className="relative w-full max-w-[620px] rounded-4xl border border-primary/20 bg-primary/5 p-6 shadow-inner">
+            <div className="pointer-events-none absolute inset-5 rounded-[40px] border border-primary/10" />
+            <Lottie
+              animationData={registerAnimation}
+              loop
+              className="relative z-10 w-full max-h-[540px]"
+              aria-label="Register illustration"
+            />
+          </div>
+          <div className="max-w-lg rounded-4xl border p-4 text-sm text-muted-foreground">
+            Create your account to sync wishlists, manage deliveries, and keep every learner in your family stocked with the latest syllabus-ready titles.
           </div>
         </div>
 
-        <Card className="relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
+        <Card className="rounded-4xl relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
           <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
-          <CardContent className="relative z-10 p-8 sm:p-10">
+          <CardContent className="relative z-10">
             <div className="flex items-center justify-between">
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Link href="/auth/login">
@@ -240,7 +256,7 @@ const Register = () => {
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Full name
                       </FormLabel>
@@ -306,7 +322,7 @@ const Register = () => {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Email
                       </FormLabel>
@@ -330,7 +346,7 @@ const Register = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Password
                       </FormLabel>
@@ -370,7 +386,7 @@ const Register = () => {
                   control={form.control}
                   name="confirmPassword"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
                         Confirm Password
                       </FormLabel>
