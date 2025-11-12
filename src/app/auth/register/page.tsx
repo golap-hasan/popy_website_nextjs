@@ -1,9 +1,9 @@
 'use client';
 
-import Lottie from "lottie-react";
+import Lottie from 'lottie-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Badge } from '@/components/ui/badge';
@@ -34,7 +34,7 @@ import {
 import { signUpUser } from '@/services/Auth';
 import { ErrorToast, SuccessToast } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import registerAnimation from "../../../../public/lottie/register.json";
+import registerAnimation from '../../../../public/lottie/register.json';
 
 const registrationValidationSchema = z.object({
   name: z.string().min(1, { message: 'Full name is required.' }),
@@ -118,8 +118,10 @@ const Register = () => {
     formState: { isSubmitting },
   } = form;
 
-  const password = form.watch('password');
-  const confirmPassword = form.watch('confirmPassword');
+  const [password, confirmPassword] = useWatch({
+    control: form.control,
+    name: ['password', 'confirmPassword'] as const,
+  });
 
   const handleSignupUser: SubmitHandler<FieldValues> = async data => {
     const payload = {
@@ -143,8 +145,8 @@ const Register = () => {
       } else {
         ErrorToast(res.message);
       }
-    } catch (err: any) {
-      console.error(err);
+    } catch (err: unknown) {
+      ErrorToast(err instanceof Error ? err.message : 'Something went wrong');
     }
   };
 
@@ -201,246 +203,251 @@ const Register = () => {
               </span>
               <span>Academic Coordinator · Rajshahi Collegiate</span>
             </div>
-        <div className="hidden md:flex w-full p-4 rounded-4xl border flex-col items-center gap-6 text-center lg:items-start lg:text-left">
-          <Badge variant="outline" className="rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
-            Join Popy Library
-          </Badge>
-          <div className="relative w-full max-w-[620px] rounded-4xl border border-primary/20 bg-primary/5 p-6 shadow-inner">
-            <div className="pointer-events-none absolute inset-5 rounded-[40px] border border-primary/10" />
-            <Lottie
-              animationData={registerAnimation}
-              loop
-              className="relative z-10 w-full max-h-[540px]"
-              aria-label="Register illustration"
-            />
-          </div>
-          <div className="max-w-lg rounded-4xl border p-4 text-sm text-muted-foreground">
-            Create your account to sync wishlists, manage deliveries, and keep every learner in your family stocked with the latest syllabus-ready titles.
-          </div>
-        </div>
-
-        <Card className="rounded-4xl relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
-          <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
-          <CardContent className="relative z-10">
-            <div className="flex items-center justify-between">
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Link href="/auth/login">
-                  <ArrowLeft className="size-4" />
-                </Link>
-              </Button>
-              <Link
-                href="/support/faqs"
-                className="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground transition hover:text-primary"
+            <div className="hidden md:flex w-full p-4 rounded-4xl border flex-col items-center gap-6 text-center lg:items-start lg:text-left">
+              <Badge
+                variant="outline"
+                className="rounded-full border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary"
               >
-                Need help?
-              </Link>
+                Join Popy Library
+              </Badge>
+              <div className="relative w-full max-w-[620px] rounded-4xl border border-primary/20 bg-primary/5 p-6 shadow-inner">
+                <div className="pointer-events-none absolute inset-5 rounded-[40px] border border-primary/10" />
+                <Lottie
+                  animationData={registerAnimation}
+                  loop
+                  className="relative z-10 w-full max-h-[540px]"
+                  aria-label="Register illustration"
+                />
+              </div>
+              <div className="max-w-lg rounded-4xl border p-4 text-sm text-muted-foreground">
+                Create your account to sync wishlists, manage deliveries, and
+                keep every learner in your family stocked with the latest
+                syllabus-ready titles.
+              </div>
             </div>
 
-            <div className="mt-8 space-y-2 text-center sm:text-left">
-              <h2 className="text-3xl font-semibold text-foreground">
-                Let&apos;s get started
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Create your account to sync devices, access bundles, and manage
-                family reading goals.
-              </p>
-            </div>
+            <Card className="rounded-4xl relative w-full max-w-lg overflow-hidden border-border/60 bg-background/90 shadow-2xl backdrop-blur">
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-primary/5 opacity-60" />
+              <CardContent className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <Button variant="ghost" size="icon" className="rounded-full">
+                    <Link href="/auth/login">
+                      <ArrowLeft className="size-4" />
+                    </Link>
+                  </Button>
+                  <Link
+                    href="/support/faqs"
+                    className="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground transition hover:text-primary"
+                  >
+                    Need help?
+                  </Link>
+                </div>
 
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(handleSignupUser)}
-                className="mt-8 space-y-6"
-              >
-                {/* FormField for name */}
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Full name
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Khaled Siddique"
-                          className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
-                          {...field}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="mt-8 space-y-2 text-center sm:text-left">
+                  <h2 className="text-3xl font-semibold text-foreground">
+                    Let&apos;s get started
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    Create your account to sync devices, access bundles, and
+                    manage family reading goals.
+                  </p>
+                </div>
 
-                {/* FormField for phone */}
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Phone number
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="+8801832639064"
-                          className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
-                          {...field}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* FormField for address */}
-                <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Address
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Mohakhali, Dhaka"
-                          className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
-                          {...field}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* FormField for email */}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Email
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="student@example.com"
-                          className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
-                          autoComplete="username"
-                          {...field}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* FormField for password */}
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Password
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="Create a secure password"
-                            className="rounded-2xl border-border/40 bg-background/95 px-4 py-5 pr-12"
-                            autoComplete="new-password"
-                            {...field}
-                            value={field.value || ''}
-                          />
-                          <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 flex items-center px-4 text-muted-foreground transition hover:text-primary"
-                            onClick={togglePasswordVisibility}
-                            aria-label={
-                              showPassword ? 'Hide password' : 'Show password'
-                            }
-                          >
-                            {showPassword ? (
-                              <EyeOff className="size-5" />
-                            ) : (
-                              <Eye className="size-5" />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* FormField for confirmPassword */}
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                        Confirm Password
-                      </FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="Create a secure password"
-                            className="rounded-2xl border-border/40 bg-background/95 px-4 py-5 pr-12"
-                            autoComplete="new-password"
-                            {...field}
-                            value={field.value || ''}
-                          />
-                          <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 flex items-center px-4 text-muted-foreground transition hover:text-primary"
-                            onClick={toggleConfirmPasswordVisibility}
-                            aria-label={
-                              showConfirmPassword
-                                ? 'Hide password'
-                                : 'Show password'
-                            }
-                          >
-                            {showConfirmPassword ? (
-                              <EyeOff className="size-5" />
-                            ) : (
-                              <Eye className="size-5" />
-                            )}
-                          </button>
-                        </div>
-                      </FormControl>
-
-                      {confirmPassword && password !== confirmPassword ? (
-                        <FormMessage> Password does not match </FormMessage>
-                      ) : (
-                        <FormMessage />
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(handleSignupUser)}
+                    className="mt-8 space-y-6"
+                  >
+                    {/* FormField for name */}
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                            Full name
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Khaled Siddique"
+                              className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
+                              {...field}
+                              value={field.value || ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    </FormItem>
-                  )}
-                />
+                    />
 
-                <Button
-                  type="submit"
-                  className="w-full rounded-full py-5 text-sm font-semibold uppercase tracking-[0.35em]"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Creating...' : 'Create account'}
-                </Button>
-              </form>
-            </Form>
+                    {/* FormField for phone */}
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                            Phone number
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="+8801832639064"
+                              className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
+                              {...field}
+                              value={field.value || ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-            <Separator className="my-8" />
+                    {/* FormField for address */}
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                            Address
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Mohakhali, Dhaka"
+                              className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
+                              {...field}
+                              value={field.value || ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-            {/* <div className="space-y-3">
+                    {/* FormField for email */}
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                            Email
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="student@example.com"
+                              className="rounded-2xl border-border/40 bg-background/95 px-4 py-5"
+                              autoComplete="username"
+                              {...field}
+                              value={field.value || ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* FormField for password */}
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                            Password
+                          </FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Create a secure password"
+                                className="rounded-2xl border-border/40 bg-background/95 px-4 py-5 pr-12"
+                                autoComplete="new-password"
+                                {...field}
+                                value={field.value || ''}
+                              />
+                              <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 flex items-center px-4 text-muted-foreground transition hover:text-primary"
+                                onClick={togglePasswordVisibility}
+                                aria-label={
+                                  showPassword ? 'Hide password' : 'Show password'
+                                }
+                              >
+                                {showPassword ? (
+                                  <EyeOff className="size-5" />
+                                ) : (
+                                  <Eye className="size-5" />
+                                )}
+                              </button>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* FormField for confirmPassword */}
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                            Confirm Password
+                          </FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                placeholder="Create a secure password"
+                                className="rounded-2xl border-border/40 bg-background/95 px-4 py-5 pr-12"
+                                autoComplete="new-password"
+                                {...field}
+                                value={field.value || ''}
+                              />
+                              <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 flex items-center px-4 text-muted-foreground transition hover:text-primary"
+                                onClick={toggleConfirmPasswordVisibility}
+                                aria-label={
+                                  showConfirmPassword
+                                    ? 'Hide password'
+                                    : 'Show password'
+                                }
+                              >
+                                {showConfirmPassword ? (
+                                  <EyeOff className="size-5" />
+                                ) : (
+                                  <Eye className="size-5" />
+                                )}
+                              </button>
+                            </div>
+                          </FormControl>
+
+                          {confirmPassword && password !== confirmPassword ? (
+                            <FormMessage> Password does not match </FormMessage>
+                          ) : (
+                            <FormMessage />
+                          )}
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      type="submit"
+                      className="w-full rounded-full py-5 text-sm font-semibold uppercase tracking-[0.35em]"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Creating...' : 'Create account'}
+                    </Button>
+                  </form>
+                </Form>
+
+                <Separator className="my-8" />
+
+                {/* <div className="space-y-3">
               {socials.map(({ label, icon: Icon }) => (
                 <Button
                   key={label}
@@ -454,17 +461,19 @@ const Register = () => {
               ))}
             </div> */}
 
-            <p className="mt-8 text-center text-sm text-muted-foreground">
-              Already have an account?{' '}
-              <Link
-                href="/auth/login"
-                className="font-semibold text-primary hover:underline"
-              >
-                Sign in
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
+                <p className="mt-8 text-center text-sm text-muted-foreground">
+                  Already have an account?{' '}
+                  <Link
+                    href="/auth/login"
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    Sign in
+                  </Link>
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
