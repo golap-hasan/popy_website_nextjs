@@ -1,115 +1,115 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Star } from "lucide-react";
+import { useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ShoppingCart, Star } from 'lucide-react';
 
 const books = [
   {
-    id: 1,
-    title: "Popy English For Today",
-    author: "Popy Publications",
-    price: "৳575",
+    _id: 1,
+    title: 'Popy English For Today',
+    author: 'Popy Publications',
+    price: '575',
     rating: 4.8,
-    badge: "New",
+    badge: 'New',
     description:
-      "Aligned with the latest NCTB syllabus for confident exam prep.",
-    image: "/english.png",
+      'Aligned with the latest NCTB syllabus for confident exam prep.',
+    image: '/english.png',
   },
   {
     id: 2,
-    title: "HSC Bangla Literature Anthology",
-    author: "Dr. Muhammed Zafar Iqbal",
-    price: "৳420",
+    title: 'HSC Bangla Literature Anthology',
+    author: 'Dr. Muhammed Zafar Iqbal',
+    price: '420',
     rating: 4.6,
-    badge: "Best Seller",
+    badge: 'Best Seller',
     description:
-      "Curated poems, prose, and annotations tailored for board exams.",
-    image: "/tottho.png",
+      'Curated poems, prose, and annotations tailored for board exams.',
+    image: '/tottho.png',
   },
   {
     id: 3,
-    title: "BCS Question Bank",
-    author: "Notion Press",
-    price: "৳690",
+    title: 'BCS Question Bank',
+    author: 'Notion Press',
+    price: '690',
     rating: 3.7,
-    badge: "Focus Series",
+    badge: 'Focus Series',
     description:
-      "Solved papers and strategy tips covering 38th to latest BCS exams.",
-    image: "/banking.png",
+      'Solved papers and strategy tips covering 38th to latest BCS exams.',
+    image: '/banking.png',
   },
   {
     id: 4,
-    title: "IELTS Writing Masterclass",
-    author: "Redowan Hasan",
-    price: "৳520",
+    title: 'IELTS Writing Masterclass',
+    author: 'Redowan Hasan',
+    price: '520',
     rating: 4.5,
-    badge: "English",
+    badge: 'English',
     description:
-      "Step-by-step frameworks to secure band 7+ in the writing module.",
-    image: "/english.png",
+      'Step-by-step frameworks to secure band 7+ in the writing module.',
+    image: '/english.png',
   },
   {
     id: 5,
-    title: "Science Olympiad Playbook",
-    author: "Chotoder Biggan",
-    price: "৳480",
+    title: 'Science Olympiad Playbook',
+    author: 'Chotoder Biggan',
+    price: '480',
     rating: 2.9,
-    badge: "Academic",
+    badge: 'Academic',
     description:
-      "Problem drills and concept refreshers for school & college olympiads.",
-    image: "/biggan.png",
+      'Problem drills and concept refreshers for school & college olympiads.',
+    image: '/biggan.png',
   },
   {
     id: 6,
-    title: "Story-Driven Programming",
-    author: "Tasnia Raihan",
-    price: "৳450",
+    title: 'Story-Driven Programming',
+    author: 'Tasnia Raihan',
+    price: '450',
     rating: 4.4,
-    badge: "Kids",
+    badge: 'Kids',
     description:
-      "A playful introduction to coding concepts for curious young minds.",
-    image: "/gonit.png",
+      'A playful introduction to coding concepts for curious young minds.',
+    image: '/gonit.png',
   },
   {
     id: 7,
-    title: "IELTS Writing Masterclass",
-    author: "Redowan Hasan",
-    price: "৳520",
+    title: 'IELTS Writing Masterclass',
+    author: 'Redowan Hasan',
+    price: '520',
     rating: 5.0,
-    badge: "English",
+    badge: 'English',
     description:
-      "Step-by-step frameworks to secure band 7+ in the writing module.",
-    image: "/english.png",
+      'Step-by-step frameworks to secure band 7+ in the writing module.',
+    image: '/english.png',
   },
   {
     id: 8,
-    title: "Science Olympiad Playbook",
-    author: "Chotoder Biggan",
-    price: "৳480",
+    title: 'Science Olympiad Playbook',
+    author: 'Chotoder Biggan',
+    price: '480',
     rating: 4.9,
-    badge: "Academic",
+    badge: 'Academic',
     description:
-      "Problem drills and concept refreshers for school & college olympiads.",
-    image: "/biggan.png",
+      'Problem drills and concept refreshers for school & college olympiads.',
+    image: '/biggan.png',
   },
   {
     id: 9,
-    title: "Story-Driven Programming",
-    author: "Tasnia Raihan",
-    price: "৳450",
+    title: 'Story-Driven Programming',
+    author: 'Tasnia Raihan',
+    price: '450',
     rating: 4.4,
-    badge: "Kids",
+    badge: 'Kids',
     description:
-      "A playful introduction to coding concepts for curious young minds.",
-    image: "/gonit.png",
+      'A playful introduction to coding concepts for curious young minds.',
+    image: '/gonit.png',
   },
 ];
 
-export type SortOption = "popularity" | "newest" | "price_low_high";
+export type SortOption = 'popularity' | 'newest' | 'price_low_high';
 
 type ShopProductsProps = {
   searchTerm: string;
@@ -118,8 +118,8 @@ type ShopProductsProps = {
 };
 
 const normalisePrice = (price: string) => {
-  const numeric = price.replace(/[^0-9]/g, "");
-  return Number.parseInt(numeric || "0", 10);
+  const numeric = price.replace(/[^0-9]/g, '');
+  return Number.parseInt(numeric || '0', 10);
 };
 
 const ShopProducts = ({
@@ -129,7 +129,7 @@ const ShopProducts = ({
 }: ShopProductsProps) => {
   const query = searchTerm.trim().toLowerCase();
 
-  const filteredBooks = books.filter((book) => {
+  const filteredBooks = books.filter(book => {
     if (!query) {
       return true;
     }
@@ -143,11 +143,11 @@ const ShopProducts = ({
 
   const sortedBooks = [...filteredBooks].sort((a, b) => {
     switch (sortOption) {
-      case "price_low_high":
+      case 'price_low_high':
         return normalisePrice(a.price) - normalisePrice(b.price);
-      case "newest":
-        return (b.id ?? 0) - (a.id ?? 0);
-      case "popularity":
+      case 'newest':
+        return (b._id ?? 0) - (a._id ?? 0);
+      case 'popularity':
       default:
         return b.rating - a.rating;
     }
@@ -180,9 +180,9 @@ const ShopProducts = ({
   return (
     <section className="space-y-4">
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {sortedBooks.map((book) => (
+        {sortedBooks.map(book => (
           <div
-            key={book.id}
+            key={book._id}
             className="group relative flex h-full flex-col gap-5 overflow-hidden rounded-lg border border-border/40 bg-background/90 p-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
             <Link
@@ -219,7 +219,7 @@ const ShopProducts = ({
                     {book.rating}
                   </div>
                   <span className="text-xs font-semibold text-primary">
-                    {book.price}
+                    ৳{book.price}
                   </span>
                 </div>
               </div>

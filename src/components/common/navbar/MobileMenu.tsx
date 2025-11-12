@@ -1,13 +1,20 @@
-'use client'
+'use client';
 
-import { useState } from "react"
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet"
-import { Menu } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getInitials } from "@/lib/utils"
+import { useState } from 'react';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getInitials } from '@/lib/utils';
+import { AuthUser } from '@/types';
 
 interface NavigationItem {
   name: string;
@@ -16,19 +23,14 @@ interface NavigationItem {
   isProtected?: boolean;
 }
 
-interface User {
-  name?: string;
-  profile_image?: string;
-}
-
 interface MobileMenuProps {
   navigationItems: NavigationItem[];
-  user?: User;
+  user: AuthUser | null;
 }
 
 const MobileMenu = ({ navigationItems, user }: MobileMenuProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -40,29 +42,38 @@ const MobileMenu = ({ navigationItems, user }: MobileMenuProps) => {
       </SheetTrigger>
       <SheetContent side="right" className="w-[300px] sm:w-[400px]">
         <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-        <SheetDescription className="sr-only">Mobile menu for navigation and user profile.</SheetDescription>
+        <SheetDescription className="sr-only">
+          Mobile menu for navigation and user profile.
+        </SheetDescription>
         <div className="flex flex-col space-y-4">
           {/* Mobile User Profile */}
           <div className="flex items-center space-x-3 py-4.5 border-b px-4">
             <Avatar className="h-10 w-10 border">
-              <AvatarImage src={user?.profile_image} alt={user?.name || "User avatar"} />
-              <AvatarFallback>{getInitials(user?.name || "User")}</AvatarFallback>
+              <AvatarImage
+                src={user?.image}
+                alt={user?.name || 'User avatar'}
+              />
+              <AvatarFallback>
+                {getInitials(user?.name || 'User')}
+              </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{user?.name || "User"}</p>
+              <p className="font-medium">{user?.name || 'User'}</p>
             </div>
           </div>
 
           {/* Mobile Navigation */}
           <div className="px-4 space-y-4">
-            {navigationItems.map((item) => {
+            {navigationItems.map(item => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.name}
                   href={item.href}
                   className={`flex items-center space-x-3 text-sm font-medium transition-colors py-2 px-4 rounded-md border ${
-                    isActive ? 'bg-secondary text-primary' : 'text-foreground hover:bg-accent/10'
+                    isActive
+                      ? 'bg-secondary text-primary'
+                      : 'text-foreground hover:bg-accent/10'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >

@@ -1,10 +1,10 @@
 import HighlightsSpecs from './HighlightsSpecs';
 import ReviewsSection from './ReviewsSection';
 import SupportInfo from './SupportInfo';
-import type { Book } from './book-details-data';
+import type { TBook } from './book-details-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const DetailTabs = ({ book }: { book: Book }) => {
+const DetailTabs = ({ book }: { book: TBook }) => {
   return (
     <section className="space-y-6 bg-background/95 ">
       <Tabs defaultValue="description" className="space-y-8">

@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Truck, MessageCircle, Clock8 } from 'lucide-react';
-import type { Book } from './book-details-data';
+import type { TBook } from './book-details-data';
 
 const SupportInfo = () => {
   return (

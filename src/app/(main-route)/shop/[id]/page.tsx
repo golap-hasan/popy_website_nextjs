@@ -18,7 +18,7 @@ export const generateMetadata = async ({
   params,
 }: ShopDetailPageProps): Promise<Metadata> => {
   const { id } = await params;
-  const book = books.find(book => book.id === id);
+  const book = books.find(book => book._id === id);
 
   if (!book) {
     return {
@@ -38,7 +38,7 @@ export const generateMetadata = async ({
 
 const ShopDetailPage = async ({ params }: ShopDetailPageProps) => {
   const { id } = await params;
-  const book = books.find(book => book.id === id);
+  const book = books.find(book => book._id === id);
 
   if (!book) {
     notFound();
