@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   DropdownMenu,
@@ -8,31 +8,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
-import { LogIn, LogOutIcon, User, UserPlus } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { getInitials } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { LogIn, LogOutIcon, User, UserPlus } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { getInitials } from '@/lib/utils';
+import { AuthUser } from '@/types';
 
-type UserType = { name?: string; email?: string; profile_image?: string };
 interface Props {
   isLoading: boolean;
-  isLoggedIn: boolean;
-  user?: UserType;
+  user: AuthUser | null;
   handleLogout: () => void;
 }
 
-const DesktopDropdown = ({
-  isLoading,
-  isLoggedIn,
-  user,
-  handleLogout,
-}: Props) => {
+const DesktopDropdown = ({ isLoading, user, handleLogout }: Props) => {
   return (
     <>
-      {isLoggedIn ? (
+      {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             {isLoading ? (
@@ -47,15 +41,15 @@ const DesktopDropdown = ({
               >
                 <Avatar className="h-10 w-10 border">
                   <AvatarImage
-                    src={user?.profile_image || ""}
-                    alt={user?.name || "User avatar"}
+                    src={user?.image || ''}
+                    alt={user?.name || 'User avatar'}
                   />
                   <AvatarFallback>
-                    {getInitials(user?.name || "User")}
+                    {getInitials(user?.name || 'User')}
                   </AvatarFallback>
                 </Avatar>
                 <span className="text-sm font-medium">
-                  {user?.name || "User"}
+                  {user?.name || 'User'}
                 </span>
               </Button>
             )}
@@ -63,9 +57,9 @@ const DesktopDropdown = ({
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col">
-                <span className="font-medium">{user?.name || "User"}</span>
+                <span className="font-medium">{user?.name || 'User'}</span>
                 <span className="text-xs text-muted-foreground font-normal">
-                  {user?.email || ""}
+                  {user?.email || ''}
                 </span>
               </div>
             </DropdownMenuLabel>

@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Star, ShieldCheck, Truck } from 'lucide-react';
-import type { Book } from './book-details-data';
+import type { TBook } from './book-details-data';
 
-const SummarySection = ({ book }: { book: Book }) => {
+const SummarySection = ({ book }: { book: TBook }) => {
   const discount = book.originalPrice
     ? Math.max(
         0,
@@ -60,10 +60,10 @@ const SummarySection = ({ book }: { book: Book }) => {
           <div className="flex flex-wrap items-center gap-6">
             <div className="space-y-1">
               <div className="flex items-end gap-2 text-3xl font-semibold text-primary">
-                <span>{book.price}</span>
+                <span>৳{book.price}</span>
                 {book.originalPrice ? (
                   <span className="text-base font-normal text-muted-foreground line-through">
-                    {book.originalPrice}
+                    ৳{book.originalPrice}
                   </span>
                 ) : null}
               </div>

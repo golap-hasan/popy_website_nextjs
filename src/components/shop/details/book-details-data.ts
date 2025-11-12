@@ -1,4 +1,4 @@
-export type BookReview = {
+export type TReview = {
   reviewer: string;
   role: string;
   rating: number;
@@ -7,8 +7,17 @@ export type BookReview = {
   content: string;
 };
 
-export type Book = {
-  id: string;
+export type TRelatedBook = {
+  _id: string;
+  title: string;
+  author: string;
+  originalPrice?: string;
+  price: string;
+  coverImage: string;
+};
+
+export type TBook = {
+  _id: string;
   title: string;
   subtitle?: string;
   author: string;
@@ -27,27 +36,19 @@ export type Book = {
   aboutAuthor: {
     bio: string;
     achievements: string[];
-    hometown?: string;
   };
-  reviews: BookReview[];
-  related: {
-    id: string;
-    title: string;
-    author: string;
-    originalPrice?: string;
-    price: string;
-    coverImage: string;
-  }[];
+  reviews: TReview[];
+  related: TRelatedBook[];
 };
 
-export const books: Book[] = [
+export const books: TBook[] = [
   {
-    id: '1',
+    _id: '1',
     title: 'Popy English For Today',
     subtitle: 'Complete language mastery for classes 9-10',
     author: 'Popy Publications',
-    price: '৳575',
-    originalPrice: '৳620',
+    price: '575',
+    originalPrice: '620',
     rating: 4.8,
     reviewsCount: 146,
     tag: 'Best for SSC',
@@ -74,7 +75,6 @@ export const books: Book[] = [
         'Contributor team includes national curriculum trainers',
         'Winner of the 2024 Student Choice Award for study aids',
       ],
-      hometown: 'Dhaka, Bangladesh',
     },
     reviews: [
       {
@@ -116,37 +116,37 @@ export const books: Book[] = [
     ],
     related: [
       {
-        id: '2',
+        _id: '2',
         title: 'HSC Bangla Literature Anthology',
         author: 'Dr. Muhammed Zafar Iqbal',
-        price: '৳420',
-        originalPrice: '৳575',
+        price: '420',
+        originalPrice: '575',
         coverImage: '/tottho.png',
       },
       {
-        id: '5',
+        _id: '5',
         title: 'Science Olympiad Playbook',
         author: 'Chotoder Biggan',
-        price: '৳480',
-        originalPrice: '৳520',
+        price: '480',
+        originalPrice: '520',
         coverImage: '/biggan.png',
       },
       {
-        id: '6',
+        _id: '6',
         title: 'Story-Driven Programming',
         author: 'Tasnia Raihan',
-        price: '৳450',
-        originalPrice: '৳500',
+        price: '450',
+        originalPrice: '500',
         coverImage: '/gonit.png',
       },
     ],
   },
   {
-    id: '2',
+    _id: '2',
     title: 'BCS Question Bank',
     subtitle: 'Solving strategies for cadres in the making',
     author: 'Notion Press',
-    price: '৳690',
+    price: '690',
     rating: 4.7,
     reviewsCount: 89,
     tag: 'BCS Focus',
@@ -196,27 +196,27 @@ export const books: Book[] = [
     ],
     related: [
       {
-        id: '1',
+        _id: '1',
         title: 'Popy English For Today',
         author: 'Popy Publications',
-        price: '৳575',
-        originalPrice: '৳675',
+        price: '575',
+        originalPrice: '675',
         coverImage: '/english.png',
       },
       {
-        id: '5',
+        _id: '5',
         title: 'Science Olympiad Playbook',
         author: 'Chotoder Biggan',
-        price: '৳480',
-        originalPrice: '৳600',
+        price: '480',
+        originalPrice: '600',
         coverImage: '/biggan.png',
       },
       {
-        id: '7',
+        _id: '7',
         title: 'IELTS Writing Masterclass',
         author: 'Redowan Hasan',
-        price: '৳520',
-        originalPrice: '৳620',
+        price: '520',
+        originalPrice: '620',
         coverImage: '/english.png',
       },
     ],

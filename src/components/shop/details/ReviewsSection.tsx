@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
-import type { Book } from './book-details-data';
+import type { TBook } from './book-details-data';
 
 const renderStars = (rating: number) => {
   return Array.from({ length: 5 }).map((_, index) => {
@@ -17,7 +17,7 @@ const renderStars = (rating: number) => {
   });
 };
 
-const ReviewsSection = ({ book }: { book: Book }) => {
+const ReviewsSection = ({ book }: { book: TBook }) => {
   return (
     <section id="reviews" className="space-y-6 bg-background/95">
       <div className="flex flex-col gap-2">

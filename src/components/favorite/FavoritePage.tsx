@@ -1,36 +1,42 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { useMemo, useState } from "react";
-import PageLayout from "@/tools/PageLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, BookmarkCheck, Clock, ShoppingBag, Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { curatedLists, savedBooks } from "./favorite-data";
+import Link from 'next/link';
+import Image from 'next/image';
+import { useMemo, useState } from 'react';
+import PageLayout from '@/tools/PageLayout';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  BookOpen,
+  BookmarkCheck,
+  Clock,
+  ShoppingBag,
+  Trash2,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { curatedLists, savedBooks } from './favorite-data';
 
 const FavoritePage = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState('all');
 
   const filteredBooks = useMemo(() => {
-    if (activeTab === "in-stock") {
-      return savedBooks.filter((book) => book.status === "In stock");
+    if (activeTab === 'in-stock') {
+      return savedBooks.filter(book => book.status === 'In stock');
     }
-    if (activeTab === "low-stock") {
-      return savedBooks.filter((book) => book.status === "Low stock");
+    if (activeTab === 'low-stock') {
+      return savedBooks.filter(book => book.status === 'Low stock');
     }
     return savedBooks;
   }, [activeTab]);
 
   const toggleSelection = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((bookId) => bookId !== id) : [...prev, id]
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(bookId => bookId !== id) : [...prev, id]
     );
   };
 
@@ -41,18 +47,19 @@ const FavoritePage = () => {
       return (
         <div className="flex flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border/50 bg-muted/10 p-10 text-center text-sm text-muted-foreground">
           <BookmarkCheck className="size-6 text-primary" />
-          Nothing saved here yet. Explore the shop and tap the heart icon to keep books handy.
+          Nothing saved here yet. Explore the shop and tap the heart icon to
+          keep books handy.
         </div>
       );
     }
 
-    return booksToRender.map((book) => {
+    return booksToRender.map(book => {
       const statusStyles =
-        book.status === "Low stock"
-          ? "bg-orange-100 text-orange-600"
-          : book.status === "Pre-order"
-          ? "bg-blue-100 text-blue-600"
-          : "bg-emerald-100 text-emerald-600";
+        book.status === 'Low stock'
+          ? 'bg-orange-100 text-orange-600'
+          : book.status === 'Pre-order'
+          ? 'bg-blue-100 text-blue-600'
+          : 'bg-emerald-100 text-emerald-600';
 
       return (
         <article
@@ -79,30 +86,49 @@ const FavoritePage = () => {
 
           <div className="flex flex-1 flex-col gap-3">
             <div className="flex flex-wrap items-start gap-3">
-              <Badge variant="secondary" className="rounded-full bg-primary/15 text-primary">
+              <Badge
+                variant="secondary"
+                className="rounded-full bg-primary/15 text-primary"
+              >
                 {book.category}
               </Badge>
               <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
                 <Clock className="size-3" /> {book.lastVisited}
               </span>
-              <span className={cn("inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]", statusStyles)}>
+              <span
+                className={cn(
+                  'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]',
+                  statusStyles
+                )}
+              >
                 {book.status}
               </span>
             </div>
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-foreground md:text-xl">{book.title}</h2>
-              <p className="text-sm text-muted-foreground">by {book.author} · {book.price}</p>
-              <p className="text-sm text-muted-foreground/90">{book.description}</p>
+              <h2 className="text-lg font-semibold text-foreground md:text-xl">
+                {book.title}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                by {book.author} · {book.price}
+              </p>
+              <p className="text-sm text-muted-foreground/90">
+                {book.description}
+              </p>
             </div>
             <div className="mt-2 flex flex-wrap gap-3">
-              <Button  size="sm" className="rounded-full">
+              <Button size="sm" className="rounded-full">
                 <Link href={`/shop/${book.id}`}>View details</Link>
               </Button>
               <Button variant="ghost" size="sm" className="rounded-full">
                 Add to cart
               </Button>
-              <Button variant="outline" size="sm" className="rounded-full" onClick={() => toggleSelection(book.id)}>
-                {selectedIds.includes(book.id) ? "Remove" : "Unsave"}
+              <Button
+                variant="outline"
+                size="sm"
+                className="rounded-full"
+                onClick={() => toggleSelection(book.id)}
+              >
+                {selectedIds.includes(book.id) ? 'Remove' : 'Unsave'}
               </Button>
             </div>
           </div>
@@ -124,7 +150,9 @@ const FavoritePage = () => {
                 Save it, revisit it, finish it
               </h1>
               <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-                Everything you’ve shortlisted in one place. Organise by stock status, share with friends, and move books to your cart when you’re ready to check out.
+                Everything you&apos;ve shortlisted in one place. Organise by
+                stock status, share with friends, and move books to your cart
+                when you&apos;re ready to check out.
               </p>
             </div>
           </div>
@@ -134,7 +162,12 @@ const FavoritePage = () => {
                 <ShoppingBag className="mr-2 size-4" /> Move selected to cart
               </Button>
             </Link>
-            <Button variant="outline" className="rounded-full" onClick={clearSelection} disabled={!selectedIds.length}>
+            <Button
+              variant="outline"
+              className="rounded-full"
+              onClick={clearSelection}
+              disabled={!selectedIds.length}
+            >
               <Trash2 className="mr-2 size-4" /> Clear selection
             </Button>
           </div>
@@ -147,19 +180,34 @@ const FavoritePage = () => {
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <BookmarkCheck className="size-4 text-primary" />
                   <span>
-                    {selectedIds.length ? `${selectedIds.length} selected — ` : null}
+                    {selectedIds.length
+                      ? `${selectedIds.length} selected — `
+                      : null}
                     {filteredBooks.length} books saved
                   </span>
                 </div>
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="md:w-fit">
+                <Tabs
+                  value={activeTab}
+                  onValueChange={setActiveTab}
+                  className="md:w-fit"
+                >
                   <TabsList className="grid grid-cols-3 rounded-full bg-muted/30 p-1 text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                    <TabsTrigger value="all" className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground">
+                    <TabsTrigger
+                      value="all"
+                      className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground"
+                    >
                       All
                     </TabsTrigger>
-                    <TabsTrigger value="in-stock" className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground">
+                    <TabsTrigger
+                      value="in-stock"
+                      className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground"
+                    >
                       In stock
                     </TabsTrigger>
-                    <TabsTrigger value="low-stock" className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground">
+                    <TabsTrigger
+                      value="low-stock"
+                      className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground"
+                    >
                       Low stock
                     </TabsTrigger>
                   </TabsList>
@@ -173,10 +221,14 @@ const FavoritePage = () => {
                   {renderBookList(filteredBooks)}
                 </TabsContent>
                 <TabsContent value="in-stock" className="space-y-4">
-                  {renderBookList(filteredBooks.filter((book) => book.status === "In stock"))}
+                  {renderBookList(
+                    filteredBooks.filter(book => book.status === 'In stock')
+                  )}
                 </TabsContent>
                 <TabsContent value="low-stock" className="space-y-4">
-                  {renderBookList(filteredBooks.filter((book) => book.status === "Low stock"))}
+                  {renderBookList(
+                    filteredBooks.filter(book => book.status === 'Low stock')
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
@@ -193,15 +245,18 @@ const FavoritePage = () => {
                     Keep collecting what matters
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Export your list, set reminders, or explore curated shelves that pair perfectly with what you love.
+                    Export your list, set reminders, or explore curated shelves
+                    that pair perfectly with what you love.
                   </p>
                 </div>
                 <div className="grid gap-3">
                   <div className="flex items-center gap-3 rounded-2xl border border-border/40 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
-                    <BookOpen className="size-4 text-primary" /> Continue where you left off
+                    <BookOpen className="size-4 text-primary" /> Continue where
+                    you left off
                   </div>
                   <div className="flex items-center gap-3 rounded-2xl border border-border/40 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
-                    <BookmarkCheck className="size-4 text-primary" /> Create a reading routine
+                    <BookmarkCheck className="size-4 text-primary" /> Create a
+                    reading routine
                   </div>
                 </div>
               </CardContent>
@@ -211,7 +266,9 @@ const FavoritePage = () => {
               <CardContent className="space-y-5">
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
-                    <h3 className="text-lg font-semibold text-foreground">Curated for you</h3>
+                    <h3 className="text-lg font-semibold text-foreground">
+                      Curated for you
+                    </h3>
                     <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                       Refresh the shelf
                     </p>
@@ -221,13 +278,20 @@ const FavoritePage = () => {
                   </Button>
                 </div>
                 <div className="space-y-4">
-                  {curatedLists.map((list) => (
-                    <div key={list.title} className="rounded-3xl border border-border/40 bg-muted/20 p-5">
+                  {curatedLists.map(list => (
+                    <div
+                      key={list.title}
+                      className="rounded-3xl border border-border/40 bg-muted/20 p-5"
+                    >
                       <div className="space-y-2">
-                        <h4 className="text-base font-semibold text-foreground">{list.title}</h4>
-                        <p className="text-sm text-muted-foreground">{list.description}</p>
+                        <h4 className="text-base font-semibold text-foreground">
+                          {list.title}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {list.description}
+                        </p>
                       </div>
-                      <Button  size="sm" className="mt-3 rounded-full">
+                      <Button size="sm" className="mt-3 rounded-full">
                         <Link href={list.href}>{list.ctaLabel}</Link>
                       </Button>
                     </div>

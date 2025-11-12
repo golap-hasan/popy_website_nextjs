@@ -1,8 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { Book } from './book-details-data';
+import type { TBook } from './book-details-data';
 
-const HighlightsSpecs = ({ book }: { book: Book }) => {
+const HighlightsSpecs = ({ book }: { book: TBook }) => {
   return (
     <section className="space-y-6 rounded-3xl bg-background/95">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">

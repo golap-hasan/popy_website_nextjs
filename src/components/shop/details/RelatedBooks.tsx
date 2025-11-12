@@ -10,9 +10,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import type { Book } from './book-details-data';
+import type { TBook } from './book-details-data';
 
-const RelatedBooks = ({ book }: { book: Book }) => {
+const RelatedBooks = ({ book }: { book: TBook }) => {
   return (
     <section className="space-y-8 rounded-3xl bg-background/95">
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
@@ -34,7 +34,7 @@ const RelatedBooks = ({ book }: { book: Book }) => {
           <CarouselContent>
             {book.related.map(relatedBook => (
               <CarouselItem
-                key={relatedBook.id}
+                key={relatedBook._id}
                 className="basis-[80%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <Card className="group h-full overflow-hidden rounded-3xl border-border/50 bg-background/92 transition-all duration-500 hover:-translate-y-1.5">
@@ -65,10 +65,10 @@ const RelatedBooks = ({ book }: { book: Book }) => {
                       </p> */}
 
                       <div className="flex items-end gap-2 text-2xl font-semibold text-primary">
-                        <span>{relatedBook.price}</span>
+                        <span>৳{relatedBook.price}</span>
                         {relatedBook.originalPrice ? (
                           <span className="text-base font-normal text-muted-foreground line-through">
-                            {relatedBook.originalPrice}
+                            ৳{relatedBook.originalPrice}
                           </span>
                         ) : null}
                       </div>
@@ -77,7 +77,9 @@ const RelatedBooks = ({ book }: { book: Book }) => {
                       size="sm"
                       className="mt-auto inline-flex items-center justify-center rounded-full px-5"
                     >
-                      <Link href={`/shop/${relatedBook.id}`}>View details</Link>
+                      <Link href={`/shop/${relatedBook._id}`}>
+                        View details
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>

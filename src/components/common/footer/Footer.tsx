@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 import {
   Facebook,
   Instagram,
@@ -7,54 +7,54 @@ import {
   Phone,
   Mail,
   MapPin,
-} from "lucide-react";
-import PageLayout from "@/tools/PageLayout";
+} from 'lucide-react';
+import PageLayout from '@/tools/PageLayout';
 
 const quickLinks = [
-  { label: "Shop", href: "/shop" },
-  { label: "Academic", href: "/collections/academic" },
-  { label: "Best Sellers", href: "/collections/best-sellers" },
-  { label: "New Arrivals", href: "/collections/new-arrivals" },
+  { label: 'Shop', href: '/shop' },
+  { label: 'Academic', href: '/collections/academic' },
+  { label: 'Best Sellers', href: '/collections/best-sellers' },
+  { label: 'New Arrivals', href: '/collections/new-arrivals' },
 ];
 
 const companyLinks = [
-  { label: "Help", href: "/help" },
-  { label: "About", href: "/about" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms & Conditions", href: "/terms" },
+  { label: 'Help', href: '/help' },
+  { label: 'About', href: '/about' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms & Conditions', href: '/terms' },
 ];
 
 const supportLinks = [
-  { label: "FAQs", href: "/support/faqs" },
-  { label: "Track Order", href: "/track-order" },
-  { label: "Returns & Refunds", href: "/support/returns" },
-  { label: "Shipping & Delivery", href: "/support/shipping" },
+  { label: 'FAQs', href: '/support/faqs' },
+  { label: 'Track Order', href: '/track-order' },
+  { label: 'Returns & Refunds', href: '/support/returns' },
+  { label: 'Shipping & Delivery', href: '/support/shipping' },
 ];
 
 const socials = [
-  { label: "Facebook", href: "https://facebook.com", icon: Facebook },
-  { label: "Instagram", href: "https://instagram.com", icon: Instagram },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
-  { label: "YouTube", href: "https://youtube.com", icon: Youtube },
+  { label: 'Facebook', href: 'https://facebook.com', icon: Facebook },
+  { label: 'Instagram', href: 'https://instagram.com', icon: Instagram },
+  { label: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
+  { label: 'YouTube', href: 'https://youtube.com', icon: Youtube },
 ];
 
 const contactDetails = [
   {
     icon: Phone,
-    label: "Hotline",
-    value: "+880 1234-567890",
-    href: "tel:+8801234567890",
+    label: 'Hotline',
+    value: '+880 1234-567890',
+    href: 'tel:+8801234567890',
   },
   {
     icon: Mail,
-    label: "Support",
-    value: "hello@popybooks.com",
-    href: "mailto:hello@popybooks.com",
+    label: 'Support',
+    value: 'hello@popybooks.com',
+    href: 'mailto:hello@popybooks.com',
   },
   {
     icon: MapPin,
-    label: "Address",
-    value: "House 56, Road 4, Dhanmondi, Dhaka",
+    label: 'Address',
+    value: 'House 56, Road 4, Dhanmondi, Dhaka',
   },
 ];
 
@@ -67,11 +67,16 @@ const Footer = () => {
           <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
             <div className="space-y-6">
               <div>
-                <Link href="/" className="text-2xl font-bold tracking-tight text-foreground">
+                <Link
+                  href="/"
+                  className="text-2xl font-bold tracking-tight text-foreground"
+                >
                   Popy Library
                 </Link>
                 <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-                  Bangladesh’s trusted companion for academic success and lifelong reading. Explore curated collections from Popy Publications and beyond.
+                  Bangladesh&apos;s trusted companion for academic success and
+                  lifelong reading. Explore curated collections from Popy
+                  Publications and beyond.
                 </p>
               </div>
 
@@ -94,7 +99,7 @@ const Footer = () => {
                 Quick Links
               </h4>
               <ul className="space-y-3">
-                {quickLinks.map((link) => (
+                {quickLinks.map(link => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
@@ -112,7 +117,7 @@ const Footer = () => {
                 Company
               </h4>
               <ul className="space-y-3">
-                {companyLinks.map((link) => (
+                {companyLinks.map(link => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
@@ -130,7 +135,7 @@ const Footer = () => {
                 Support
               </h4>
               <ul className="space-y-3">
-                {supportLinks.map((link) => (
+                {supportLinks.map(link => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
@@ -162,7 +167,9 @@ const Footer = () => {
                       {value}
                     </Link>
                   ) : (
-                    <p className="text-sm font-semibold text-foreground">{value}</p>
+                    <p className="text-sm font-semibold text-foreground">
+                      {value}
+                    </p>
                   )}
                 </div>
               </div>
@@ -173,18 +180,32 @@ const Footer = () => {
         <div className="border-t border-border/50">
           <PageLayout paddingSize="small" className="text-muted-foreground">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p>© {new Date().getFullYear()} Popy Library. All rights reserved.</p>
+              <p>
+                © {new Date().getFullYear()} Popy Library. All rights reserved.
+              </p>
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/80">
-                Developed by <span className="font-semibold text-foreground">SmartEdge Technologies</span>
+                Developed by{' '}
+                <span className="font-semibold text-foreground">
+                  SmartEdge Technologies
+                </span>
               </p>
               <div className="flex gap-4">
-                <Link href="/privacy" className="transition-colors hover:text-primary">
+                <Link
+                  href="/privacy"
+                  className="transition-colors hover:text-primary"
+                >
                   Privacy Policy
                 </Link>
-                <Link href="/terms" className="transition-colors hover:text-primary">
+                <Link
+                  href="/terms"
+                  className="transition-colors hover:text-primary"
+                >
                   Terms of Service
                 </Link>
-                <Link href="/sitemap" className="transition-colors hover:text-primary">
+                <Link
+                  href="/sitemap"
+                  className="transition-colors hover:text-primary"
+                >
                   Sitemap
                 </Link>
               </div>
