@@ -45,3 +45,27 @@ export const getSingleClientBookings = async (
     return Error(error);
   }
 };
+
+export const getCategories = async () => {
+  const accessToken = await getValidAccessTokenForServerHandlerGet();
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/category`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        next: {
+          tags: ['CATEGORY'],
+        },
+      }
+    );
+
+    const result = await res.json();
+    return result;
+  } catch (error: any) {
+    return Error(error);
+  }
+};

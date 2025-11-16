@@ -1,29 +1,40 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
-import PageLayout from '@/tools/PageLayout';
-import FiltersSidebar from './FiltersSidebar';
-import ShopProducts, { SortOption } from './ShopProducts';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
+import PageLayout from "@/tools/PageLayout";
+import FiltersSidebar from "./FiltersSidebar";
+import ShopProducts, { SortOption } from "./ShopProducts";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { Filter } from 'lucide-react';
+} from "@/components/ui/sheet";
+import { Filter } from "lucide-react";
+import CustomPagination from "../common/custom-pagination/CustomPagination";
+import type { ApiMeta, Book, Category } from "@/types/shop";
 
-const MobileFilters = () => {
+type ShopLayoutProps = {
+  initialBooks: Book[];
+  initialMeta: ApiMeta;
+  initialCategories: Category[];
+};
+
+type MobileFiltersProps = Parameters<typeof FiltersSidebar>[0];
+
+const MobileFilters = (props: MobileFiltersProps) => {
   return (
     <div className="md:hidden">
       <Sheet>
@@ -43,7 +54,7 @@ const MobileFilters = () => {
             </SheetTitle>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto px-3 pb-10 pt-5">
-            <FiltersSidebar />
+            <FiltersSidebar {...props} />
           </div>
         </SheetContent>
       </Sheet>
@@ -51,28 +62,137 @@ const MobileFilters = () => {
   );
 };
 
-const ShopLayout = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOption, setSortOption] = useState<SortOption>('popularity');
-  const [resultsCount, setResultsCount] = useState<number>(0);
+const ShopLayout = ({
+  initialBooks,
+  initialMeta,
+  initialCategories,
+}: ShopLayoutProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  useMemo(() => {
-    switch (sortOption) {
-      case 'newest':
-        return 'Newest';
-      case 'price_low_high':
-        return 'Price: Low to High';
-      case 'popularity':
-      default:
-        return 'Popularity';
+  const updateFilter = (key: string, value: string | undefined) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
     }
-  }, [sortOption]);
+
+    if (key !== "page") {
+      params.set("page", "1");
+    }
+
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const searchTerm = searchParams.get("searchTerm") ?? "";
+  const selectedCategory = searchParams.get("category") ?? "";
+  const sortOption = (searchParams.get("sort") as SortOption) ?? "popularity";
+  const currentPage = Number(searchParams.get("page") ?? "1");
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
+  const rating = searchParams.get("rating");
+  const authors = searchParams.get("authors");
+  const publishers = searchParams.get("publishers");
+
+  const priceRange: [number, number] = useMemo(
+    () => [
+      minPrice ? Number(minPrice) : 200,
+      maxPrice ? Number(maxPrice) : 2000,
+    ],
+    [minPrice, maxPrice]
+  );
+  const selectedRating = rating ? Number(rating) : 0;
+  const selectedAuthors = authors ? authors.split(",") : [];
+  const selectedPublishers = publishers ? publishers.split(",") : [];
+
+  const [searchInput, setSearchInput] = useState(searchTerm);
+  const [priceInput, setPriceInput] = useState<[number, number]>(priceRange);
+
+  useEffect(() => {
+    setSearchInput(searchTerm);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setPriceInput(priceRange);
+  }, [priceRange]);
+
+  const totalPages = initialMeta.totalPage ?? 1;
+  const resultsCount = initialMeta.total ?? 0;
+
+  const updatePrice = (range: [number, number]) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("minPrice", String(range[0]));
+    params.set("maxPrice", String(range[1]));
+    params.set("page", "1");
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    updateFilter("searchTerm", e.target.value);
+  };
+
+  const handleCategoryChange = (slug: string) => {
+    updateFilter("category", selectedCategory === slug ? undefined : slug);
+  };
+
+  const handlePriceChange = (newRange: [number, number]) => {
+    setPriceInput(newRange);
+    updatePrice(newRange);
+  };
+
+  const handleRatingChange = (newRating: number) => {
+    updateFilter("rating", newRating > 0 ? String(newRating) : undefined);
+  };
+
+  const handleAuthorChange = (newAuthors: string[]) => {
+    updateFilter(
+      "authors",
+      newAuthors.length > 0 ? newAuthors.join(",") : undefined
+    );
+  };
+
+  const handlePublisherChange = (newPublishers: string[]) => {
+    updateFilter(
+      "publishers",
+      newPublishers.length > 0 ? newPublishers.join(",") : undefined
+    );
+  };
+
+  const handlePageChange = (page: number) => {
+    updateFilter("page", String(page));
+  };
+
+  const sidebarProps = {
+    categories: initialCategories,
+    selectedCategory,
+    onCategoryChange: handleCategoryChange,
+    priceRange: priceInput,
+    onPriceChange: handlePriceChange,
+    selectedRating,
+    onRatingChange: handleRatingChange,
+    selectedAuthors,
+    onAuthorChange: handleAuthorChange,
+    selectedPublishers,
+    onPublisherChange: handlePublisherChange,
+  };
 
   return (
-    <PageLayout>
+    <PageLayout
+      pagination={
+        <CustomPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={handlePageChange}
+        />
+      }
+    >
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[320px_1fr]">
         <div className="hidden lg:block lg:sticky lg:top-28 lg:h-fit">
-          <FiltersSidebar />
+          <FiltersSidebar {...sidebarProps} />
         </div>
         <div className="space-y-10">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -83,11 +203,11 @@ const ShopLayout = () => {
               <p className="text-sm text-muted-foreground">
                 {resultsCount > 0
                   ? `${resultsCount} titles found — refine your search to get even closer to what you need.`
-                  : 'Browse curated books and refine with filters to match your reading goals.'}
+                  : "Browse curated books and refine with filters to match your reading goals."}
               </p>
             </div>
             <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:justify-end">
-              <MobileFilters />
+              <MobileFilters {...sidebarProps} />
               <div className="flex w-full flex-col gap-1 md:w-64">
                 <Label
                   htmlFor="shop-search"
@@ -97,8 +217,8 @@ const ShopLayout = () => {
                 </Label>
                 <Input
                   id="shop-search"
-                  value={searchTerm}
-                  onChange={event => setSearchTerm(event.target.value)}
+                  value={searchInput}
+                  onChange={handleSearchChange}
                   placeholder="Search by title, author, or tag"
                   className="rounded-full"
                 />
@@ -109,7 +229,9 @@ const ShopLayout = () => {
                 </Label>
                 <Select
                   value={sortOption}
-                  onValueChange={(value: SortOption) => setSortOption(value)}
+                  onValueChange={(value: SortOption) =>
+                    updateFilter("sort", value)
+                  }
                 >
                   <SelectTrigger className="rounded-full text-sm">
                     <SelectValue placeholder="Sort by" />
@@ -120,17 +242,17 @@ const ShopLayout = () => {
                     <SelectItem value="price_low_high">
                       Price: Low to High
                     </SelectItem>
+                    <SelectItem value="price_high_low">
+                      Price: High to Low
+                    </SelectItem>
+                    <SelectItem value="rating">Rating</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
           </div>
 
-          <ShopProducts
-            searchTerm={searchTerm}
-            sortOption={sortOption}
-            onResultsChange={setResultsCount}
-          />
+          <ShopProducts books={initialBooks} />
         </div>
       </div>
     </PageLayout>

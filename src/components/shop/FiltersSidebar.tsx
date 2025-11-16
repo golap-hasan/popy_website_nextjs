@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import type { Category } from "@/types/shop";
 import { Slider } from "@/components/ui/slider";
 import { StarRating } from "@/tools/StarRating";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ const priceRanges = [
   { label: "৳200 - ৳400", value: "200-400" },
   { label: "৳400 - ৳600", value: "400-600" },
   { label: "৳600 - ৳800", value: "600-800" },
-  { label: "৳800+", value: "800+" },
+  { label: "৳800+", value: "800-1200" },
 ];
 
 const authorFilters = [
@@ -28,99 +28,36 @@ const authorFilters = [
   { name: "Rabindranath Tagore" },
 ];
 
-const publisherFilters = [
-  { name: "Somoy Prokashoni" },
-  { name: "Anonna Prokashoni" },
-  { name: "Bishwa Sahitya Kendra" },
-  { name: "Adarsha" },
-  { name: "Pathak Shamabesh" },
-];
+type FiltersSidebarProps = {
+  categories?: Category[];
+  selectedCategory?: string;
+  onCategoryChange?: (slug: string) => void;
+  priceRange?: [number, number];
+  onPriceChange?: (range: [number, number]) => void;
+  selectedRating?: number;
+  onRatingChange?: (rating: number) => void;
+  selectedAuthors?: string[];
+  onAuthorChange?: (authors: string[]) => void;
+};
 
-const levelFilters = [
-  {
-    label: "Play Group",
-  },
-  {
-    label: "Nursery",
-  },
-  {
-    label: "KG",
-  },
-  {
-    label: "Class One",
-  },
-  {
-    label: "Class Two",
-  },
-  {
-    label: "Class Three",
-  },
-  {
-    label: "Class Four",
-  },
-  {
-    label: "Class Five",
-  },
-  {
-    label: "Class Six",
-  },
-  {
-    label: "Class Seven",
-  },
-  {
-    label: "Class Eight",
-  },
-  {
-    label: "Class Nine",
-  },
-  {
-    label: "SSC",
-  },
-  {
-    label: "HSC",
-  },
-];
-
-const FiltersSidebar = () => {
-  const [priceRange, setPriceRange] = useState<[number, number]>([200, 800]);
-  const [selectedRating, setSelectedRating] = useState(0);
-  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
-  const [selectedPublishers, setSelectedPublishers] = useState<string[]>([]);
-  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
-
-  const handlePriceChange = (values: number[]) => {
-    if (values.length === 1) {
-      setPriceRange([values[0], priceRange[1]]);
-    } else {
-      setPriceRange([values[0], values[1]]);
-    }
-  };
-
+const FiltersSidebar = ({
+  categories = [],
+  selectedCategory = "",
+  onCategoryChange,
+  priceRange = [200, 2000],
+  onPriceChange,
+  selectedRating = 0,
+  onRatingChange,
+  selectedAuthors = [],
+  onAuthorChange,
+}: FiltersSidebarProps) => {
   const handleAuthorSelection = (name: string, checked: boolean) => {
-    setSelectedAuthors((previous) => {
-      if (checked) {
-        return previous.includes(name) ? previous : [...previous, name];
-      }
-      return previous.filter((item) => item !== name);
-    });
-  };
-
-  const handlePublisherSelection = (name: string, checked: boolean) => {
-    setSelectedPublishers((previous) => {
-      if (checked) {
-        return previous.includes(name) ? previous : [...previous, name];
-      }
-      return previous.filter((item) => item !== name);
-    });
-  };
-
-  const handleLevelSelection = (label: string, checked: boolean) => {
-    setSelectedLevels((previous) => {
-      if (checked) {
-        return previous.includes(label) ? previous : [...previous, label];
-      }
-      return previous.filter((item) => item !== label);
-    });
+    if (onAuthorChange) {
+      const newAuthors = checked
+        ? [...selectedAuthors, name]
+        : selectedAuthors.filter((item) => item !== name);
+      onAuthorChange(newAuthors);
+    }
   };
 
   return (
@@ -129,29 +66,26 @@ const FiltersSidebar = () => {
         <ScrollArea className="h-96 pr-4">
           <div className="space-y-3">
             <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-muted-foreground">
-              Book levels
+              Categories
             </h3>
             <div className="space-y-2">
-              {levelFilters.map((item) => {
-                const levelId = `level-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
-                const isChecked = selectedLevels.includes(item.label);
-
+              {categories.map((cat) => {
+                const catId = `cat-${cat.slug}`;
+                const isChecked = selectedCategory === cat.name;
                 return (
                   <label
-                    key={item.label}
-                    htmlFor={levelId}
+                    key={cat._id}
+                    htmlFor={catId}
                     className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/20 px-3 py-2 text-sm text-foreground transition hover:bg-muted"
                   >
                     <div className="flex items-center gap-3">
                       <Checkbox
-                        id={levelId}
+                        id={catId}
                         checked={isChecked}
-                        onCheckedChange={(checked) =>
-                          handleLevelSelection(item.label, checked === true)
-                        }
+                        onCheckedChange={() => onCategoryChange?.(cat.name)}
                         className="rounded"
                       />
-                      <span>{item.label}</span>
+                      <span>{cat.name}</span>
                     </div>
                     <span className="text-xs text-muted-foreground">
                       {isChecked ? "Selected" : "Select"}
@@ -164,7 +98,11 @@ const FiltersSidebar = () => {
           <ScrollBar orientation="vertical" />
         </ScrollArea>
 
-        <Accordion type="multiple" defaultValue={["price", "rating"]} className="space-y-3">
+        <Accordion
+          type="multiple"
+          defaultValue={["price", "rating", "authors"]}
+          className="space-y-3"
+        >
           <AccordionItem
             value="authors"
             className="rounded-2xl border border-border/50 bg-background/60 px-4"
@@ -207,50 +145,6 @@ const FiltersSidebar = () => {
           </AccordionItem>
 
           <AccordionItem
-            value="publishers"
-            className="rounded-2xl border border-border/50 bg-background/60 px-4"
-          >
-            <AccordionTrigger className="px-0 py-3 text-sm font-medium text-foreground">
-              By publishers
-            </AccordionTrigger>
-            <AccordionContent className="pb-4">
-              <ScrollArea className="max-h-60 pr-2">
-                <div className="space-y-2">
-                  {publisherFilters.map((publisher) => {
-                    const publisherId = `publisher-${publisher.name
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`;
-                    const isChecked = selectedPublishers.includes(publisher.name);
-
-                    return (
-                      <label
-                        key={publisher.name}
-                        htmlFor={publisherId}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-border/60 bg-muted/20 px-3 py-2 text-sm text-foreground transition hover:bg-muted"
-                      >
-                        <span className="flex items-center gap-2">
-                          <Checkbox
-                            id={publisherId}
-                            checked={isChecked}
-                            onCheckedChange={(checked) =>
-                              handlePublisherSelection(
-                                publisher.name,
-                                checked === true
-                              )
-                            }
-                          />
-                          <span>{publisher.name}</span>
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-                <ScrollBar orientation="vertical" />
-              </ScrollArea>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem
             value="price"
             className="rounded-2xl border border-border/50 bg-background/60 px-4"
           >
@@ -268,7 +162,7 @@ const FiltersSidebar = () => {
                   max={2000}
                   step={10}
                   value={priceRange}
-                  onValueChange={handlePriceChange}
+                  onValueChange={(v) => onPriceChange?.([v[0], v[1]])}
                 />
                 <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
                   {priceRanges.map((range) => (
@@ -277,10 +171,10 @@ const FiltersSidebar = () => {
                       variant="outline"
                       className="justify-center rounded-full border-border/60 px-3 py-1 text-xs text-muted-foreground hover:border-primary hover:text-primary"
                       onClick={() => {
-                        const [min, max] = range.value.includes("+")
-                          ? [Number(range.value.replace("+", "")), 1200]
-                          : range.value.split("-").map((value) => Number(value));
-                        setPriceRange([min, max]);
+                        const [min, max] = range.value
+                          .split("-")
+                          .map((value) => Number(value));
+                        onPriceChange?.([min, max]);
                       }}
                     >
                       {range.label}
@@ -303,7 +197,7 @@ const FiltersSidebar = () => {
                 <StarRating
                   rating={selectedRating}
                   totalStars={5}
-                  onRate={setSelectedRating}
+                  onRate={onRatingChange}
                   className="text-primary"
                   size={18}
                   gap={2}
@@ -314,28 +208,6 @@ const FiltersSidebar = () => {
               </div>
             </AccordionContent>
           </AccordionItem>
-
-          {/* <AccordionItem
-            value="tags"
-            className="rounded-2xl border border-border/50 bg-background/60 px-4"
-          >
-            <AccordionTrigger className="px-0 py-3 text-sm font-medium text-foreground">
-              Popular tags
-            </AccordionTrigger>
-            <AccordionContent className="pb-4">
-              <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                {["SSC", "HSC", "BCS", "IELTS", "Story"].map((tag) => (
-                  <Link
-                    key={tag}
-                    href={`/search?tag=${tag.toLowerCase()}`}
-                    className="inline-flex items-center rounded-full border border-primary/20 px-3 py-1 text-xs text-primary transition hover:bg-primary/10"
-                  >
-                    #{tag}
-                  </Link>
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem> */}
         </Accordion>
       </div>
     </aside>
