@@ -24,6 +24,8 @@ import PageLayout from '@/tools/PageLayout';
 import { useUser } from '@/context/UserContext';
 import { logOut } from '@/services/Auth';
 import { protectedRoutes } from '@/constants';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/redux/store';
 
 const navigationItems = [
   { name: 'Home', href: '/', icon: Home },
@@ -39,6 +41,7 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
   const { user, setUser, isLoading, setIsLoading } = useUser();
+  const cartCount = useSelector((state: RootState) => state.cart.totalQuantity);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -174,9 +177,14 @@ const Navbar = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hidden rounded-full md:flex"
+                  className="relative hidden rounded-full md:flex"
                 >
                   <ShoppingCartIcon className="h-5 w-5" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+                      {cartCount > 9 ? '9+' : cartCount}
+                    </span>
+                  )}
                   <span className="sr-only">Cart</span>
                 </Button>
               </Link>

@@ -38,11 +38,11 @@ const CartSummaryCard = ({ items }: CartSummaryCardProps) => {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-3">
-        <Link className="w-full" href="/checkout">
-          <Button className="w-full" disabled={items.length === 0}>
+        <Button className="w-full" disabled={items.length === 0}>
+          <Link className="w-full" href="/checkout">
             Proceed to checkout
-          </Button>
-        </Link>
+          </Link>
+        </Button>
         <p className="text-center text-xs text-muted-foreground">
           Secure payment powered by SSL Commerz. Estimated delivery within 2-3
           business days.

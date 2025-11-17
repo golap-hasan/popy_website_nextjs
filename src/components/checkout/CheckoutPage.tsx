@@ -25,14 +25,15 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
+import { InfoToast } from "@/lib/utils";
 
 const divisions = [
   "Dhaka",
   "Chattogram",
-  "Khulna",
   "Rajshahi",
-  "Sylhet",
+  "Khulna",
   "Barishal",
+  "Sylhet",
   "Rangpur",
   "Mymensingh",
 ];
@@ -70,11 +71,47 @@ const CheckoutPage = () => {
 
   const isCartEmpty = items.length === 0;
 
+  const handlePlaceOrder = () => {
+    const hasAllAddress =
+      Boolean(shippingInfo.division) &&
+      Boolean(shippingInfo.city.trim()) &&
+      Boolean(shippingInfo.addressLine.trim()) &&
+      Boolean(shippingInfo.postalCode.trim());
+
+    if (!hasAllAddress) {
+      InfoToast("Please fill in all shipping address fields");
+      return;
+    }
+
+    const books = items.map((item) => ({
+      book: item.id,
+      quantity: item.quantity,
+    }));
+
+    const parts = [
+      shippingInfo.addressLine,
+      shippingInfo.city,
+      shippingInfo.division,
+      shippingInfo.postalCode,
+    ].filter(Boolean);
+
+    const shippingAddress = parts.join(", ");
+
+    const payload = {
+      books,
+      shippingAddress,
+      paymentMethod: "COD" as const,
+    };
+
+    // TODO: Replace this with an actual API call when backend is ready.
+    console.log("Checkout order payload", payload);
+  };
+
   return (
-    <PageLayout paddingSize="small">
+    <PageLayout paddingSize="small" className="screen-height">
       <div className="flex flex-col gap-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Badge className="bg-primary/10 text-primary">Secure checkout</Badge>
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
               Confirm order & delivery
@@ -127,6 +164,7 @@ const CheckoutPage = () => {
                       onChange={(event) =>
                         setShippingInfo((prev) => ({ ...prev, city: event.target.value }))
                       }
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -138,6 +176,7 @@ const CheckoutPage = () => {
                       onChange={(event) =>
                         setShippingInfo((prev) => ({ ...prev, postalCode: event.target.value }))
                       }
+                      required
                     />
                   </div>
                 </div>
@@ -151,6 +190,7 @@ const CheckoutPage = () => {
                       setShippingInfo((prev) => ({ ...prev, addressLine: event.target.value }))
                     }
                     rows={3}
+                    required
                   />
                 </div>
               </CardContent>
@@ -184,6 +224,16 @@ const CheckoutPage = () => {
                 <CardTitle className="text-lg">Order summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
+                <div className="rounded-xl border border-dashed border-primary/40 bg-primary/5 px-4 py-3 text-xs text-muted-foreground">
+                  <p>
+                    <span className="font-semibold text-primary">Delivery inside Dhaka:</span> ৳70 &nbsp;·&nbsp;
+                    <span className="font-semibold text-primary">Outside Dhaka:</span> ৳130.
+                  </p>
+                  <p className="mt-1">
+                    Orders of <span className="font-semibold text-foreground">৳1,599</span> or more (excluding delivery) qualify for
+                    <span className="font-semibold text-primary"> free home delivery</span>.
+                  </p>
+                </div>
                 <div className="space-y-3">
                   {items.map((item) => (
                     <div key={item.id} className="flex items-center justify-between">
@@ -215,7 +265,12 @@ const CheckoutPage = () => {
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col gap-3">
-                <Button size="lg" disabled={isCartEmpty} className="w-full">
+                <Button
+                  size="lg"
+                  disabled={isCartEmpty}
+                  className="w-full"
+                  onClick={handlePlaceOrder}
+                >
                   Place order now
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
@@ -224,7 +279,7 @@ const CheckoutPage = () => {
               </CardFooter>
             </Card>
 
-            <Card className="border-dashed border-border/60 bg-background/60 shadow-none">
+            {/* <Card className="border-dashed border-border/60 bg-background/60 shadow-none">
               <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <p className="text-sm font-semibold text-foreground">Need assistance?</p>
                 <p>
@@ -241,7 +296,7 @@ const CheckoutPage = () => {
                   </Button>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>
