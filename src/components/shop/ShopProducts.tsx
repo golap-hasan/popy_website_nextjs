@@ -1,30 +1,15 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Star } from 'lucide-react';
-import type { Book } from '@/types/shop';
-
-// Remote books are passed via props; no local mock data.
-
-export type SortOption = 'popularity' | 'newest' | 'price_low_high';
-
+// import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, Star } from "lucide-react";
+import type { Book } from "@/types/shop";
+import { getImageUrl } from "@/lib/utils";
+export type SortOption = "popularity" | "newest" | "price_low_high";
 type ShopProductsProps = {
   books?: Book[];
-};
-
-const coverUrl = (book: Book) => {
-  if (typeof book.coverImage === 'string') {
-    // normalize paths like 'public/images/foo.png' => '/images/foo.png'
-    if (book.coverImage.startsWith('public/')) {
-      return `/${book.coverImage.replace(/^public\//, '')}`;
-    }
-    return book.coverImage;
-  }
-  if (book.coverImage && typeof book.coverImage === 'object') return book.coverImage.url ?? '';
-  return book.image ?? '/placeholder.png';
 };
 
 const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
@@ -55,7 +40,9 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {books.map((book, i) => (
           <div
-            key={String(book._id ?? book.id ?? book.slug ?? `${book.title}-${i}`)}
+            key={String(
+              book._id ?? book.id ?? book.slug ?? `${book.title}-${i}`
+            )}
             className="group relative flex h-full flex-col gap-5 overflow-hidden rounded-lg border border-border/40 bg-background/90 p-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
             <Link
@@ -64,13 +51,11 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
               aria-label={`View details for ${book.title}`}
             >
               <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20">
-                <Image
-                  src={coverUrl(book)}
+                <img
+                  src={getImageUrl(book.coverImage || "")}
                   alt={`${book.title} cover`}
-                  width={260}
-                  height={340}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(min-width: 1280px) 220px, (min-width: 768px) 240px, 80vw"
+                  loading="lazy"
                 />
                 <div className="pointer-events-none absolute inset-0 z-10 opacity-0 backdrop-blur-xs rounded-lg transition-opacity duration-200 group-hover:opacity-100" />
                 {book.badge ? (
@@ -86,7 +71,9 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
                     {book.title}
                   </h3>
                   {book.author ? (
-                    <p className="text-xs text-muted-foreground">{book.author}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {book.author}
+                    </p>
                   ) : null}
                 </div>
 
@@ -96,7 +83,10 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
                     {book.rating ?? 0}
                   </div>
                   <span className="text-xs font-semibold text-primary">
-                    ৳{typeof book.price === 'number' ? book.price : book.price ?? ''}
+                    ৳
+                    {typeof book.price === "number"
+                      ? book.price
+                      : book.price ?? ""}
                   </span>
                 </div>
               </div>
