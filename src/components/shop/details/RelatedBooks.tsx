@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,9 +9,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import type { TBook } from './book-details-data';
+import type { TBook, RelatedItem } from '@/types/book';
+import { getImageUrl } from '@/lib/utils';
 
 const RelatedBooks = ({ book }: { book: TBook }) => {
+  const related: RelatedItem[] =
+    ((book as unknown as { related?: RelatedItem[]; relatedBooks?: RelatedItem[] })?.related ??
+      (book as unknown as { related?: RelatedItem[]; relatedBooks?: RelatedItem[] })?.relatedBooks ??
+      []) as RelatedItem[];
   return (
     <section className="space-y-8 rounded-3xl bg-background/95">
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
@@ -32,7 +36,7 @@ const RelatedBooks = ({ book }: { book: TBook }) => {
       <Carousel opts={{ align: 'start', slidesToScroll: 1 }}>
         <div className="relative">
           <CarouselContent>
-            {book.related.map(relatedBook => (
+            {related.map((relatedBook: RelatedItem) => (
               <CarouselItem
                 key={relatedBook._id}
                 className="basis-[80%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
@@ -40,12 +44,11 @@ const RelatedBooks = ({ book }: { book: TBook }) => {
                 <Card className="group h-full overflow-hidden rounded-3xl border-border/50 bg-background/92 transition-all duration-500 hover:-translate-y-1.5">
                   <CardContent className="flex h-full flex-col gap-5">
                     <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background">
-                      <Image
-                        src={relatedBook.coverImage}
+                      <img
+                        src={getImageUrl(relatedBook.coverImage || '')}
                         alt={`${relatedBook.title} cover`}
-                        width={260}
-                        height={320}
                         className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
+                        loading="lazy"
                       />
                       <div className="absolute left-3 top-3 flex items-center gap-2">
                         <Badge className="rounded-full bg-primary/90 text-primary-foreground ">
@@ -77,7 +80,7 @@ const RelatedBooks = ({ book }: { book: TBook }) => {
                       size="sm"
                       className="mt-auto inline-flex items-center justify-center rounded-full px-5"
                     >
-                      <Link href={`/shop/${relatedBook._id}`}>
+                      <Link href={`/shop/${relatedBook.slug || relatedBook._id}`}>
                         View details
                       </Link>
                     </Button>

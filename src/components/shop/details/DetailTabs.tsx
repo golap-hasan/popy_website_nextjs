@@ -1,7 +1,7 @@
 import HighlightsSpecs from './HighlightsSpecs';
-import ReviewsSection from './ReviewsSection';
+// import ReviewsSection from './ReviewsSection';
 import SupportInfo from './SupportInfo';
-import type { TBook } from './book-details-data';
+import type { TBook } from '@/types/book';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const DetailTabs = ({ book }: { book: TBook }) => {
@@ -19,7 +19,7 @@ const DetailTabs = ({ book }: { book: TBook }) => {
         </TabsContent>
 
         <TabsContent value="reviews" className="space-y-10">
-          <ReviewsSection book={book} />
+          {/* <ReviewsSection book={book} /> */}
         </TabsContent>
       </Tabs>
     </section>

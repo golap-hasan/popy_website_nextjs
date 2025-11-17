@@ -1,23 +1,19 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Star, ShieldCheck, Truck } from 'lucide-react';
-import type { TBook } from './book-details-data';
+import { getImageUrl } from '@/lib/utils';
+import type { TBook } from '@/types/book';
 
 const SummarySection = ({ book }: { book: TBook }) => {
-  const discount = book.originalPrice
-    ? Math.max(
-        0,
-        Math.round(
-          ((Number.parseInt(book.originalPrice.replace(/[^0-9]/g, ''), 10) -
-            Number.parseInt(book.price.replace(/[^0-9]/g, ''), 10)) /
-            Number.parseInt(book.originalPrice.replace(/[^0-9]/g, ''), 10)) *
-            100
-        )
-      )
-    : null;
+  const priceNumber = Number(book.price ?? 0);
+  const originalNumber = Number(book.originalPrice ?? 0);
+
+  const discount =
+    originalNumber && priceNumber
+      ? Math.max(0, Math.round(((originalNumber - priceNumber) / originalNumber) * 100))
+      : null;
 
   return (
     <section className="relative overflow-hidden bg-background/95">
@@ -84,7 +80,7 @@ const SummarySection = ({ book }: { book: TBook }) => {
           </div>
           <Separator className="my-4" />
           <div className="grid gap-3 text-sm text-muted-foreground md:grid-cols-2">
-            {book.highlights.slice(0, 2).map(highlight => (
+            {book.highlights?.slice(0, 2).map(highlight => (
               <div
                 key={highlight}
                 className="rounded-2xl border border-border/40 bg-muted/20 p-4"
@@ -99,13 +95,11 @@ const SummarySection = ({ book }: { book: TBook }) => {
           <div className="absolute -bottom-12 left-0 hidden size-72 rounded-full bg-secondary/20 blur-3xl md:block" />
           <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/70 p-5 shadow-lg">
             <div className="relative h-[420px] w-[300px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30">
-              <Image
-                src={book.coverImage}
+              <img
+                src={getImageUrl(book.coverImage || '')}
                 alt={`${book.title} cover`}
-                fill
-                sizes="(min-width: 1024px) 320px, 60vw"
-                className="object-cover"
-                priority
+                className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
           </div>

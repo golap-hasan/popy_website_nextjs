@@ -1,6 +1,6 @@
 "use client";
 
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -51,11 +51,13 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
               aria-label={`View details for ${book.title}`}
             >
               <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20">
-                <img
-                  src={getImageUrl(book.coverImage || "")}
+                <Image
+                  src={getImageUrl(book.coverImage)}
                   alt={`${book.title} cover`}
+                  width={260}
+                  height={340}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
+                  sizes="(min-width: 1280px) 220px, (min-width: 768px) 240px, 80vw"
                 />
                 <div className="pointer-events-none absolute inset-0 z-10 opacity-0 backdrop-blur-xs rounded-lg transition-opacity duration-200 group-hover:opacity-100" />
                 {book.badge ? (

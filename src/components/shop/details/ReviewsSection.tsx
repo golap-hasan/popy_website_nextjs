@@ -1,23 +1,23 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Star } from 'lucide-react';
-import type { TBook } from './book-details-data';
+import type { TBook } from '@/types/book';
 
-const renderStars = (rating: number) => {
-  return Array.from({ length: 5 }).map((_, index) => {
-    const filled = index + 1 <= Math.round(rating);
-    return (
-      <Star
-        key={index}
-        className={`size-4 ${
-          filled ? 'fill-primary text-primary' : 'text-muted-foreground'
-        }`}
-      />
-    );
-  });
+import { StarRating } from '@/tools/StarRating';
+
+type Review = {
+  reviewer: string;
+  role: string;
+  rating: number;
+  date: string;
+  summary: string;
+  content: string;
 };
 
 const ReviewsSection = ({ book }: { book: TBook }) => {
+  const reviews: Review[] = [];
+  const rating = Number(book.rating ?? 0);
+  const reviewsCount = Number(book.reviewsCount ?? 0);
+
   return (
     <section id="reviews" className="space-y-6 bg-background/95">
       <div className="flex flex-col gap-2">
@@ -25,7 +25,7 @@ const ReviewsSection = ({ book }: { book: TBook }) => {
           Community voices
         </p>
         <h2 className="text-2xl font-semibold text-foreground md:text-3xl">
-          {book.reviewsCount}+ learners are growing with this guide
+          {reviewsCount}+ learners are growing with this guide
         </h2>
         <p className="max-w-3xl text-sm text-muted-foreground">
           Honest reflections curated from recent buyers and educators. Each
@@ -38,17 +38,26 @@ const ReviewsSection = ({ book }: { book: TBook }) => {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                 <div className="grid size-24 place-items-center rounded-full bg-primary/10 text-3xl font-semibold text-primary">
-                  {book.rating.toFixed(1)}
+                  {rating > 0 ? rating.toFixed(1) : 'N/A'}
                 </div>
                 <div className="space-y-1">
                   <p className="text-xl font-semibold text-foreground">
                     Overall rating
                   </p>
                   <div className="flex items-center gap-1 text-primary">
-                    {renderStars(book.rating)}
+                    {rating > 0 ? (
+                      <StarRating 
+                        rating={rating} 
+                        totalStars={5} 
+                        size={16}
+                        className="text-primary"
+                      />
+                    ) : (
+                      <p className="text-xs text-muted-foreground">No reviews yet</p>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Based on {book.reviewsCount} reviews from students,
+                    Based on {reviewsCount > 0 ? reviewsCount : 'no'} reviews from students,
                     teachers, and parents
                   </p>
                 </div>
@@ -78,7 +87,7 @@ const ReviewsSection = ({ book }: { book: TBook }) => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {book.reviews.map(review => (
+            {reviews.map((review: Review) => (
               <Card
                 key={`${review.reviewer}-${review.date}`}
                 className="border-border/50 bg-background/92 p-0"
@@ -100,9 +109,12 @@ const ReviewsSection = ({ book }: { book: TBook }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 text-primary">
-                      {renderStars(review.rating)}
-                    </div>
+                    <StarRating 
+                      rating={review.rating} 
+                      totalStars={5} 
+                      size={14}
+                      className="text-primary"
+                    />
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm font-semibold text-foreground">

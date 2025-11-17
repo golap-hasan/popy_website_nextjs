@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-// GET BOOKS
+// GET ALL BOOKS
 export const getBooks = async (query: {
   [key: string]: string | string[] | undefined;
 }) => {
@@ -21,6 +21,7 @@ export const getBooks = async (query: {
   return result;
 };
 
+// GET CATEGORIES
 export const getCategories = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`, {
@@ -37,3 +38,26 @@ export const getCategories = async () => {
     return Error(error);
   }
 };
+
+// GET SINGLE BOOKS
+export const getSingleBookBySlug = async (slug:string) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/book/${slug}`)
+    const result = await res.json();
+    return result;
+  } catch (error: any) {
+    return Error(error)
+  }
+}
+
+// GET REVIEWS
+export const getReviews = async (id:string) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/book/reviews/${id}`)
+    const result = await res.json();
+    return result;
+  } catch (error: any) {
+    return Error(error)
+  }
+}
+

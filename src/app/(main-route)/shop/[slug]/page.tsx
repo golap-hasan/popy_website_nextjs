@@ -3,22 +3,20 @@ import PageLayout from '@/tools/PageLayout';
 import SummarySection from '@/components/shop/details/SummarySection';
 import DetailTabs from '@/components/shop/details/DetailTabs';
 import RelatedBooks from '@/components/shop/details/RelatedBooks';
-import { books } from '@/components/shop/details/book-details-data';
 import { notFound } from 'next/navigation';
-
-type ShopDetailPageParams = Promise<{
-  id: string;
-}>;
-
-type ShopDetailPageProps = {
-  params: ShopDetailPageParams;
-};
+import { getSingleBookBySlug } from '@/services/shop';
 
 export const generateMetadata = async ({
   params,
-}: ShopDetailPageProps): Promise<Metadata> => {
-  const { id } = await params;
-  const book = books.find(book => book._id === id);
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}): Promise<Metadata> => {
+  const { slug } = await params;
+  const res = await getSingleBookBySlug(slug);
+  const data = res?.data;
+  const book = Array.isArray(data) ? data[0] : data;
 
   if (!book) {
     return {
@@ -36,9 +34,17 @@ export const generateMetadata = async ({
   };
 };
 
-const ShopDetailPage = async ({ params }: ShopDetailPageProps) => {
-  const { id } = await params;
-  const book = books.find(book => book._id === id);
+const ShopDetailPage = async ({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}) => {
+  const { slug } = await params;
+  const res = await getSingleBookBySlug(slug);
+  const data = res?.data;
+  const book = Array.isArray(data) ? data[0] : data;
 
   if (!book) {
     notFound();
