@@ -8,6 +8,8 @@ export interface CartItem {
   coverImage: string;
   author: string;
   quantity: number;
+  variant?: string;
+  image?: string;
 }
 
 interface CartState {

@@ -17,7 +17,7 @@ import Image from 'next/image';
 import MobileMenu from './MobileMenu';
 import MobileDropdown from './MobileDropdown';
 import DesktopDropdown from './DesktopDropdown';
-import { cn, InfoToast } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import PageLayout from '@/tools/PageLayout';
@@ -38,12 +38,7 @@ const Navbar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
   const { user, setUser, isLoading, setIsLoading } = useUser();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -137,44 +132,34 @@ const Navbar = () => {
             {/* Right Section */}
             <div className="flex items-center gap-4">
               {/* Theme Toggle */}
-              {mounted && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="group relative rounded-full hidden md:flex p-0"
-                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  aria-label={`Switch to ${
-                    theme === 'dark' ? 'light' : 'dark'
-                  } mode`}
-                >
-                  <Moon
-                    className={`absolute h-5 w-5 transition-all ${
-                      theme === 'dark'
-                        ? 'scale-100 opacity-100'
-                        : 'scale-0 opacity-0'
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <Sun
-                    className={`h-5 w-5 transition-all ${
-                      theme === 'dark'
-                        ? 'scale-0 opacity-0'
-                        : 'scale-100 opacity-100'
-                    }`}
-                    aria-hidden="true"
-                  />
-                </Button>
-              )}
-              {/* Heart Icon */}
-              <Link
-                href="/favorite"
-                onClick={e => {
-                  if (!user) {
-                    e.preventDefault();
-                    InfoToast('Please login to view favorites');
-                  }
-                }}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="group relative rounded-full hidden md:flex p-0"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                aria-label={`Switch to ${
+                  theme === 'dark' ? 'light' : 'dark'
+                } mode`}
               >
+                <Moon
+                  className={`absolute h-5 w-5 transition-all ${
+                    theme === 'dark'
+                      ? 'scale-100 opacity-100'
+                      : 'scale-0 opacity-0'
+                  }`}
+                  aria-hidden="true"
+                />
+                <Sun
+                  className={`h-5 w-5 transition-all ${
+                    theme === 'dark'
+                      ? 'scale-0 opacity-0'
+                      : 'scale-100 opacity-100'
+                  }`}
+                  aria-hidden="true"
+                />
+              </Button>
+              {/* Heart Icon */}
+              <Link href="/favorite">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -185,15 +170,7 @@ const Navbar = () => {
                 </Button>
               </Link>
               {/* Cart Icon */}
-              <Link
-                href="/cart"
-                onClick={e => {
-                  if (!user) {
-                    e.preventDefault();
-                    InfoToast('Please login to view cart');
-                  }
-                }}
-              >
+              <Link href="/cart">
                 <Button
                   variant="ghost"
                   size="icon"

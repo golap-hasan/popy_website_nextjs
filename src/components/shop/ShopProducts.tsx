@@ -5,16 +5,48 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart } from "lucide-react";
+import { useDispatch } from "react-redux";
 import type { Book } from "@/types/shop";
-import { getImageUrl } from "@/lib/utils";
+import { getImageUrl, InfoToast } from "@/lib/utils";
 import { StarRating } from "@/tools/StarRating";
+import type { AppDispatch } from "@/redux/store";
+import { addToCart } from "@/redux/feature/cart/cartSlice";
 export type SortOption = "popularity" | "newest" | "price_low_high";
 type ShopProductsProps = {
   books?: Book[];
 };
 
 const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const books: Book[] = Array.isArray(remoteBooks) ? remoteBooks : [];
+
+  const handleAddToCart = (book: Book) => {
+    const id = String(book._id ?? book.id ?? book.slug ?? book.title);
+    const slug = book.slug ?? String(book._id ?? book.id ?? "");
+    const priceNumber =
+      typeof book.price === "number"
+        ? book.price
+        : Number(book.price ?? 0);
+
+    const rawImage = book.coverImage ?? book.image ?? "";
+    const imageUrl = rawImage ? getImageUrl(rawImage) : "";
+
+    dispatch(
+      addToCart({
+        id,
+        slug,
+        title: book.title,
+        price: priceNumber,
+        coverImage: rawImage,
+        author: book.author ?? "",
+        quantity: 1,
+        variant: book.subtitle,
+        image: imageUrl,
+      })
+    );
+
+    InfoToast(`${book.title} added to cart`);
+  };
 
   if (books.length === 0) {
     return (
@@ -99,6 +131,7 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
               <Button
                 size="sm"
                 className="pointer-events-auto gap-2 rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-all duration-200 hover:bg-primary/90 focus-visible:opacity-100 focus-visible:shadow-xl group-hover:-translate-y-1 group-hover:opacity-100 group-hover:shadow-xl"
+                onClick={() => handleAddToCart(book)}
               >
                 <ShoppingCart className="size-4" />
                 Add to cart

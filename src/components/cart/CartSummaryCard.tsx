@@ -1,8 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { CartItem } from "./cart-data";
-import { calculateCartTotals } from "./cart-data";
+import type { CartItem } from "@/redux/feature/cart/cartSlice";
 import Link from "next/link";
 
 interface CartSummaryCardProps {
@@ -10,7 +15,14 @@ interface CartSummaryCardProps {
 }
 
 const CartSummaryCard = ({ items }: CartSummaryCardProps) => {
-  const { subtotal, discount, delivery, total } = calculateCartTotals(items);
+  const subtotal = items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const discount = subtotal > 1500 ? Math.round(subtotal * 0.1) : 0;
+  const delivery = 70;
+  const total = subtotal - discount + delivery;
 
   return (
     <Card className="border-border/60 bg-background/80 shadow-sm">
@@ -38,12 +50,13 @@ const CartSummaryCard = ({ items }: CartSummaryCardProps) => {
       </CardContent>
       <CardFooter className="flex flex-col gap-3">
         <Link className="w-full" href="/checkout">
-         <Button className="w-full" disabled={items.length === 0}>
-          Proceed to checkout
-        </Button>
+          <Button className="w-full" disabled={items.length === 0}>
+            Proceed to checkout
+          </Button>
         </Link>
         <p className="text-center text-xs text-muted-foreground">
-          Secure payment powered by SSL Commerz. Estimated delivery within 2-3 business days.
+          Secure payment powered by SSL Commerz. Estimated delivery within 2-3
+          business days.
         </p>
       </CardFooter>
     </Card>

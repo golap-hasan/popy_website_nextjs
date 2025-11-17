@@ -1,47 +1,51 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import PageLayout from "@/tools/PageLayout";
 import CartItemsTable from "./CartItemsTable";
 import CartSummaryCard from "./CartSummaryCard";
-import { cartItems as initialItems, CartItem } from "./cart-data";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import type { RootState, AppDispatch } from "@/redux/store";
+import {
+  updateQuantity,
+  removeFromCart,
+  clearCart,
+} from "@/redux/feature/cart/cartSlice";
 
 const CartPage = () => {
-  const [items, setItems] = useState<CartItem[]>(initialItems);
-  const [couponCode, setCouponCode] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const items = useSelector((state: RootState) => state.cart.items);
+  // const [couponCode, setCouponCode] = useState("");
 
   const isCartEmpty = items.length === 0;
 
   const handleQuantityChange = (id: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
+    const item = items.find((cartItem) => cartItem.id === id);
+    if (!item) return;
+
+    const nextQuantity = Math.max(1, item.quantity + delta);
+    if (nextQuantity === item.quantity) return;
+
+    dispatch(updateQuantity({ id, quantity: nextQuantity }));
   };
 
   const handleRemove = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    dispatch(removeFromCart(id));
   };
 
   const handleClearCart = () => {
-    setItems([]);
+    dispatch(clearCart());
   };
 
-  const handleApplyCoupon = () => {
-    // Placeholder interaction – integrate with backend/cart API when ready.
-    if (!couponCode) return;
-    // For now just clear the input to acknowledge application.
-    setCouponCode("");
-  };
+  // const handleApplyCoupon = () => {
+  //   // Placeholder interaction – integrate with backend/cart API when ready.
+  //   if (!couponCode) return;
+  //   // For now just clear the input to acknowledge application.
+  //   setCouponCode("");
+  // };
 
   return (
     <PageLayout paddingSize="small" className="screen-height">
@@ -80,7 +84,7 @@ const CartPage = () => {
           <div className="space-y-6">
             <CartSummaryCard items={items} />
 
-            <Card className="border-border/60 bg-background/80 shadow-sm">
+            {/* <Card className="border-border/60 bg-background/80 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-base">Coupon & offers</CardTitle>
               </CardHeader>
@@ -106,7 +110,7 @@ const CartPage = () => {
                   unlock extra savings.
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>

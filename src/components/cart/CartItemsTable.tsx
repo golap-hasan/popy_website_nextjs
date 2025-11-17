@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { CartItem } from "./cart-data";
+import type { CartItem } from "@/redux/feature/cart/cartSlice";
 
 type CartItemsTableProps = {
   items: CartItem[];

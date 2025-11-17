@@ -14,10 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -27,7 +23,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { cartItems, calculateCartTotals } from "@/components/cart/cart-data";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const deliveryOptions = [
   {
@@ -80,6 +78,7 @@ const districts = [
 ];
 
 const CheckoutPage = () => {
+  const items = useSelector((state: RootState) => state.cart.items);
   const [contactInfo, setContactInfo] = useState({
     email: "",
     phone: "",
@@ -95,7 +94,22 @@ const CheckoutPage = () => {
   const [deliveryMethod, setDeliveryMethod] = useState(deliveryOptions[0].value);
   const [paymentMethod, setPaymentMethod] = useState(paymentOptions[0].value);
 
-  const baseTotals = useMemo(() => calculateCartTotals(cartItems), []);
+  const baseTotals = useMemo(() => {
+    const subtotal = items.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
+    const discount = subtotal > 1500 ? Math.round(subtotal * 0.1) : 0;
+    const delivery = 70;
+
+    return {
+      subtotal,
+      discount,
+      delivery,
+      total: subtotal - discount + delivery,
+    };
+  }, [items]);
   const deliveryFee = useMemo(
     () =>
       deliveryOptions.find((option) => option.value === deliveryMethod)?.fee ??
@@ -104,7 +118,7 @@ const CheckoutPage = () => {
   );
   const total = baseTotals.subtotal - baseTotals.discount + deliveryFee;
 
-  const isCartEmpty = cartItems.length === 0;
+  const isCartEmpty = items.length === 0;
 
   return (
     <PageLayout paddingSize="small">
@@ -247,7 +261,7 @@ const CheckoutPage = () => {
               </CardContent>
             </Card>
 
-            {/* <Card className="border-border/60 bg-background/80 shadow-sm">
+            <Card className="border-border/60 bg-background/80 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-lg">Delivery method</CardTitle>
               </CardHeader>
@@ -294,7 +308,7 @@ const CheckoutPage = () => {
                   ))}
                 </RadioGroup>
               </CardContent>
-            </Card> */}
+            </Card>
           </div>
 
           <div className="space-y-6">
@@ -304,7 +318,7 @@ const CheckoutPage = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
                 <div className="space-y-3">
-                  {cartItems.map((item) => (
+                  {items.map((item) => (
                     <div key={item.id} className="flex items-center justify-between">
                       <div>
                         <p className="text-sm font-medium text-foreground">{item.title}</p>
