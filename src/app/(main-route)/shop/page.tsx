@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import ShopHero from '@/components/shop/ShopHero';
 import ShopLayout from '@/components/shop/ShopLayout';
 import type { Category, Book, ApiMeta } from '@/types/shop';
+import { getBooks, getCategories } from '@/services/shop';
 
 const baseTitle = 'Shop Books | Popy Library';
 const baseDescription =
@@ -89,56 +90,19 @@ export async function generateMetadata({
 
 export default async function ShopPage({ searchParams }: PageProps) {
   const sp = await searchParams;
-  const params = new URLSearchParams();
+  const booksRes = (await getBooks(sp)) as { data: Book[]; meta?: ApiMeta };
+  const books = Array.isArray(booksRes.data) ? booksRes.data : [];
+  const meta = booksRes?.meta ?? {};
 
-  if (sp?.searchTerm) {
-    params.append('searchTerm', sp.searchTerm as string);
-  }
-  if (sp?.category) {
-    params.append('category', sp.category as string);
-  }
-  if (sp?.minPrice) {
-    params.append('minPrice', sp.minPrice as string);
-  }
-  if (sp?.maxPrice) {
-    params.append('maxPrice', sp.maxPrice as string);
-  }
-  if (sp?.sort) {
-    params.append('sort', sp.sort as string);
-  }
-  if (sp?.page) {
-    params.append('page', sp.page as string);
-  }
-  if (sp?.rating) {
-    params.append('rating', sp.rating as string);
-  }
-  if (sp?.authors) {
-    params.append('authors', sp.authors as string);
-  }
-  if (sp?.publishers) {
-    params.append('publishers', sp.publishers as string);
-  }
-
-  const booksRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/book?${params.toString()}`,
-    { next: { revalidate: 300, tags: ['BOOK'] } }
-  );
-  const booksJson = (await booksRes.json()) as { data: Book[]; meta?: ApiMeta };
-  const initialBooks = Array.isArray(booksJson?.data) ? booksJson.data : [];
-  const initialMeta = booksJson?.meta ?? {};
-
-  const catRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`, {
-    next: { revalidate: 300, tags: ['CATEGORY'] },
-  });
-  const catJson = (await catRes.json()) as { data: Category[] };
-  const categories = Array.isArray(catJson?.data) ? catJson.data : [];
+  const catRes = (await getCategories()) as { data: Category[] };
+  const categories = Array.isArray(catRes?.data) ? catRes.data : [];
 
   return (
     <>
       <ShopHero />
       <ShopLayout
-        initialBooks={initialBooks}
-        initialMeta={initialMeta}
+        initialBooks={books}
+        initialMeta={meta}
         initialCategories={categories}
       />
     </>
