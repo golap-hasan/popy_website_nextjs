@@ -62,6 +62,9 @@ const MobileFilters = (props: MobileFiltersProps) => {
   );
 };
 
+const DEFAULT_MIN_PRICE = 200;
+const DEFAULT_MAX_PRICE = 2000;
+
 const ShopLayout = ({
   initialBooks,
   initialMeta,
@@ -71,20 +74,24 @@ const ShopLayout = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const updateFilter = (key: string, value: string | undefined) => {
+  const replaceWithParams = (updater: (params: URLSearchParams) => void) => {
     const params = new URLSearchParams(searchParams.toString());
-
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-
-    if (key !== "page") {
-      params.set("page", "1");
-    }
-
+    updater(params);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
+  const updateFilter = (key: string, value: string | undefined) => {
+    replaceWithParams((params) => {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+
+      if (key !== "page") {
+        params.set("page", "1");
+      }
+    });
   };
 
   const searchTerm = searchParams.get("searchTerm") ?? "";
@@ -99,8 +106,8 @@ const ShopLayout = ({
 
   const priceRange: [number, number] = useMemo(
     () => [
-      minPrice ? Number(minPrice) : 200,
-      maxPrice ? Number(maxPrice) : 2000,
+      minPrice ? Number(minPrice) : DEFAULT_MIN_PRICE,
+      maxPrice ? Number(maxPrice) : DEFAULT_MAX_PRICE,
     ],
     [minPrice, maxPrice]
   );
@@ -123,11 +130,11 @@ const ShopLayout = ({
   const resultsCount = initialMeta.total ?? 0;
 
   const updatePrice = (range: [number, number]) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("minPrice", String(range[0]));
-    params.set("maxPrice", String(range[1]));
-    params.set("page", "1");
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    replaceWithParams((params) => {
+      params.set("minPrice", String(range[0]));
+      params.set("maxPrice", String(range[1]));
+      params.set("page", "1");
+    });
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -182,6 +189,7 @@ const ShopLayout = ({
 
   return (
     <PageLayout
+      paddingSize="small"
       pagination={
         <CustomPagination
           currentPage={currentPage}

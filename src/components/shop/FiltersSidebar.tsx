@@ -71,7 +71,7 @@ const FiltersSidebar = ({
             <div className="space-y-2">
               {categories.map((cat) => {
                 const catId = `cat-${cat.slug}`;
-                const isChecked = selectedCategory === cat.name;
+                const isChecked = selectedCategory === cat.slug;
                 return (
                   <label
                     key={cat._id}
@@ -82,7 +82,7 @@ const FiltersSidebar = ({
                       <Checkbox
                         id={catId}
                         checked={isChecked}
-                        onCheckedChange={() => onCategoryChange?.(cat.name)}
+                        onCheckedChange={() => onCategoryChange?.(cat.slug)}
                         className="rounded"
                       />
                       <span>{cat.name}</span>
@@ -100,7 +100,7 @@ const FiltersSidebar = ({
 
         <Accordion
           type="multiple"
-          defaultValue={["price", "rating", "authors"]}
+          defaultValue={["price", "rating",]}
           className="space-y-3"
         >
           <AccordionItem
