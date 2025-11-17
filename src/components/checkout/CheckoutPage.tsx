@@ -25,48 +25,8 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-const deliveryOptions = [
-  {
-    value: "standard",
-    label: "Standard home delivery",
-    description: "Delivered within 3-4 business days",
-    fee: 70,
-  },
-  {
-    value: "express",
-    label: "Express delivery",
-    description: "Delivered within 24 hours inside Dhaka",
-    fee: 120,
-  },
-  {
-    value: "pickup",
-    label: "Store pickup",
-    description: "Collect from Mirpur showroom between 10am-8pm",
-    fee: 0,
-  },
-];
-
-const paymentOptions = [
-  {
-    value: "cod",
-    label: "Cash on delivery",
-    helper: "Pay with cash when the order arrives",
-  },
-  {
-    value: "bkash",
-    label: "bKash",
-    helper: "Secure instant payment via bKash gateway",
-  },
-  {
-    value: "card",
-    label: "Debit / Credit card",
-    helper: "Visa, Mastercard, American Express supported",
-  },
-];
-
-const districts = [
+const divisions = [
   "Dhaka",
   "Chattogram",
   "Khulna",
@@ -79,44 +39,34 @@ const districts = [
 
 const CheckoutPage = () => {
   const items = useSelector((state: RootState) => state.cart.items);
-  const [contactInfo, setContactInfo] = useState({
-    email: "",
-    phone: "",
-  });
   const [shippingInfo, setShippingInfo] = useState({
-    fullName: "",
-    district: districts[0],
+    division: divisions[0],
     city: "",
     addressLine: "",
     postalCode: "",
-    notes: "",
   });
-  const [deliveryMethod, setDeliveryMethod] = useState(deliveryOptions[0].value);
-  const [paymentMethod, setPaymentMethod] = useState(paymentOptions[0].value);
 
-  const baseTotals = useMemo(() => {
+  const totals = useMemo(() => {
     const subtotal = items.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
+    const discount = 0;
 
-    const discount = subtotal > 1500 ? Math.round(subtotal * 0.1) : 0;
-    const delivery = 70;
+    let delivery = 0;
+    if (subtotal < 1599) {
+      delivery = shippingInfo.division === "Dhaka" ? 70 : 130;
+    }
+
+    const total = subtotal - discount + delivery;
 
     return {
       subtotal,
       discount,
       delivery,
-      total: subtotal - discount + delivery,
+      total,
     };
-  }, [items]);
-  const deliveryFee = useMemo(
-    () =>
-      deliveryOptions.find((option) => option.value === deliveryMethod)?.fee ??
-      baseTotals.delivery,
-    [deliveryMethod, baseTotals.delivery],
-  );
-  const total = baseTotals.subtotal - baseTotals.discount + deliveryFee;
+  }, [items, shippingInfo.division]);
 
   const isCartEmpty = items.length === 0;
 
@@ -130,7 +80,7 @@ const CheckoutPage = () => {
               Confirm order & delivery
             </h1>
             <p className="max-w-xl text-sm text-muted-foreground">
-              Provide your contact details, delivery address, and payment preference to complete your order.
+              Provide your delivery address to complete your order.
             </p>
           </div>
           <Button variant="ghost" size="sm">
@@ -142,68 +92,25 @@ const CheckoutPage = () => {
           <div className="space-y-6">
             <Card className="border-border/60 bg-background/80 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg">Contact information</CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="checkout-email">Email address</Label>
-                  <Input
-                    id="checkout-email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={contactInfo.email}
-                    onChange={(event) =>
-                      setContactInfo((prev) => ({ ...prev, email: event.target.value }))
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="checkout-phone">Phone number</Label>
-                  <Input
-                    id="checkout-phone"
-                    type="tel"
-                    placeholder="01XXXXXXXXX"
-                    value={contactInfo.phone}
-                    onChange={(event) =>
-                      setContactInfo((prev) => ({ ...prev, phone: event.target.value }))
-                    }
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border/60 bg-background/80 shadow-sm">
-              <CardHeader>
                 <CardTitle className="text-lg">Shipping address</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="checkout-name">Full name</Label>
-                    <Input
-                      id="checkout-name"
-                      placeholder="Your full name"
-                      value={shippingInfo.fullName}
-                      onChange={(event) =>
-                        setShippingInfo((prev) => ({ ...prev, fullName: event.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="checkout-district">District</Label>
+                    <Label htmlFor="checkout-district">Division</Label>
                     <Select
-                      value={shippingInfo.district}
+                      value={shippingInfo.division}
                       onValueChange={(value) =>
-                        setShippingInfo((prev) => ({ ...prev, district: value }))
+                        setShippingInfo((prev) => ({ ...prev, division: value }))
                       }
                     >
                       <SelectTrigger id="checkout-district">
-                        <SelectValue placeholder="Select district" />
+                        <SelectValue placeholder="Select division" />
                       </SelectTrigger>
                       <SelectContent>
-                        {districts.map((district) => (
-                          <SelectItem key={district} value={district}>
-                            {district}
+                        {divisions.map((division) => (
+                          <SelectItem key={division} value={division}>
+                            {division}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -246,67 +153,27 @@ const CheckoutPage = () => {
                     rows={3}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="checkout-notes">Delivery notes (optional)</Label>
-                  <Textarea
-                    id="checkout-notes"
-                    placeholder="Add instructions for the delivery partner"
-                    value={shippingInfo.notes}
-                    onChange={(event) =>
-                      setShippingInfo((prev) => ({ ...prev, notes: event.target.value }))
-                    }
-                    rows={3}
-                  />
-                </div>
               </CardContent>
             </Card>
-
-            <Card className="border-border/60 bg-background/80 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg">Delivery method</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <RadioGroup value={deliveryMethod} onValueChange={setDeliveryMethod}>
-                  {deliveryOptions.map((option) => (
-                    <div
-                      key={option.value}
-                      className="flex items-start gap-3 rounded-2xl border border-border/60 bg-muted/20 p-4"
-                    >
-                      <RadioGroupItem value={option.value} id={`delivery-${option.value}`} className="mt-1" />
-                      <Label htmlFor={`delivery-${option.value}`} className="cursor-pointer space-y-1">
-                        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
-                          {option.label}
-                          <Badge variant="outline" className="border-primary/40 text-xs text-primary">
-                            ৳{option.fee}
-                          </Badge>
-                        </span>
-                        <p className="text-xs text-muted-foreground">{option.description}</p>
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </CardContent>
-            </Card>
-
             <Card className="border-border/60 bg-background/80 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-lg">Payment method</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                  {paymentOptions.map((option) => (
-                    <div
-                      key={option.value}
-                      className="flex items-start gap-3 rounded-2xl border border-border/60 bg-muted/20 p-4"
-                    >
-                      <RadioGroupItem value={option.value} id={`payment-${option.value}`} className="mt-1" />
-                      <Label htmlFor={`payment-${option.value}`} className="cursor-pointer space-y-1">
-                        <span className="text-sm font-medium text-foreground">{option.label}</span>
-                        <p className="text-xs text-muted-foreground">{option.helper}</p>
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
+              <CardContent className="space-y-4 text-sm">
+                <div className="flex items-start gap-3 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-4">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-semibold">
+                    COD
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-foreground">Cash on delivery</p>
+                    <p className="text-xs text-muted-foreground">
+                      Pay in cash when your books are delivered to your doorstep.
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Our delivery partner will confirm your order on arrival. Please try to keep the exact amount ready.
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -334,21 +201,17 @@ const CheckoutPage = () => {
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center justify-between">
                     <span>Subtotal</span>
-                    <span className="font-medium text-foreground">৳{baseTotals.subtotal}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Discount</span>
-                    <span className="font-medium text-emerald-600">-৳{baseTotals.discount}</span>
+                    <span className="font-medium text-foreground">৳{totals.subtotal}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Delivery fee</span>
-                    <span className="font-medium text-foreground">৳{deliveryFee}</span>
+                    <span className="font-medium text-foreground">৳{totals.delivery}</span>
                   </div>
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between text-base font-semibold text-foreground">
                   <span>Total to pay</span>
-                  <span>৳{total}</span>
+                  <span>৳{totals.total}</span>
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col gap-3">

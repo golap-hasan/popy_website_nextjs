@@ -18,7 +18,6 @@ import {
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const items = useSelector((state: RootState) => state.cart.items);
-  // const [couponCode, setCouponCode] = useState("");
 
   const isCartEmpty = items.length === 0;
 
