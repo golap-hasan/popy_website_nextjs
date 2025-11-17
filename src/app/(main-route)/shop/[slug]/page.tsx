@@ -41,18 +41,19 @@ const ShopDetailPage = async ({
   params: Promise<{
     slug: string;
   }>;
-  searchParams?: { page?: string; limit?: string };
+  searchParams: Promise<{ page?: string; limit?: string }>;
 }) => {
   const { slug } = await params;
-  const page = searchParams?.page || '1';
-  const limit = searchParams?.limit || '2';
+  const sp = (await searchParams) || {};
+  const page = (Array.isArray(sp.page) ? sp.page[0] : sp.page) || '1';
+  const limit = (Array.isArray(sp.limit) ? sp.limit[0] : sp.limit) || '1';
 
   const res = await getSingleBookBySlug(slug);
   const data = res?.data;
   const book = Array.isArray(data) ? data[0] : data;
 
   // get reviews
-  const reviewsRes = await getReviewsByBookSlug(book?.slug, { page, limit });
+  const reviewsRes = await getReviewsByBookSlug(book?.slug,  page, limit );
   const reviewsList = reviewsRes?.data?.data ?? reviewsRes?.data ?? [];
   const reviewsMeta = reviewsRes?.data?.meta ?? reviewsRes?.meta;
 

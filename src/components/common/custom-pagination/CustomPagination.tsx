@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type PaginationIdentifier = number | "...";
 
@@ -68,17 +69,65 @@ const usePagination = ({
 type CustomPaginationProps = {
   currentPage: number;
   totalPages: number;
-  setCurrentPage: (page: number) => void;
+  setCurrentPage?: (page: number) => void;
+  syncWithUrl?: boolean;
+  preserveParams?: string[];
+  defaultLimit?: string;
+  anchorId?: string;
 };
 
 const CustomPagination: React.FC<CustomPaginationProps> = ({
   currentPage,
   totalPages,
   setCurrentPage,
+  syncWithUrl = false,
+  preserveParams = ["limit"],
+  defaultLimit = "1",
+  anchorId,
 }) => {
-  const paginationRange = usePagination({ currentPage, totalPages });
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  if (currentPage === 0 || paginationRange.length < 2) {
+  const urlPage = Number(searchParams?.get("page")) || 1;
+  const effectiveCurrentPage = syncWithUrl ? urlPage : currentPage;
+
+  const updateUrlPage = (targetPage: number) => {
+    const params = new URLSearchParams(searchParams?.toString() || "");
+    if (targetPage > 1) {
+      params.set("page", String(targetPage));
+    } else {
+      params.delete("page");
+    }
+    // preserve selected params
+    for (const key of preserveParams) {
+      const val = searchParams?.get(key);
+      if (!val) {
+        params.delete(key);
+        continue;
+      }
+      if (key === "limit" && val === defaultLimit) {
+        params.delete(key);
+      } else {
+        params.set(key, val);
+      }
+    }
+    const qs = params.toString();
+    const hash = anchorId ? `#${anchorId}` : "";
+    router.push(`${pathname}${qs ? `?${qs}` : ""}${hash}`, { scroll: false });
+  };
+
+  const goToPage = (target: number) => {
+    if (syncWithUrl) {
+      updateUrlPage(target);
+    } else if (setCurrentPage) {
+      setCurrentPage(target);
+    }
+  };
+
+  const paginationRange = usePagination({ currentPage: effectiveCurrentPage, totalPages });
+
+  if (effectiveCurrentPage === 0 || paginationRange.length < 2) {
     return null;
   }
 
@@ -90,10 +139,10 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setCurrentPage(Math.max(currentPage - 1, 1));
+              goToPage(Math.max(effectiveCurrentPage - 1, 1));
             }}
             className={
-              currentPage === 1 ? "pointer-events-none opacity-50" : ""
+              effectiveCurrentPage === 1 ? "pointer-events-none opacity-50" : ""
             }
           />
         </PaginationItem>
@@ -112,9 +161,9 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  setCurrentPage(pageNumber);
+                  goToPage(pageNumber as number);
                 }}
-                isActive={currentPage === pageNumber}
+                isActive={effectiveCurrentPage === pageNumber}
               >
                 {pageNumber}
               </PaginationLink>
@@ -126,10 +175,10 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setCurrentPage(Math.min(currentPage + 1, totalPages));
+              goToPage(Math.min(effectiveCurrentPage + 1, totalPages));
             }}
             className={
-              currentPage === totalPages ? "pointer-events-none opacity-50" : ""
+              effectiveCurrentPage === totalPages ? "pointer-events-none opacity-50" : ""
             }
           />
         </PaginationItem>

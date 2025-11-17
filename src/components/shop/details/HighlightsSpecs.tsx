@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { TBook } from './book-details-data';
+import { TBook } from '@/types/book';
 
 const HighlightsSpecs = ({ book }: { book: TBook }) => {
   return (

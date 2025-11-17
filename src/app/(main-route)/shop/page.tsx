@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
  
 import type { Metadata } from 'next';
 // import ShopHero from '@/components/shop/ShopHero';

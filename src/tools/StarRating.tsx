@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 interface StarRatingProps {
   rating: number;
-  totalStars: number;
+  totalStars?: number;
   onRate?: (rating: number) => void;
   size?: number;
   gap?: number;

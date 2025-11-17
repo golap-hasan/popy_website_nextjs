@@ -4,9 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import type { Book } from "@/types/shop";
 import { getImageUrl } from "@/lib/utils";
+import { StarRating } from "@/tools/StarRating";
 export type SortOption = "popularity" | "newest" | "price_low_high";
 type ShopProductsProps = {
   books?: Book[];
@@ -80,9 +81,9 @@ const ShopProducts = ({ books: remoteBooks }: ShopProductsProps) => {
                 </div>
 
                 <div className="mt-auto flex items-center justify-between text-sm text-muted-foreground">
-                  <div className="inline-flex items-center gap-1 rounded-full bg-primary/5 px-3 py-1 text-primary">
-                    <Star className="size-4 fill-current" />
-                    {book.rating ?? 0}
+                  <div className="inline-flex items-center gap-1 rounded-full text-primary">
+                    <StarRating rating={book?.rating as number} totalStars={1} size={14} />
+                    <span>{book?.rating?.toFixed(1)}</span>
                   </div>
                   <span className="text-xs font-semibold text-primary">
                     ৳

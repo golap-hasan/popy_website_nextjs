@@ -8,7 +8,6 @@ import CustomPagination from '@/components/common/custom-pagination/CustomPagina
 import { getImageUrl, getInitials, timeAgo } from '@/lib/utils';
 import { BookReview } from '@/types/book';
 import { IMeta } from '@/types';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 type ReviewsSectionProps = {
   rating: number;
@@ -18,32 +17,16 @@ type ReviewsSectionProps = {
 };
 
 const ReviewsSection = ({ rating, reviewsCount, reviews, reviewsMeta }: ReviewsSectionProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const handlePageChange = (newPage: number) => {
-    const params = new URLSearchParams(searchParams?.toString() || '');
-    
-    if (newPage > 1) {
-      params.set('page', newPage.toString());
-    } else {
-      params.delete('page');
-    }
-    
-    // Keep other query parameters
-    const queryString = params.toString();
-    router.push(`${pathname}${queryString ? `?${queryString}` : ''}`);
-  };
-
   return (
     <PageLayout
       paddingSize="none"
       pagination={
-        reviewsMeta.totalPage > 1 && (
+        Number(reviewsMeta.totalPage) > 1 && (
           <CustomPagination
-            totalPages={reviewsMeta.totalPage}
-            currentPage={reviewsMeta.page}
-            setCurrentPage={handlePageChange}
+            totalPages={Number(reviewsMeta.totalPage) || 0}
+            currentPage={Number(reviewsMeta.page) || 1}
+            syncWithUrl
+            anchorId="reviews"
           />
         )}
       
