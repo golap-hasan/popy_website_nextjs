@@ -40,19 +40,12 @@ const CartPage = () => {
     dispatch(clearCart());
   };
 
-  // const handleApplyCoupon = () => {
-  //   // Placeholder interaction – integrate with backend/cart API when ready.
-  //   if (!couponCode) return;
-  //   // For now just clear the input to acknowledge application.
-  //   setCouponCode("");
-  // };
-
   return (
     <PageLayout paddingSize="small" className="screen-height">
       <div className="space-y-10">
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-3">
-            <Badge className="bg-primary/10 text-primary">Free delivery over ৳1,500</Badge>
+            <Badge className="bg-primary/10 text-primary">Free delivery over ৳1,599</Badge>
           </div>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-1">
@@ -83,34 +76,6 @@ const CartPage = () => {
 
           <div className="space-y-6">
             <CartSummaryCard items={items} />
-
-            {/* <Card className="border-border/60 bg-background/80 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-base">Coupon & offers</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Input
-                    value={couponCode}
-                    onChange={(event) => setCouponCode(event.target.value)}
-                    placeholder="Enter promo code"
-                    className="sm:flex-1"
-                  />
-                  <Button
-                    variant="secondary"
-                    className="sm:w-32"
-                    disabled={!couponCode}
-                    onClick={handleApplyCoupon}
-                  >
-                    Apply
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Have a student account? Use code <span className="font-medium text-foreground">STUDENT15</span> to
-                  unlock extra savings.
-                </p>
-              </CardContent>
-            </Card> */}
           </div>
         </div>
       </div>

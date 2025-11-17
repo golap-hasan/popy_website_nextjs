@@ -19,10 +19,7 @@ const CartSummaryCard = ({ items }: CartSummaryCardProps) => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-
-  const discount = subtotal > 1500 ? Math.round(subtotal * 0.1) : 0;
-  const delivery = 70;
-  const total = subtotal - discount + delivery;
+  const total = subtotal;
 
   return (
     <Card className="border-border/60 bg-background/80 shadow-sm">
@@ -33,14 +30,6 @@ const CartSummaryCard = ({ items }: CartSummaryCardProps) => {
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Subtotal</span>
           <span className="font-medium text-foreground">৳{subtotal}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Discount</span>
-          <span className="font-medium text-emerald-600">-৳{discount}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Delivery</span>
-          <span className="font-medium text-foreground">৳{delivery}</span>
         </div>
         <Separator />
         <div className="flex items-center justify-between text-base font-semibold text-foreground">
