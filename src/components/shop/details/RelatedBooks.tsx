@@ -36,9 +36,9 @@ const RelatedBooks = ({ book }: { book: TBook }) => {
       <Carousel opts={{ align: 'start', slidesToScroll: 1 }}>
         <div className="relative">
           <CarouselContent>
-            {related.map((relatedBook: RelatedItem) => (
+            {related.map((relatedBook: RelatedItem, idx: number) => (
               <CarouselItem
-                key={relatedBook._id}
+                key={idx}
                 className="basis-[80%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
               >
                 <Card className="group h-full overflow-hidden rounded-3xl border-border/50 bg-background/92 transition-all duration-500 hover:-translate-y-1.5">

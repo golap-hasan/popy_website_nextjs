@@ -51,6 +51,7 @@ export type TBook = {
   title: string;
   subtitle?: string;
   author: string;
+  slug: string;
   price: number;
   originalPrice?: number;
   rating: number;
@@ -71,3 +72,14 @@ export type TBook = {
   related?: RelatedItem[];
   relatedBooks?: RelatedItem[];
 };
+
+export type BookReview = {
+  createdAt: string;
+  rating: number;
+  review: string;
+  userData?: {
+    name?: string;
+    image?: string;
+  };
+};
+

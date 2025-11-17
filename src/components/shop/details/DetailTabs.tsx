@@ -1,10 +1,11 @@
 import HighlightsSpecs from './HighlightsSpecs';
-// import ReviewsSection from './ReviewsSection';
+import ReviewsSection from './ReviewsSection';
 import SupportInfo from './SupportInfo';
-import type { TBook } from '@/types/book';
+import type { BookReview, TBook } from '@/types/book';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { IMeta } from '@/types';
 
-const DetailTabs = ({ book }: { book: TBook }) => {
+const DetailTabs = ({ book, reviews, reviewsMeta }: { book: TBook, reviews: BookReview[], reviewsMeta: IMeta }) => {
   return (
     <section className="space-y-6 bg-background/95 ">
       <Tabs defaultValue="description" className="space-y-8">
@@ -19,7 +20,12 @@ const DetailTabs = ({ book }: { book: TBook }) => {
         </TabsContent>
 
         <TabsContent value="reviews" className="space-y-10">
-          {/* <ReviewsSection book={book} /> */}
+          <ReviewsSection
+            rating={book.rating}
+            reviewsCount={book.reviewsCount}
+            reviews={reviews}
+            reviewsMeta={reviewsMeta}
+          />
         </TabsContent>
       </Tabs>
     </section>
