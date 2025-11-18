@@ -63,7 +63,7 @@ const Footer = () => {
     <footer className="relative bg-muted/40">
       <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-secondary/10" />
       <div className="relative">
-        <PageLayout>
+        <PageLayout paddingSize='small' className='pt-12'>
           <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
             <div className="space-y-6">
               <div>
@@ -149,7 +149,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="mt-16 grid gap-6 border-t border-border/50 pt-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-6 border-t border-border/50 py-6 sm:grid-cols-2 lg:grid-cols-3">
             {contactDetails.map(({ icon: Icon, label, value, href }) => (
               <div key={label} className="flex items-start gap-4">
                 <div className="mt-1 inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -179,7 +179,7 @@ const Footer = () => {
 
         <div className="border-t border-border/50">
           <PageLayout paddingSize="small" className="text-muted-foreground">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
               <p>
                 © {new Date().getFullYear()} Popy Library. All rights reserved.
               </p>
