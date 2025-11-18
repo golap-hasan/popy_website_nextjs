@@ -1,14 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Heart } from "lucide-react";
 import type { Book } from "@/types/shop";
 import { getImageUrl } from "@/lib/utils";
 import { StarRating } from "@/tools/StarRating";
 import { useAddToCart } from "@/hooks/useAddToCart";
+import { useWishlist } from "@/hooks/useWishlist";
 export type SortOption = "popularity" | "newest" | "price_low_high";
 type ShopProductsProps = {
   books?: Book[];
@@ -16,6 +16,7 @@ type ShopProductsProps = {
 
 const ShopProducts = ({ books }: ShopProductsProps) => {
   const { handleAddToCart } = useAddToCart();
+  const { handleAddToWishlist } = useWishlist();
   const safeBooks: Book[] = Array.isArray(books) ? books : [];
 
   if (safeBooks.length === 0) {
@@ -54,13 +55,11 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
               aria-label={`View details for ${book.title}`}
             >
               <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20">
-                <Image
+                <img
                   src={getImageUrl(book.coverImage)}
                   alt={`${book.title} cover`}
-                  width={260}
-                  height={340}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(min-width: 1280px) 220px, (min-width: 768px) 240px, 80vw"
+                  loading="lazy"
                 />
                 <div className="pointer-events-none absolute inset-0 z-10 opacity-0 backdrop-blur-xs rounded-lg transition-opacity duration-200 group-hover:opacity-100" />
                 {book.badge ? (
@@ -97,14 +96,31 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
               </div>
             </Link>
 
-            <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+            <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 gap-3">
               <Button
                 size="sm"
                 className="pointer-events-auto gap-2 rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-all duration-200 hover:bg-primary/90 focus-visible:opacity-100 focus-visible:shadow-xl group-hover:-translate-y-1 group-hover:opacity-100 group-hover:shadow-xl"
-                onClick={() => handleAddToCart(book)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddToWishlist(book);
+                }}
               >
-                <ShoppingCart className="size-4" />
-                Add to cart
+                <Heart/>
+                Add to wishlist
+              </Button>
+              
+              <Button
+                size="sm"
+                className="pointer-events-auto gap-2 rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-all duration-200 hover:bg-primary/90 focus-visible:opacity-100 focus-visible:shadow-xl group-hover:-translate-y-1 group-hover:opacity-100 group-hover:shadow-xl"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddToCart(book);
+                }}
+              >
+                <ShoppingCart />
+                <span className="hidden sm:inline">Add to cart</span>
               </Button>
             </div>
           </div>

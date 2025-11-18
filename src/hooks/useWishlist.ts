@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
-import type { TBook } from "@/types/book";
 import { addToWishlist } from "@/redux/feature/wishlist/wishListSlice";
 import { InfoToast } from "@/lib/utils";
+import { Book } from "@/types/shop";
 
-type WishlistSourceBook = TBook & {
+type WishlistSourceBook = Book & {
   _id?: string;
   id?: string;
   author?: string;
@@ -14,7 +14,7 @@ type WishlistSourceBook = TBook & {
 export const useWishlist = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleAddToWishlist = (rawBook: TBook) => {
+  const handleAddToWishlist = (rawBook: Book) => {
     const book = rawBook as WishlistSourceBook;
 
     const id = String(book._id ?? book.id ?? book.slug ?? book.title);
