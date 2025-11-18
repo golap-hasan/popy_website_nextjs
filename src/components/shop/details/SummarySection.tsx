@@ -1,21 +1,26 @@
 "use client";
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Star, ShieldCheck, Truck, Bookmark, ShoppingBag } from 'lucide-react';
-import { getImageUrl } from '@/lib/utils';
-import type { TBook } from '@/types/book';
-import { useWishlist } from '@/hooks/useWishlist';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Star, ShieldCheck, Truck, Bookmark, ShoppingBag } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
+import { useWishlist } from "@/hooks/useWishlist";
+import { useAddToCart } from "@/hooks/useAddToCart";
+import { Book } from "@/types/shop";
 
-const SummarySection = ({ book }: { book: TBook }) => {
+const SummarySection = ({ book }: { book: Book }) => {
   const { handleAddToWishlist } = useWishlist();
+  const { handleAddToCart } = useAddToCart();
   const priceNumber = Number(book.price ?? 0);
   const originalNumber = Number(book.originalPrice ?? 0);
 
   const discount =
     originalNumber && priceNumber
-      ? Math.max(0, Math.round(((originalNumber - priceNumber) / originalNumber) * 100))
+      ? Math.max(
+        0,
+        Math.round(((originalNumber - priceNumber) / originalNumber) * 100)
+      )
       : null;
 
   return (
@@ -40,7 +45,7 @@ const SummarySection = ({ book }: { book: TBook }) => {
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-primary">
               <Star className="size-4 fill-current" />
               <span className="font-semibold text-foreground">
-                {book.rating.toFixed(1)}
+                {Number(book.rating ?? 0).toFixed(1)}
               </span>
               <span>({book.reviewsCount} reviews)</span>
             </div>
@@ -73,8 +78,16 @@ const SummarySection = ({ book }: { book: TBook }) => {
               ) : null}
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <Button size="lg" className="rounded-full px-8">
-                <ShoppingBag/> Add to cart
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddToCart(book);
+                }}
+                size="lg"
+                className="rounded-full px-8"
+              >
+                <ShoppingBag /> Add to cart
               </Button>
               <Button
                 size="icon-lg"
@@ -82,7 +95,7 @@ const SummarySection = ({ book }: { book: TBook }) => {
                 className="rounded-full"
                 onClick={() => handleAddToWishlist(book)}
               >
-                <Bookmark/>
+                <Bookmark />
               </Button>
               {/* <Button size="lg" variant="outline" className="rounded-full px-8">
                 <Link href="#reviews">Read reviews</Link>
@@ -91,7 +104,7 @@ const SummarySection = ({ book }: { book: TBook }) => {
           </div>
           <Separator className="my-4" />
           <div className="grid gap-3 text-sm text-muted-foreground md:grid-cols-2">
-            {book.highlights?.slice(0, 2).map(highlight => (
+            {book.highlights?.slice(0, 2).map((highlight) => (
               <div
                 key={highlight}
                 className="rounded-2xl border border-border/40 bg-muted/20 p-4"
@@ -107,7 +120,7 @@ const SummarySection = ({ book }: { book: TBook }) => {
           <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/70 p-5 shadow-lg">
             <div className="relative h-[420px] w-[300px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30">
               <img
-                src={getImageUrl(book.coverImage || '')}
+                src={getImageUrl(book.coverImage || "")}
                 alt={`${book.title} cover`}
                 className="h-full w-full object-cover"
                 loading="lazy"
