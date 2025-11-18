@@ -128,7 +128,7 @@ const Hero = () => {
 
           <div className="relative">
             <div className="absolute -inset-6 hidden rounded-[48px] bg-linear-to-tr from-primary/15 via-primary/5 to-transparent blur-3xl lg:block" />
-            <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/90 shadow-xl backdrop-blur p-4">
+            <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/90 backdrop-blur p-4">
               <Carousel
                 opts={{
                   align: "center",
@@ -149,7 +149,7 @@ const Hero = () => {
                           className="basis-3/4 sm:basis-1/2 lg:basis-1/3"
                         >
                           <div className={`relative flex justify-center transition-transform duration-300`}>
-                            <div className="relative aspect-3/4 w-full max-w-[210px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30 shadow-sm">
+                            <div className="relative aspect-3/4 w-full max-w-[210px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30">
                               <Image
                                 src={book.src}
                                 alt={book.alt}
@@ -172,7 +172,7 @@ const Hero = () => {
                 </div>
               </Carousel>
 
-              <div className="mt-8 space-y-4 rounded-2xl border border-border/40 bg-background/95 p-6 text-sm text-muted-foreground shadow-sm">
+              <div className="mt-8 space-y-4 rounded-2xl border border-border/40 bg-background/95 p-6 text-sm text-muted-foreground">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
                     Reader favourites

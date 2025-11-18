@@ -46,7 +46,7 @@ const ShopDetailPage = async ({
   const { slug } = await params;
   const sp = (await searchParams) || {};
   const page = (Array.isArray(sp.page) ? sp.page[0] : sp.page) || '1';
-  const limit = (Array.isArray(sp.limit) ? sp.limit[0] : sp.limit) || '1';
+  const limit = (Array.isArray(sp.limit) ? sp.limit[0] : sp.limit) || '10';
 
   const res = await getSingleBookBySlug(slug);
   const data = res?.data;

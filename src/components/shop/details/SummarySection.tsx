@@ -1,12 +1,15 @@
-import Link from 'next/link';
+"use client";
+
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Star, ShieldCheck, Truck } from 'lucide-react';
+import { Star, ShieldCheck, Truck, Bookmark, ShoppingBag } from 'lucide-react';
 import { getImageUrl } from '@/lib/utils';
 import type { TBook } from '@/types/book';
+import { useWishlist } from '@/hooks/useWishlist';
 
 const SummarySection = ({ book }: { book: TBook }) => {
+  const { handleAddToWishlist } = useWishlist();
   const priceNumber = Number(book.price ?? 0);
   const originalNumber = Number(book.originalPrice ?? 0);
 
@@ -71,11 +74,19 @@ const SummarySection = ({ book }: { book: TBook }) => {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <Button size="lg" className="rounded-full px-8">
-                Add to cart
+                <ShoppingBag/> Add to cart
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-8">
+              <Button
+                size="icon-lg"
+                variant="outline"
+                className="rounded-full"
+                onClick={() => handleAddToWishlist(book)}
+              >
+                <Bookmark/>
+              </Button>
+              {/* <Button size="lg" variant="outline" className="rounded-full px-8">
                 <Link href="#reviews">Read reviews</Link>
-              </Button>
+              </Button> */}
             </div>
           </div>
           <Separator className="my-4" />

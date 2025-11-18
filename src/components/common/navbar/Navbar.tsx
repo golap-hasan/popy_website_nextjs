@@ -42,6 +42,9 @@ const Navbar = () => {
   const pathname = usePathname();
   const { user, setUser, isLoading, setIsLoading } = useUser();
   const cartCount = useSelector((state: RootState) => state.cart.totalQuantity);
+  const wishlistCount = useSelector(
+    (state: RootState) => state.wishlist.items.length
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -166,9 +169,14 @@ const Navbar = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hidden rounded-full md:flex"
+                  className="relative hidden rounded-full md:flex"
                 >
                   <Bookmark className="h-5 w-5" />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+                      {wishlistCount > 9 ? '9+' : wishlistCount}
+                    </span>
+                  )}
                   <span className="sr-only">Favorites</span>
                 </Button>
               </Link>

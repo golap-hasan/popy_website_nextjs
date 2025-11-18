@@ -1,38 +1,37 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PageLayout from '@/tools/PageLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  BookOpen,
-  BookmarkCheck,
-  Clock,
-  ShoppingBag,
-  Trash2,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { curatedLists, savedBooks } from './favorite-data';
+import { BookmarkCheck, ShoppingBag, Trash2, Eye, X } from 'lucide-react';
+import { useAddToCart } from '@/hooks/useAddToCart';
+import type { RootState, AppDispatch } from '@/redux/store';
+import { removeFromWishlist } from '@/redux/feature/wishlist/wishListSlice';
+import type { WishlistItem } from '@/redux/feature/wishlist/wishListSlice';
+import type { Book } from '@/types/shop';
+import { getImageUrl } from '@/lib/utils';
 
 const FavoritePage = () => {
+  const { handleAddToCart } = useAddToCart();
+  const dispatch = useDispatch<AppDispatch>();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState('all');
 
-  const filteredBooks = useMemo(() => {
-    if (activeTab === 'in-stock') {
-      return savedBooks.filter(book => book.status === 'In stock');
-    }
-    if (activeTab === 'low-stock') {
-      return savedBooks.filter(book => book.status === 'Low stock');
-    }
-    return savedBooks;
-  }, [activeTab]);
+  const wishlistItems = useSelector(
+    (state: RootState) => state.wishlist.items as WishlistItem[]
+  );
+
+  // Use raw wishlist items directly; no fake status/category/description
+  const wishlistBooks = useMemo(() => {
+    return Array.isArray(wishlistItems) ? wishlistItems : [];
+  }, [wishlistItems]);
+
+  // For now all tabs show the same wishlist list; no fake status-based filtering
+  const filteredBooks = useMemo(() => wishlistBooks, [wishlistBooks]);
 
   const toggleSelection = (id: string) => {
     setSelectedIds(prev =>
@@ -41,6 +40,21 @@ const FavoritePage = () => {
   };
 
   const clearSelection = () => setSelectedIds([]);
+
+  const handleMoveSelectedToCart = () => {
+    if (!selectedIds.length) return;
+
+    const booksToMove = wishlistBooks.filter(book =>
+      selectedIds.includes(book.id)
+    );
+
+    booksToMove.forEach(book => {
+      handleAddToCart(book as unknown as Book);
+      dispatch(removeFromWishlist(book.id));
+    });
+
+    setSelectedIds([]);
+  };
 
   const renderBookList = (booksToRender = filteredBooks) => {
     if (!booksToRender.length) {
@@ -54,13 +68,6 @@ const FavoritePage = () => {
     }
 
     return booksToRender.map(book => {
-      const statusStyles =
-        book.status === 'Low stock'
-          ? 'bg-orange-100 text-orange-600'
-          : book.status === 'Pre-order'
-          ? 'bg-blue-100 text-blue-600'
-          : 'bg-emerald-100 text-emerald-600';
-
       return (
         <article
           key={book.id}
@@ -74,35 +81,18 @@ const FavoritePage = () => {
               aria-label={`Select ${book.title}`}
             />
             <div className="relative h-40 w-28 overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
-              <Image
-                src={book.coverImage}
+              <img
+                src={getImageUrl(book.coverImage)}
                 alt={`${book.title} cover`}
-                fill
-                sizes="(min-width: 1024px) 180px, (min-width: 768px) 140px, 45vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
               />
             </div>
           </div>
 
           <div className="flex flex-1 flex-col gap-3">
             <div className="flex flex-wrap items-start gap-3">
-              <Badge
-                variant="secondary"
-                className="rounded-full bg-primary/15 text-primary"
-              >
-                {book.category}
-              </Badge>
-              <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                <Clock className="size-3" /> {book.lastVisited}
-              </span>
-              <span
-                className={cn(
-                  'inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]',
-                  statusStyles
-                )}
-              >
-                {book.status}
-              </span>
+              {/* Category / meta badges removed to avoid showing placeholder data */}
             </div>
             <div className="space-y-1">
               <h2 className="text-lg font-semibold text-foreground md:text-xl">
@@ -111,24 +101,40 @@ const FavoritePage = () => {
               <p className="text-sm text-muted-foreground">
                 by {book.author} · {book.price}
               </p>
-              <p className="text-sm text-muted-foreground/90">
-                {book.description}
-              </p>
             </div>
-            <div className="mt-2 flex flex-wrap gap-3">
-              <Button size="sm" className="rounded-full">
-                <Link href={`/shop/${book.id}`}>View details</Link>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <Button 
+                size="sm" 
+                variant="outline"
+                className="gap-1.5 rounded-full border-border/60 hover:bg-primary/5"
+              >
+                <Link href={`/shop/${book.slug ?? book.id}`} className="flex items-center gap-1.5">
+                  <Eye className="size-3.5" />
+                  <span>View details</span>
+                </Link>
               </Button>
-              <Button variant="ghost" size="sm" className="rounded-full">
-                Add to cart
+              
+              <Button
+                onClick={() => handleAddToCart(book as unknown as Book)}
+                variant="outline"
+                size="sm"
+                className="gap-1.5 rounded-full border-border/60 hover:bg-primary/5"
+              >
+                <ShoppingBag className="size-3.5" />
+                <span>Add to cart</span>
               </Button>
+              
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-full"
-                onClick={() => toggleSelection(book.id)}
+                className="gap-1.5 rounded-full border-destructive/30 text-destructive hover:bg-destructive/5 hover:text-destructive"
+                onClick={() => {
+                  dispatch(removeFromWishlist(book.id));
+                  setSelectedIds(prev => prev.filter(id => id !== book.id));
+                }}
               >
-                {selectedIds.includes(book.id) ? 'Remove' : 'Unsave'}
+                <X className="size-3.5" />
+                <span>Remove</span>
               </Button>
             </div>
           </div>
@@ -138,7 +144,7 @@ const FavoritePage = () => {
   };
 
   return (
-    <PageLayout paddingSize="small">
+    <PageLayout paddingSize="small" className='screen-height'>
       <div className="space-y-12">
         <header className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-3">
@@ -157,11 +163,29 @@ const FavoritePage = () => {
             </div>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href="/cart">
-              <Button className="rounded-full">
-                <ShoppingBag className="mr-2 size-4" /> Move selected to cart
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              className="gap-1.5 rounded-full"
+              onClick={() => {
+                if (selectedIds.length === wishlistBooks.length) {
+                  setSelectedIds([]);
+                } else {
+                  setSelectedIds(wishlistBooks.map(book => book.id));
+                }
+              }}
+            >
+              <BookmarkCheck className="size-4" />
+              <span>{selectedIds.length === wishlistBooks.length ? 'Deselect all' : 'Select all'}</span>
+            </Button>
+            
+            <Button
+              className="gap-1.5 rounded-full bg-primary hover:bg-primary/90"
+              onClick={handleMoveSelectedToCart}
+              disabled={!selectedIds.length}
+            >
+              <ShoppingBag className="size-4" />
+              <span>Move selected to cart</span>
+            </Button>
             <Button
               variant="outline"
               className="rounded-full"
@@ -173,10 +197,10 @@ const FavoritePage = () => {
           </div>
         </header>
 
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <section className="max-w-5xl space-y-6">
           <Card className="border-border/60 bg-background/95">
             <CardContent className="space-y-6">
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <BookmarkCheck className="size-4 text-primary" />
                   <span>
@@ -186,120 +210,15 @@ const FavoritePage = () => {
                     {filteredBooks.length} books saved
                   </span>
                 </div>
-                <Tabs
-                  value={activeTab}
-                  onValueChange={setActiveTab}
-                  className="md:w-fit"
-                >
-                  <TabsList className="grid grid-cols-3 rounded-full bg-muted/30 p-1 text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                    <TabsTrigger
-                      value="all"
-                      className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground"
-                    >
-                      All
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="in-stock"
-                      className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground"
-                    >
-                      In stock
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="low-stock"
-                      className="rounded-full data-[state=active]:bg-background data-[state=active]:text-foreground"
-                    >
-                      Low stock
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
               </div>
 
               <Separator />
 
-              <Tabs value={activeTab} className="space-y-6">
-                <TabsContent value="all" className="space-y-4">
-                  {renderBookList(filteredBooks)}
-                </TabsContent>
-                <TabsContent value="in-stock" className="space-y-4">
-                  {renderBookList(
-                    filteredBooks.filter(book => book.status === 'In stock')
-                  )}
-                </TabsContent>
-                <TabsContent value="low-stock" className="space-y-4">
-                  {renderBookList(
-                    filteredBooks.filter(book => book.status === 'Low stock')
-                  )}
-                </TabsContent>
-              </Tabs>
+              <div className="space-y-4">
+                {renderBookList(filteredBooks)}
+              </div>
             </CardContent>
           </Card>
-
-          <div className="space-y-6">
-            <Card className="border-border/60 bg-background/95">
-              <CardContent className="space-y-4">
-                <div className="flex flex-col gap-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary/80">
-                    Quick actions
-                  </p>
-                  <h2 className="text-xl font-semibold text-foreground">
-                    Keep collecting what matters
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    Export your list, set reminders, or explore curated shelves
-                    that pair perfectly with what you love.
-                  </p>
-                </div>
-                <div className="grid gap-3">
-                  <div className="flex items-center gap-3 rounded-2xl border border-border/40 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
-                    <BookOpen className="size-4 text-primary" /> Continue where
-                    you left off
-                  </div>
-                  <div className="flex items-center gap-3 rounded-2xl border border-border/40 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
-                    <BookmarkCheck className="size-4 text-primary" /> Create a
-                    reading routine
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border/60 bg-background/95">
-              <CardContent className="space-y-5">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-semibold text-foreground">
-                      Curated for you
-                    </h3>
-                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                      Refresh the shelf
-                    </p>
-                  </div>
-                  <Button variant="ghost" size="sm" className="rounded-full">
-                    Refresh
-                  </Button>
-                </div>
-                <div className="space-y-4">
-                  {curatedLists.map(list => (
-                    <div
-                      key={list.title}
-                      className="rounded-3xl border border-border/40 bg-muted/20 p-5"
-                    >
-                      <div className="space-y-2">
-                        <h4 className="text-base font-semibold text-foreground">
-                          {list.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {list.description}
-                        </p>
-                      </div>
-                      <Button size="sm" className="mt-3 rounded-full">
-                        <Link href={list.href}>{list.ctaLabel}</Link>
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </section>
       </div>
     </PageLayout>
