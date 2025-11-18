@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { LogIn, LogOutIcon, User, UserPlus } from 'lucide-react';
+import { ListOrdered, LogIn, LogOutIcon, User, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getInitials } from '@/lib/utils';
@@ -78,6 +78,22 @@ const DesktopDropdown = ({ isLoading, user, handleLogout }: Props) => {
                   <Link href="/profile" className="w-full">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <Link href="/my-orders" className="w-full">
+                    <ListOrdered className="mr-2 h-4 w-4" />
+                    <span>My Orders</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <Link href="/track-order" className="w-full">
+                    <ListOrdered className="mr-2 h-4 w-4" />
+                    <span>Track Order</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>

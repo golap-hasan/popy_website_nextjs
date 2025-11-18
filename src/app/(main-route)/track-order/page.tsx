@@ -1,23 +1,42 @@
-import type { Metadata } from 'next';
-import React from 'react';
-import PageLayout from '@/tools/PageLayout';
-import { Card, CardContent } from '@/components/ui/card';
-import { CheckCircle, Clock, Package, Truck, CheckCheck, CreditCard } from 'lucide-react';
-import { trackOrder } from '@/services/order';
-import { format } from 'date-fns';
-import { TrackOrderForm } from './TrackOrderForm';
-import { StarRating } from '@/tools/StarRating';
+import type { Metadata } from "next";
+import React from "react";
+import PageLayout from "@/tools/PageLayout";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  CheckCircle,
+  Clock,
+  Package,
+  Truck,
+  CheckCheck,
+  CreditCard,
+} from "lucide-react";
+import { trackOrder } from "@/services/order";
+import { format } from "date-fns";
+import { TrackOrderForm } from "./TrackOrderForm";
+import { StarRating } from "@/tools/StarRating";
 
 export const metadata: Metadata = {
-  title: 'Track Order | Popy Library',
-  description: 'Track your order status and delivery updates',
+  title: "Track Order | Popy Library",
+  description: "Track your order status and delivery updates",
 };
 
 const statusSteps = [
-  { id: 'processing', label: 'Processing', icon: <Package className="h-5 w-5" /> },
-  { id: 'shipped', label: 'Shipped', icon: <Truck className="h-5 w-5" /> },
-  { id: 'delivered', label: 'Delivered', icon: <CheckCheck className="h-5 w-5" /> },
-  { id: 'completed', label: 'Completed', icon: <CheckCircle className="h-5 w-5" /> },
+  {
+    id: "processing",
+    label: "Processing",
+    icon: <Package className="h-5 w-5" />,
+  },
+  { id: "shipped", label: "Shipped", icon: <Truck className="h-5 w-5" /> },
+  {
+    id: "delivered",
+    label: "Delivered",
+    icon: <CheckCheck className="h-5 w-5" />,
+  },
+  {
+    id: "completed",
+    label: "Completed",
+    icon: <CheckCircle className="h-5 w-5" />,
+  },
 ];
 
 interface TrackOrderPageProps {
@@ -40,7 +59,7 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
   const orderId = Array.isArray(rawOrderId) ? rawOrderId[0] : rawOrderId;
 
   let order: Order | null = null;
-  let fetchError = '';
+  let fetchError = "";
 
   if (orderId) {
     try {
@@ -50,18 +69,20 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
       } else {
         fetchError =
           result?.message ??
-          'Order not found. Please check the order ID and try again.';
+          "Order not found. Please check the order ID and try again.";
       }
     } catch {
-      fetchError = 'An error occurred while fetching order details.';
+      fetchError = "An error occurred while fetching order details.";
     }
   }
 
   return (
-    <PageLayout paddingSize="small">
-        <div>
-          <div className="space-y-2 text-center py-6">
-          <h1 className="text-3xl font-bold tracking-tight">Track Your Order</h1>
+    <PageLayout paddingSize="small" className="screen-height">
+      <div>
+        <div className="space-y-2 text-center py-6">
+          <h1 className="text-3xl font-bold tracking-tight">
+            Track Your Order
+          </h1>
           <p className="text-muted-foreground">
             Enter your order ID to check the status of your order
           </p>
@@ -70,7 +91,7 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
         <Card className="border-border/50 bg-background/95">
           <CardContent>
             <TrackOrderForm
-              initialOrderId={orderId ?? ''}
+              initialOrderId={orderId ?? ""}
               serverError={fetchError}
             />
 
@@ -80,18 +101,28 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                 <div className="rounded-lg border p-6">
                   <div className="flex flex-col justify-between space-y-4 sm:flex-row sm:items-center sm:space-y-0">
                     <div>
-                      <h3 className="text-lg font-medium">Order #{order._id.slice(-8).toUpperCase()}</h3>
+                      <h3 className="text-lg font-medium">
+                        Order #{order._id.slice(-8).toUpperCase()}
+                      </h3>
                       <p className="text-sm text-muted-foreground">
-                        Placed on {format(new Date(order.createdAt), 'MMM d, yyyy')}
+                        Placed on{" "}
+                        {format(new Date(order.createdAt), "MMM d, yyyy")}
                       </p>
                     </div>
                     <div className="space-y-1 text-right">
-                      <p className="text-lg font-semibold">৳{order.finalAmount.toLocaleString()}</p>
+                      <p className="text-lg font-semibold">
+                        ৳{order.finalAmount.toLocaleString()}
+                      </p>
                       <div className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-xs">
-                        <div className={`h-2 w-2 rounded-full ${
-                          order.status === 'Completed' ? 'bg-green-500' : 
-                            order.status === 'Processing' ? 'bg-yellow-500' : 'bg-blue-500'
-                        }`} />
+                        <div
+                          className={`h-2 w-2 rounded-full ${
+                            order.status === "Completed"
+                              ? "bg-green-500"
+                              : order.status === "Processing"
+                                ? "bg-yellow-500"
+                                : "bg-blue-500"
+                          }`}
+                        />
                         <span>{order.status}</span>
                       </div>
                     </div>
@@ -104,24 +135,38 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                       <div className="absolute left-4 top-0 h-full w-0.5 -translate-x-1/2 bg-border" />
                       <div className="space-y-8">
                         {statusSteps.map((step, index) => {
-                          const currentStatusIndex = getStatusIndex(order.status);
+                          const currentStatusIndex = getStatusIndex(
+                            order.status
+                          );
                           const isCompleted = index <= currentStatusIndex;
                           const isCurrent = index === currentStatusIndex;
-                          
+
                           return (
                             <div key={step.id} className="relative flex gap-4">
-                              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                                isCompleted ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                              }`}>
+                              <div
+                                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                                  isCompleted
+                                    ? "bg-primary text-primary-foreground"
+                                    : "bg-muted"
+                                }`}
+                              >
                                 {React.cloneElement(step.icon, {
-                                  className: `h-4 w-4 ${isCompleted ? 'text-white' : 'text-muted-foreground'}`
+                                  className: `h-4 w-4 ${
+                                    isCompleted
+                                      ? "text-white"
+                                      : "text-muted-foreground"
+                                  }`,
                                 })}
                               </div>
                               <div className="flex-1 pb-8">
                                 <div className="flex items-center justify-between">
-                                  <h4 className={`text-sm font-medium ${
-                                    isCompleted ? 'text-foreground' : 'text-muted-foreground'
-                                  }`}>
+                                  <h4
+                                    className={`text-sm font-medium ${
+                                      isCompleted
+                                        ? "text-foreground"
+                                        : "text-muted-foreground"
+                                    }`}
+                                  >
                                     {step.label}
                                   </h4>
                                   {isCurrent && (
@@ -133,10 +178,14 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                                 </div>
                                 {isCurrent && order.updatedAt && (
                                   <p className="mt-1 text-xs text-muted-foreground">
-                                    Updated on {format(new Date(order.updatedAt), 'MMM d, yyyy hh:mm a')}
+                                    Updated on{" "}
+                                    {format(
+                                      new Date(order.updatedAt),
+                                      "MMM d, yyyy hh:mm a"
+                                    )}
                                   </p>
                                 )}
-                                {step.id === 'completed' && order.review && (
+                                {step.id === "completed" && order.review && (
                                   <div className="mt-2 rounded-lg bg-muted/50 p-3">
                                     <div className="flex items-center gap-1">
                                       {/* {[...Array(5)].map((_, i) => (
@@ -149,9 +198,14 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                                           }`}
                                         />
                                       ))} */}
-                                      <StarRating rating={order.rating?? 0 } totalStars={5}/>
+                                      <StarRating
+                                        rating={order.rating ?? 0}
+                                        totalStars={5}
+                                      />
                                     </div>
-                                    <p className="mt-1 text-sm">{order.review}</p>
+                                    <p className="mt-1 text-sm">
+                                      {order.review}
+                                    </p>
                                   </div>
                                 )}
                               </div>
@@ -167,7 +221,9 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                 <div className="grid gap-6 md:grid-cols-2">
                   <Card>
                     <CardContent className="p-6">
-                      <h3 className="mb-4 text-sm font-medium">Shipping Address</h3>
+                      <h3 className="mb-4 text-sm font-medium">
+                        Shipping Address
+                      </h3>
                       <address className="not-italic text-muted-foreground">
                         <p className="text-sm">{order.shippingAddress}</p>
                       </address>
@@ -175,10 +231,12 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                   </Card>
                   <Card>
                     <CardContent className="p-6">
-                      <h3 className="mb-4 text-sm font-medium">Payment Method</h3>
+                      <h3 className="mb-4 text-sm font-medium">
+                        Payment Method
+                      </h3>
                       <div className="flex items-center gap-2">
                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-muted">
-                          {order.paymentMethod === 'COD' ? (
+                          {order.paymentMethod === "COD" ? (
                             <span className="text-sm font-medium">COD</span>
                           ) : (
                             <CreditCard className="h-5 w-5" />
@@ -186,7 +244,9 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                         </div>
                         <div>
                           <p className="text-sm font-medium">
-                            {order.paymentMethod === 'COD' ? 'Cash on Delivery' : 'Credit/Debit Card'}
+                            {order.paymentMethod === "COD"
+                              ? "Cash on Delivery"
+                              : "Credit/Debit Card"}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             {order.paymentStatus}
@@ -207,21 +267,35 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
                           <Package className="h-6 w-6 text-muted-foreground" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium">Book ID: {item.book}</p>
-                          <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
+                          <p className="text-sm font-medium">
+                            Book ID: {item.book}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Qty: {item.quantity}
+                          </p>
                         </div>
-                        <p className="text-sm font-medium">৳{item.unitPrice.toLocaleString()}</p>
+                        <p className="text-sm font-medium">
+                          ৳{item.unitPrice.toLocaleString()}
+                        </p>
                       </div>
                     ))}
                   </div>
                   <div className="border-t pt-4">
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Subtotal</span>
-                      <span className="text-sm">৳{order.totalPrice.toLocaleString()}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Subtotal
+                      </span>
+                      <span className="text-sm">
+                        ৳{order.totalPrice.toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">Delivery Charge</span>
-                      <span className="text-sm">৳{order.deliveryCharge.toLocaleString()}</span>
+                      <span className="text-sm text-muted-foreground">
+                        Delivery Charge
+                      </span>
+                      <span className="text-sm">
+                        ৳{order.deliveryCharge.toLocaleString()}
+                      </span>
                     </div>
                     <div className="mt-2 flex justify-between border-t pt-2 text-base font-medium">
                       <span>Total</span>
@@ -233,7 +307,7 @@ const TrackOrderPage = async ({ searchParams }: TrackOrderPageProps) => {
             )}
           </CardContent>
         </Card>
-        </div>
+      </div>
     </PageLayout>
   );
 };

@@ -1,48 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use server"
+"use server";
 
 import { getValidAccessTokenForServerActions } from "@/lib/getValidAccessToken";
 import { updateTag } from "next/cache";
 import { FieldValues } from "react-hook-form";
 
 // Place Order
-export const placeOrder = async(data: FieldValues)=>{
+export const placeOrder = async (data: FieldValues) => {
   const accessToken = await getValidAccessTokenForServerActions();
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/order`,
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/order`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-    updateTag("ORDERS",)
-    
+    updateTag("ORDERS");
+
     const result = await res.json();
     return result;
   } catch (error: any) {
     return Error(error);
   }
-}
+};
 
 //  Get Orders
-export const getOrders = async (): Promise<any> => {
+export const getOrders = async (
+  page: string | string[] | undefined,
+  limit: string | string[] | undefined
+): Promise<any> => {
   const accessToken = await getValidAccessTokenForServerActions();
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/order`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/order/my?page=${page}&limit=${limit}`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
         next: {
-          tags: ['ORDERS'],
+          tags: ["ORDERS"],
         },
       }
     );
@@ -60,9 +60,9 @@ export const trackOrder = async (id: string): Promise<any> => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/order/track/${id}`,
       {
-        method: 'GET',
+        method: "GET",
         next: {
-          tags: ['TRACKS'],
+          tags: ["TRACKS"],
         },
       }
     );

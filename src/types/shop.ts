@@ -33,6 +33,17 @@ export type Book = {
   aboutAuthor?: { bio?: string; achievements?: string[] };
 };
 
+export type RelatedItem = {
+  title: string;
+  author?: string;
+  slug: string;
+  price?: number | string;
+  originalPrice?: number | string;
+  rating?: number;
+  reviewsCount?: number;
+  coverImage?: string;
+};
+
 export type ApiMeta = {
   page?: number;
   limit?: number;

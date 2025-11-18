@@ -13,7 +13,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
-  Heart,
+  BookMarked,
+  ListOrdered,
   LogIn,
   LogOutIcon,
   Moon,
@@ -89,13 +90,33 @@ const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/favorite" className="w-full flex items-center">
-                    <Heart
+                  <Link href="/my-orders" className="w-full flex items-center">
+                    <ListOrdered
                       size={16}
                       className="opacity-60 mr-2"
                       aria-hidden="true"
                     />
-                    <span>Favourite</span>
+                    <span>My Orders</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/favorite" className="w-full flex items-center">
+                    <BookMarked
+                      size={16}
+                      className="opacity-60 mr-2"
+                      aria-hidden="true"
+                    />
+                    <span>Wishlist</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/track-order" className="w-full flex items-center">
+                    <ListOrdered
+                      size={16}
+                      className="opacity-60 mr-2"
+                      aria-hidden="true"
+                    />
+                    <span>Track Order</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem

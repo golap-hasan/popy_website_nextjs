@@ -6,8 +6,7 @@ import { StarRating } from '@/tools/StarRating';
 import PageLayout from '@/tools/PageLayout';
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination';
 import { getImageUrl, getInitials, timeAgo } from '@/lib/utils';
-import { BookReview } from '@/types/book';
-import { IMeta } from '@/types';
+import { BookReview, IMeta } from '@/types';
 
 type ReviewsSectionProps = {
   rating: number;

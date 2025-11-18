@@ -9,10 +9,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import type { TBook, RelatedItem } from '@/types/book';
 import { getImageUrl } from '@/lib/utils';
+import { Book, RelatedItem } from '@/types/shop';
 
-const RelatedBooks = ({ book }: { book: TBook }) => {
+const RelatedBooks = ({ book }: { book: Book }) => {
   const related: RelatedItem[] =
     ((book as unknown as { related?: RelatedItem[]; relatedBooks?: RelatedItem[] })?.related ??
       (book as unknown as { related?: RelatedItem[]; relatedBooks?: RelatedItem[] })?.relatedBooks ??
@@ -80,7 +80,7 @@ const RelatedBooks = ({ book }: { book: TBook }) => {
                       size="sm"
                       className="mt-auto inline-flex items-center justify-center rounded-full px-5"
                     >
-                      <Link href={`/shop/${relatedBook.slug || relatedBook._id}`}>
+                      <Link href={relatedBook.slug ? `/shop/${relatedBook.slug}` : "#"}>
                         View details
                       </Link>
                     </Button>
