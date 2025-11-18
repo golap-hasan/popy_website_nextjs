@@ -1,0 +1,33 @@
+{
+    "success": true,
+    "message": "Order retrived succesfully!",
+    "data": {
+        "_id": "691af2a0b63ebfd663a33e53",
+        "user": "690db6850c5fcc4fa5af6ac4",
+        "books": [
+            {
+                "book": "691380087fb197aec8dc24c8",
+                "quantity": 50,
+                "unitPrice": 350
+            },
+            {
+                "book": "691ae5472cf91421a1396915",
+                "quantity": 70,
+                "unitPrice": 350
+            }
+        ],
+        "totalPrice": 42000,
+        "deliveryCharge": 0,
+        "finalAmount": 42000,
+        "shippingAddress": "House 15, Road 7, Dhanmondi, Dhaka",
+        "paymentMethod": "COD",
+        "status": "Completed",
+        "paymentStatus": "Paid",
+        "deliveryStatus": "Delivered",
+        "isDeleted": false,
+        "createdAt": "2025-11-17T10:02:08.328Z",
+        "updatedAt": "2025-11-17T10:05:03.185Z",
+        "rating": 5,
+        "review": "The Best Book I have ever seen Golap Vai!"
+    }
+}
