@@ -13,161 +13,161 @@ import { Button } from "@/components/ui/button";
 // import { useResetPasswordMutation } from "@/redux/feature/auth/authApi";
 
 const resetPasswordSchema = z.object({
-    newPassword: z.string().min(6, { message: "New password must be at least 6 characters." }),
-    confirmNewPassword: z.string().min(6, { message: "Confirm new password must be at least 6 characters." }),
+  newPassword: z.string().min(6, { message: "New password must be at least 6 characters." }),
+  confirmNewPassword: z.string().min(6, { message: "Confirm new password must be at least 6 characters." }),
 }).refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: "Passwords don't match.",
-    path: ["confirmNewPassword"],
+  message: "Passwords don't match.",
+  path: ["confirmNewPassword"],
 });
 
 const ResetPasswordForm = () => {
-    const searchParams = useSearchParams();
-    const email = useMemo(() => searchParams.get("email") ?? "", [searchParams]);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
-    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-    const [isPending, startTransition] = useTransition();
-    const toggleNewPasswordVisibility = () => setShowNewPassword((previous) => !previous);
-    const toggleConfirmNewPasswordVisibility = () => setShowConfirmNewPassword((previous) => !previous);
+  const searchParams = useSearchParams();
+  const email = useMemo(() => searchParams.get("email") ?? "", [searchParams]);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [isPending, startTransition] = useTransition();
+  const toggleNewPasswordVisibility = () => setShowNewPassword((previous) => !previous);
+  const toggleConfirmNewPasswordVisibility = () => setShowConfirmNewPassword((previous) => !previous);
 
-    // const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  // const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
-    const form = useForm<z.infer<typeof resetPasswordSchema>>({
-        resolver: zodResolver(resetPasswordSchema),
-        defaultValues: {
-            newPassword: "",
-            confirmNewPassword: "",
-        },
+  const form = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      newPassword: "",
+      confirmNewPassword: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {
+    setStatus("idle");
+    startTransition(async () => {
+      try {
+        const payload = {
+          newPassword: data.newPassword,
+          confirmPassword: data.confirmNewPassword,
+          email,
+        };
+        console.info("Reset password request", payload);
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        setStatus("success");
+      } catch (error) {
+        console.error("Reset password failed", error);
+        setStatus("error");
+      }
     });
+  };
 
-    const onSubmit = (data: z.infer<typeof resetPasswordSchema>) => {
-        setStatus("idle");
-        startTransition(async () => {
-            try {
-                const payload = {
-                    newPassword: data.newPassword,
-                    confirmPassword: data.confirmNewPassword,
-                    email,
-                };
-                console.info("Reset password request", payload);
-                await new Promise((resolve) => setTimeout(resolve, 1200));
-                setStatus("success");
-            } catch (error) {
-                console.error("Reset password failed", error);
-                setStatus("error");
-            }
-        });
-    };
-
-    return (
-        <div className="w-full max-w-sm md:max-w-lg">
-            <Card className="overflow-hidden p-0">
-                <CardContent className="p-0">
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6 md:p-8">
-                            <Link
-                                href="/auth/login"
-                                className="inline-flex items-center text-sm font-medium text-muted-foreground transition hover:text-primary"
-                            >
-                                <ArrowLeft className="mr-2 size-4" />
+  return (
+    <div className="w-full max-w-sm md:max-w-lg">
+      <Card className="overflow-hidden p-0">
+        <CardContent className="p-0">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6 md:p-8">
+              <Link
+                href="/auth/login"
+                className="inline-flex items-center text-sm font-medium text-muted-foreground transition hover:text-primary"
+              >
+                <ArrowLeft className="mr-2 size-4" />
                                 Back to login
-                            </Link>
-                            <div className="flex flex-col gap-6">
-                                <div className="flex flex-col items-center text-center gap-2">
-                                    <h1 className="text-2xl font-semibold text-foreground">Reset your password</h1>
-                                    <p className="text-sm text-muted-foreground">
+              </Link>
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col items-center text-center gap-2">
+                  <h1 className="text-2xl font-semibold text-foreground">Reset your password</h1>
+                  <p className="text-sm text-muted-foreground">
                                         Choose a new password below. For security reasons, the link is valid for a short time only.
-                                    </p>
-                                    {email ? (
-                                        <p className="text-xs uppercase tracking-[0.3em] text-primary/70">{email}</p>
-                                    ) : null}
-                                </div>
+                  </p>
+                  {email ? (
+                    <p className="text-xs uppercase tracking-[0.3em] text-primary/70">{email}</p>
+                  ) : null}
+                </div>
 
-                                <FormField
-                                    control={form.control}
-                                    name="newPassword"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>New Password</FormLabel>
-                                            <FormControl>
-                                                <div className="relative">
-                                                    <Input
-                                                        type={showNewPassword ? "text" : "password"}
-                                                        placeholder="********"
-                                                        {...field}
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
-                                                        onClick={toggleNewPasswordVisibility}
-                                                        aria-label={showNewPassword ? "Hide password" : "Show password"}
-                                                    >
-                                                        {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                                    </button>
-                                                </div>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                <FormField
+                  control={form.control}
+                  name="newPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>New Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showNewPassword ? "text" : "password"}
+                            placeholder="********"
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
+                            onClick={toggleNewPasswordVisibility}
+                            aria-label={showNewPassword ? "Hide password" : "Show password"}
+                          >
+                            {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                                <FormField
-                                    control={form.control}
-                                    name="confirmNewPassword"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Confirm New Password</FormLabel>
-                                            <FormControl>
-                                                <div className="relative">
-                                                    <Input
-                                                        type={showConfirmNewPassword ? "text" : "password"}
-                                                        placeholder="********"
-                                                        {...field}
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
-                                                        onClick={toggleConfirmNewPasswordVisibility}
-                                                        aria-label={showConfirmNewPassword ? "Hide password" : "Show password"}
-                                                    >
-                                                        {showConfirmNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                                    </button>
-                                                </div>
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                <FormField
+                  control={form.control}
+                  name="confirmNewPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm New Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            type={showConfirmNewPassword ? "text" : "password"}
+                            placeholder="********"
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center px-3 text-primary cursor-pointer"
+                            onClick={toggleConfirmNewPasswordVisibility}
+                            aria-label={showConfirmNewPassword ? "Hide password" : "Show password"}
+                          >
+                            {showConfirmNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                          </button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                                {status === "success" ? (
-                                    <p className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
+                {status === "success" ? (
+                  <p className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
                                         Your password was reset successfully. You can now log in with your new credentials.
-                                    </p>
-                                ) : null}
-                                {status === "error" ? (
-                                    <p className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                  </p>
+                ) : null}
+                {status === "error" ? (
+                  <p className="rounded-2xl border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
                                         Something went wrong. Please try again or request a fresh reset link.
-                                    </p>
-                                ) : null}
+                  </p>
+                ) : null}
 
-                                <Button type="submit" className="w-full" loading={isPending} disabled={isPending}>
-                                    {isPending ? "Updating..." : "Reset password"}
-                                </Button>
-                            </div>
-                        </form>
-                    </Form>
-                </CardContent>
-            </Card>
-        </div>
-    )
+                <Button type="submit" className="w-full" loading={isPending} disabled={isPending}>
+                  {isPending ? "Updating..." : "Reset password"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
 const ResetPassword = () => {
-    return (
-        <Suspense fallback={<div className="flex w-full justify-center p-8 text-sm text-muted-foreground">Loading reset form...</div>}>
-            <ResetPasswordForm />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<div className="flex w-full justify-center p-8 text-sm text-muted-foreground">Loading reset form...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
+  );
 };
 
 export default ResetPassword;

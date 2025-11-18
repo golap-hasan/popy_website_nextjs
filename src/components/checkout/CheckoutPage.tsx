@@ -25,7 +25,8 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
-import { InfoToast } from "@/lib/utils";
+import { ErrorToast, InfoToast, SuccessToast } from "@/lib/utils";
+import { placeOrder } from "@/services/order";
 
 const divisions = [
   "Dhaka",
@@ -71,7 +72,7 @@ const CheckoutPage = () => {
 
   const isCartEmpty = items.length === 0;
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     const hasAllAddress =
       Boolean(shippingInfo.division) &&
       Boolean(shippingInfo.city.trim()) &&
@@ -102,9 +103,16 @@ const CheckoutPage = () => {
       shippingAddress,
       paymentMethod: "COD" as const,
     };
-
-    // TODO: Replace this with an actual API call when backend is ready.
-    console.log("Checkout order payload", payload);
+    try {
+      const res = await placeOrder(payload);
+      if (res?.success){
+        SuccessToast("Order completed successfully")
+      }
+      else{
+        ErrorToast(res?.message)
+      }
+    } catch {
+    }
   };
 
   return (
@@ -267,7 +275,7 @@ const CheckoutPage = () => {
               <CardFooter className="flex flex-col gap-3">
                 <Button
                   size="lg"
-                  disabled={isCartEmpty}
+                  disabled={isCartEmpty} 
                   className="w-full"
                   onClick={handlePlaceOrder}
                 >

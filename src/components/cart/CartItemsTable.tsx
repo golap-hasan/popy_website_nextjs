@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,12 +63,10 @@ const CartItemsTable = ({
                     <div className="flex gap-3">
                       <div className="relative hidden size-20 overflow-hidden rounded-xl border border-border/40 bg-muted/30 sm:block">
                         {item.image ? (
-                          <Image
+                          <img
                             src={item.image}
                             alt={item.title}
-                            fill
-                            sizes="80px"
-                            className="object-cover"
+                            className="h-full w-full object-cover"
                           />
                         ) : (
                           <div className="flex size-full items-center justify-center text-xs text-muted-foreground">

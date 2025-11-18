@@ -240,8 +240,8 @@ const VerifyOtpForm = () => {
                     {isResendLoading
                       ? 'Resending...'
                       : cooldown > 0
-                      ? `Resend in ${cooldown}s`
-                      : 'Resend Code'}
+                        ? `Resend in ${cooldown}s`
+                        : 'Resend Code'}
                   </button>
                 </div>
 
