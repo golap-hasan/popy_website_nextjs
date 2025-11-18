@@ -13,7 +13,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { Award, BookOpen, Sparkles, Star } from "lucide-react";
+import { Award, BookOpen, Star } from "lucide-react";
 
 const categories = [
   {
@@ -30,12 +30,7 @@ const categories = [
     name: "Best sellers",
     count: "500+ favourites",
     icon: <Star className="size-5" />,
-  },
-  {
-    name: "Creative reads",
-    count: "400+ picks",
-    icon: <Sparkles className="size-5" />,
-  },
+  }
 ];
 
 const bookCovers = [
@@ -86,14 +81,14 @@ const Hero = () => {
         <div className="absolute inset-0 bg-[url('/pattern.png')] bg-repeat opacity-30" />
       </div>
 
-      <PageLayout className="relative max-w-full">
+      <PageLayout className="relative">
         <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="space-y-8 text-center lg:text-left">
             <div className="space-y-4">
-              <span className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+              {/* <span className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
                 Read beyond the syllabus
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+              </span> */}
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                 Discover curated learning journeys for every Bangladeshi reader
               </h1>
               <p className="text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
@@ -111,7 +106,7 @@ const Hero = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               {categories.map((category) => (
                 <div
                   key={category.name}
@@ -133,7 +128,7 @@ const Hero = () => {
 
           <div className="relative">
             <div className="absolute -inset-6 hidden rounded-[48px] bg-linear-to-tr from-primary/15 via-primary/5 to-transparent blur-3xl lg:block" />
-            <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/90 p-4 shadow-xl backdrop-blur sm:rounded-[42px] sm:p-6">
+            <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/90 shadow-xl backdrop-blur p-4">
               <Carousel
                 opts={{
                   align: "center",
@@ -145,7 +140,7 @@ const Hero = () => {
                 onMouseLeave={autoplayPlugin.current.reset}
               >
                 <div className="relative">
-                  <CarouselContent className="pb-6 pt-4">
+                  <CarouselContent className="p-6">
                     {bookCovers.map((book, index) => {
 
                       return (
