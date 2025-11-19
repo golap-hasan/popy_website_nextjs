@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { forgotPassword } from "@/services/Auth";
+import { SuccessToast, ErrorToast } from "@/lib/utils";
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { useState } from 'react';
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -28,6 +31,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 
 const ForgetPassword = () => {
+  const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -43,12 +47,17 @@ const ForgetPassword = () => {
     setStatus('idle');
 
     try {
-      // TODO: Replace with real API call once auth services are wired up.
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      console.info('Password reset email requested', data.email);
-      setStatus('success');
-    } catch (error) {
-      console.error('Failed to request password reset', error);
+      const result = await forgotPassword(data.email);
+      if (result?.success) {
+        SuccessToast("Reset link sent to your email");
+        setStatus('success');
+        router.push('/auth/verify-otp?type=forget-password');
+      } else {
+        ErrorToast(result?.message || "Failed to send reset link");
+        setStatus('error');
+      }
+    } catch {
+      ErrorToast("An error occurred while sending reset link");
       setStatus('error');
     } finally {
       setIsSubmitting(false);

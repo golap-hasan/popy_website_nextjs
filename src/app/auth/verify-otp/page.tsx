@@ -93,8 +93,8 @@ const VerifyOtpForm = () => {
           }
           setIsVerifyLoadingForSignup(false);
         }
-      } catch (error) {
-        console.error('OTP verification failed', error);
+      } catch {
+        // console.error('OTP verification failed', error);
         setStatus('error');
         setCooldown(0);
         ErrorToast('Verification failed. Please try again.');
@@ -133,8 +133,7 @@ const VerifyOtpForm = () => {
         }
         setIsResendSignupLoading(false);
       }
-    } catch (error) {
-      console.error('Failed to resend OTP', error);
+    } catch {
       setStatus('error');
       setCooldown(0);
       ErrorToast('Failed to resend OTP');
@@ -149,16 +148,6 @@ const VerifyOtpForm = () => {
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  // Set initial cooldown
-  useEffect(() => {
-    setCooldown(300);
-  }, []);
-
-  const isLoading =
-    isVerifyLoadingForSignup ||
-    isVerifyLoadingForResetPassword ||
-    isResendResetLoading ||
-    isResendSignupLoading;
   const isResendLoading = isResendResetLoading || isResendSignupLoading;
   const isVerifyLoading =
     isPending || isVerifyLoadingForSignup || isVerifyLoadingForResetPassword;
