@@ -104,7 +104,7 @@ const MyOrdersPage = async ({ searchParams }: OrdersPageProps) => {
               <CardHeader className="flex flex-col gap-2 border-b border-border/40 pb-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1">
                   <CardTitle className="text-sm font-semibold">
-                    Order #{order._id?.slice(-6) ?? ""}
+                    Order #{order._id ?? ""}
                   </CardTitle>
                   <p className="text-xs text-muted-foreground">
                     Shipping to: {order.shippingAddress}

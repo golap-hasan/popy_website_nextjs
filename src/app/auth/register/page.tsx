@@ -48,7 +48,7 @@ const registrationValidationSchema = z.object({
 
   password: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters.' })
+    .min(6, { message: 'Password must be at least 6 characters.' })
     .max(20, { message: 'Password must be at most 20 characters.' })
     .regex(
       /^(?=.*\p{Ll})(?=.*\p{Lu})(?=.*\p{Nd})(?=.*[^\p{L}\p{N}\s])[^\s]{8,64}$/u,

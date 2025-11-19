@@ -1,12 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import PageLayout from "@/tools/PageLayout";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import PersonalInfoCard from "@/components/profile/update-profile/PersonalInfoCard";
 import PasswordUpdateCard from "@/components/profile/update-profile/PasswordUpdateCard";
-import DeliveryPreferencesCard from "@/components/profile/update-profile/DeliveryPreferencesCard";
+import AvatarUpdateCard from "@/components/profile/update-profile/AvatarUpdateCard";
+// import DeliveryPreferencesCard from "@/components/profile/update-profile/DeliveryPreferencesCard";
 
 export const metadata: Metadata = {
   title: "Update profile | Popy Publications",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 
 const UpdateProfilePage = () => {
   return (
-    <PageLayout paddingSize="small">
+    <PageLayout paddingSize="small" className="screen-height">
       <div className="space-y-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
@@ -43,13 +44,14 @@ const UpdateProfilePage = () => {
           </div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1.75fr_1fr]">
-          <div className="space-y-8">
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AvatarUpdateCard />
             <PersonalInfoCard />
-            <PasswordUpdateCard />
           </div>
-          <div>
-            <DeliveryPreferencesCard />
+          <div className="grid grid-cols-1">
+            <PasswordUpdateCard />
+            {/* <DeliveryPreferencesCard /> */}
           </div>
         </div>
       </div>

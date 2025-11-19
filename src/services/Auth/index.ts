@@ -113,9 +113,9 @@ export const updateProfilePhoto = async (data: FormData): Promise<any> => {
     );
 
     const result = await res.json();
-    if (result?.success) {
-      (await cookies()).set('accessToken', result?.data?.accessToken);
-    }
+    // if (result?.success) {
+    //   (await cookies()).set('accessToken', result?.data?.accessToken);
+    // }
 
     return result;
   } catch (error: any) {
