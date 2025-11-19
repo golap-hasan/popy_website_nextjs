@@ -1,8 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { TBook } from '@/types/book';
+import { Book } from '@/types/shop';
 
-const HighlightsSpecs = ({ book }: { book: TBook }) => {
+const HighlightsSpecs = ({ book }: { book: Book }) => {
   return (
     <section className="space-y-6 rounded-3xl bg-background/95">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -27,7 +27,7 @@ const HighlightsSpecs = ({ book }: { book: TBook }) => {
               Key highlights
             </p>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              {book.highlights.map(highlight => (
+              {book.highlights?.map(highlight => (
                 <li
                   key={highlight}
                   className="rounded-2xl border border-border/40 bg-muted/20 p-4"
@@ -45,7 +45,7 @@ const HighlightsSpecs = ({ book }: { book: TBook }) => {
                 Product specs
               </p>
               <div className="space-y-3">
-                {book.specs.map((spec, index) => (
+                {book.specs?.map((spec, index) => (
                   <div key={spec.label} className="space-y-1">
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <span className="font-semibold text-foreground">
@@ -53,7 +53,7 @@ const HighlightsSpecs = ({ book }: { book: TBook }) => {
                       </span>
                       <span>{spec.value}</span>
                     </div>
-                    {index < book.specs.length - 1 ? <Separator /> : null}
+                    {index < (book.specs?.length || 0) - 1 ? <Separator /> : null}
                   </div>
                 ))}
               </div>

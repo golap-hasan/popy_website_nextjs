@@ -1,4 +1,4 @@
-import { IBook } from './book';
+import { Book } from './shop';
 import { TUser } from './user';
 
 export type TOrder = {
@@ -26,7 +26,7 @@ export type TOrder = {
 };
 
 export interface IOrderBook {
-  book: IBook;
+  book: Book;
   quantity: number;
   unitPrice: number;
 }
