@@ -15,7 +15,7 @@ export type Book = {
   rating?: number;                      
   badge?: string;
   image?: string;
-  coverImage?: string;
+  coverImage: string;
   slug?: string;                          
   subtitle?: string;                       
   description?: string;                 

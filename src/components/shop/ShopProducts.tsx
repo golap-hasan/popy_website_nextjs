@@ -8,6 +8,7 @@ import type { Book } from "@/types/shop";
 import { StarRating } from "@/tools/StarRating";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { useWishlist } from "@/hooks/useWishlist";
+import Image from "next/image";
 export type SortOption = "popularity" | "newest" | "price_low_high";
 type ShopProductsProps = {
   books?: Book[];
@@ -54,11 +55,12 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
               aria-label={`View details for ${book.title}`}
             >
               <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20">
-                <img
+                <Image
                   src={book.coverImage}
                   alt={`${book.title} cover`}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
+                  width={200} 
+                  height={200}
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 z-10 opacity-0 backdrop-blur-xs rounded-lg transition-opacity duration-200 group-hover:opacity-100" />
                 {book.badge ? (
@@ -82,7 +84,11 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
 
                 <div className="mt-auto flex items-center justify-between text-sm text-muted-foreground">
                   <div className="inline-flex items-center gap-1 rounded-full text-primary">
-                    <StarRating rating={book?.rating as number} totalStars={1} size={14} />
+                    <StarRating
+                      rating={book?.rating as number}
+                      totalStars={1}
+                      size={14}
+                    />
                     <span>{book?.rating?.toFixed(1)}</span>
                   </div>
                   <span className="text-xs font-semibold text-primary">
@@ -105,10 +111,10 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
                   handleAddToWishlist(book);
                 }}
               >
-                <Heart/>
+                <Heart />
                 Add to wishlist
               </Button>
-              
+
               <Button
                 size="sm"
                 className="pointer-events-auto gap-2 rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-all duration-200 hover:bg-primary/90 focus-visible:opacity-100 focus-visible:shadow-xl group-hover:-translate-y-1 group-hover:opacity-100 group-hover:shadow-xl"
