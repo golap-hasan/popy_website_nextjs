@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-const params = new URLSearchParams();
 
 // GET ALL BOOKS
 export const getBooks = async (query: {
   [key: string]: string | string[] | undefined;
 }) => {
+  const params = new URLSearchParams();
+
   Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== '') {
+    if (value !== undefined && value !== "") {
       params.set(key, value.toString());
     }
   });
