@@ -7,6 +7,7 @@ import { Star, ShieldCheck, Truck, Bookmark, ShoppingBag } from "lucide-react";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { Book } from "@/types/shop";
+import Image from "next/image";
 
 const SummarySection = ({ book }: { book: Book }) => {
   const { handleAddToWishlist } = useWishlist();
@@ -113,13 +114,15 @@ const SummarySection = ({ book }: { book: Book }) => {
         <div className="relative flex items-center justify-center">
           <div className="absolute -top-12 right-10 hidden size-72 rounded-full bg-primary/20 blur-3xl md:block" />
           <div className="absolute -bottom-12 left-0 hidden size-72 rounded-full bg-secondary/20 blur-3xl md:block" />
-          <div className="relative aspect-3/4 overflow-hidden rounded-3xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background p-2 sm:p-3">
+          <div className="relative w-full max-w-sm aspect-3/4 overflow-hidden rounded-3xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background p-2 sm:p-3">
             <div className="relative h-full w-full overflow-hidden rounded-2xl bg-background/80">
-              <img
+              <Image
                 src={book.coverImage}
                 alt={`${book.title} cover`}
-                className="h-full w-full object-cover"
-                loading="lazy"
+                fill
+                sizes="(max-width: 640px) 60vw, (max-width: 1024px) 40vw, 32vw"
+                className="object-cover"
+                priority
               />
               <div className="pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-t from-background/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </div>
