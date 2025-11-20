@@ -51,7 +51,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   };
 }
 
-async function fetchBooks(params: ShopSearchParams) {
+async function fetchBooks(params: ShopSearchParams) { 
   try {
     const response = await getBooks(params);
     return {
