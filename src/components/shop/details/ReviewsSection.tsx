@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { StarRating } from '@/tools/StarRating';
 import PageLayout from '@/tools/PageLayout';
 import CustomPagination from '@/components/common/custom-pagination/CustomPagination';
-import { getImageUrl, getInitials, timeAgo } from '@/lib/utils';
+import { getInitials, timeAgo } from '@/lib/utils';
 import { BookReview, IMeta } from '@/types';
 
 type ReviewsSectionProps = {
@@ -108,7 +108,7 @@ const ReviewsSection = ({ rating, reviewsCount, reviews, reviewsMeta }: ReviewsS
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
                           <Avatar className="size-12">
-                            <AvatarImage src={review.userData?.image ? getImageUrl(review.userData.image) : undefined} />
+                            <AvatarImage src={review.userData?.image ? review.userData.image : undefined} />
                             <AvatarFallback>
                               {getInitials(review.userData?.name || 'User')}
                             </AvatarFallback>

@@ -9,7 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { getImageUrl } from '@/lib/utils';
 import { Book, RelatedItem } from '@/types/shop';
 
 const RelatedBooks = ({ book }: { book: Book }) => {
@@ -45,7 +44,7 @@ const RelatedBooks = ({ book }: { book: Book }) => {
                   <CardContent className="flex h-full flex-col gap-5">
                     <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background">
                       <img
-                        src={getImageUrl(relatedBook.coverImage || '')}
+                        src={relatedBook.coverImage}
                         alt={`${relatedBook.title} cover`}
                         className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
                         loading="lazy"

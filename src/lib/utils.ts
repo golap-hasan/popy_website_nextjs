@@ -85,24 +85,6 @@ export const formatDate = (dateString: string) => {
   return format(new Date(dateString), "dd MMM yyyy");
 };
 
-// GET IMAGE URL
-// export const getImageUrl = (imagePath: string) => {
-//   if (!imagePath) return "";
-//   if (/^https?:\/\//i.test(imagePath)) return imagePath;
-//   return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${imagePath}`;
-// };
-
-export const getImageUrl = (path?: string) => {
-  if (!path)
-    return "https://res.cloudinary.com/dweesppci/image/upload/v1763361369/1763361369660-KHALED-SIDDIQUE.png";
-
-  if (path.startsWith("http")) {
-    return path;
-  }
-
-  return `${process.env.NEXT_PUBLIC_IMAGE_URL}/${path}`;
-};
-
 // Time Ago
 export const timeAgo = (createdAt: string) => {
   if (!createdAt) return "";

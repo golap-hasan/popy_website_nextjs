@@ -14,7 +14,6 @@ import type { RootState, AppDispatch } from '@/redux/store';
 import { removeFromWishlist } from '@/redux/feature/wishlist/wishListSlice';
 import type { WishlistItem } from '@/redux/feature/wishlist/wishListSlice';
 import type { Book } from '@/types/shop';
-import { getImageUrl } from '@/lib/utils';
 
 const FavoritePage = () => {
   const { handleAddToCart } = useAddToCart();
@@ -82,7 +81,7 @@ const FavoritePage = () => {
             />
             <div className="relative h-40 w-28 overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
               <img
-                src={getImageUrl(book.coverImage)}
+                src={book.coverImage}
                 alt={`${book.title} cover`}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"

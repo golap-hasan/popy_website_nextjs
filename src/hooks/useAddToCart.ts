@@ -1,5 +1,5 @@
 
-import { getImageUrl, InfoToast } from "@/lib/utils";
+import { InfoToast } from "@/lib/utils";
 import { addToCart } from "@/redux/feature/cart/cartSlice";
 import { AppDispatch } from "@/redux/store";
 import { Book } from "@/types/shop";
@@ -15,7 +15,7 @@ export const useAddToCart = () => {
       typeof book.price === "number" ? book.price : Number(book.price ?? 0);
 
     const rawImage = book.coverImage ?? book.image ?? "";
-    const imageUrl = rawImage ? getImageUrl(rawImage) : "";
+    const imageUrl = rawImage ? rawImage : "";
 
     dispatch(
       addToCart({

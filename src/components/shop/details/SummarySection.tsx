@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Star, ShieldCheck, Truck, Bookmark, ShoppingBag } from "lucide-react";
-import { getImageUrl } from "@/lib/utils";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { Book } from "@/types/shop";
@@ -120,7 +119,7 @@ const SummarySection = ({ book }: { book: Book }) => {
           <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/70 p-5 shadow-lg">
             <div className="relative h-[420px] w-[300px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30">
               <img
-                src={getImageUrl(book.coverImage || "")}
+                src={book.coverImage}
                 alt={`${book.title} cover`}
                 className="h-full w-full object-cover"
                 loading="lazy"

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getImageUrl } from "@/lib/utils";
 import OrderReviewButton from "./OrderReviewButton";
 
 type OrderBookItem = {
@@ -77,7 +76,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
               <div className="relative h-14 w-10 shrink-0 overflow-hidden rounded-md border border-border/40 bg-muted/20">
                 {item.book?.coverImage ? (
                   <Image
-                    src={getImageUrl(item.book.coverImage)}
+                    src={item.book.coverImage}
                     alt={item.book?.title ?? "Book cover"}
                     fill
                     sizes="40px"

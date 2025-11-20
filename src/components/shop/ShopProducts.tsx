@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Heart } from "lucide-react";
 import type { Book } from "@/types/shop";
-import { getImageUrl } from "@/lib/utils";
 import { StarRating } from "@/tools/StarRating";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { useWishlist } from "@/hooks/useWishlist";
@@ -56,7 +55,7 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
             >
               <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20">
                 <img
-                  src={getImageUrl(book.coverImage)}
+                  src={book.coverImage}
                   alt={`${book.title} cover`}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
