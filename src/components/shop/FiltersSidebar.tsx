@@ -20,13 +20,13 @@ const priceRanges = [
   { label: "৳800+", value: "800-1200" },
 ];
 
-const authorFilters = [
-  { name: "Humayun Ahmed" },
-  { name: "Zafar Iqbal" },
-  { name: "Muhammed Zafar Iqbal" },
-  { name: "Anisul Hoque" },
-  { name: "Rabindranath Tagore" },
-];
+// const authorFilters = [
+//   { name: "Humayun Ahmed" },
+//   { name: "Zafar Iqbal" },
+//   { name: "Muhammed Zafar Iqbal" },
+//   { name: "Anisul Hoque" },
+//   { name: "Rabindranath Tagore" },
+// ];
 
 type FiltersSidebarProps = {
   categories?: Category[];
@@ -36,8 +36,8 @@ type FiltersSidebarProps = {
   onPriceChange?: (range: [number, number]) => void;
   selectedRating?: number;
   onRatingChange?: (rating: number) => void;
-  selectedAuthors?: string[];
-  onAuthorChange?: (authors: string[]) => void;
+  // selectedAuthors?: string[];
+  // onAuthorChange?: (authors: string[]) => void;
 };
 
 const FiltersSidebar = ({
@@ -48,17 +48,17 @@ const FiltersSidebar = ({
   onPriceChange,
   selectedRating = 0,
   onRatingChange,
-  selectedAuthors = [],
-  onAuthorChange,
+  // selectedAuthors = [],
+  // onAuthorChange,
 }: FiltersSidebarProps) => {
-  const handleAuthorSelection = (name: string, checked: boolean) => {
-    if (onAuthorChange) {
-      const newAuthors = checked
-        ? [...selectedAuthors, name]
-        : selectedAuthors.filter((item) => item !== name);
-      onAuthorChange(newAuthors);
-    }
-  };
+  // const handleAuthorSelection = (name: string, checked: boolean) => {
+  //   if (onAuthorChange) {
+  //     const newAuthors = checked
+  //       ? [...selectedAuthors, name]
+  //       : selectedAuthors.filter((item) => item !== name);
+  //     onAuthorChange(newAuthors);
+  //   }
+  // };
 
   return (
     <aside className="space-y-8 rounded-3xl border border-border/40 bg-background/80 p-6 shadow-sm backdrop-blur">
@@ -103,7 +103,7 @@ const FiltersSidebar = ({
           defaultValue={["price", "rating",]}
           className="space-y-3"
         >
-          <AccordionItem
+          {/* <AccordionItem
             value="authors"
             className="rounded-2xl border border-border/50 bg-background/60 px-4"
           >
@@ -142,7 +142,7 @@ const FiltersSidebar = ({
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
             </AccordionContent>
-          </AccordionItem>
+          </AccordionItem> */}
 
           <AccordionItem
             value="price"

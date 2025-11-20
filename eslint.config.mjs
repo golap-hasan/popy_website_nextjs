@@ -12,7 +12,7 @@ const eslintConfig = defineConfig([
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/no-unescaped-entities": "off",
-      "@next/next/no-img-element": "off",
+      "@next/next/no-img-element": "warn",
       "prefer-const": "warn",
       "no-var": "error",
       "eqeqeq": ["error", "always"],

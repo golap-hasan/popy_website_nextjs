@@ -41,7 +41,7 @@ export type RelatedItem = {
   originalPrice?: number | string;
   rating?: number;
   reviewsCount?: number;
-  coverImage?: string;
+  coverImage: string;
 };
 
 export type ApiMeta = {

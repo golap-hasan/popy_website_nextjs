@@ -25,17 +25,23 @@ import { SuccessToast, ErrorToast, getInitials } from "@/lib/utils";
 import { useUser } from "@/context/UserContext";
 
 const avatarSchema = z.object({
-  image: z.instanceof(File).refine((file) => file.size < 5 * 1024 * 1024, {
-    message: "File size must be less than 5MB",
-  }).refine((file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
-    message: "File must be JPEG, PNG, or WebP",
-  }),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size < 5 * 1024 * 1024, {
+      message: "File size must be less than 5MB",
+    })
+    .refine(
+      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      {
+        message: "File must be JPEG, PNG, or WebP",
+      }
+    ),
 });
 
 type AvatarFormValues = z.infer<typeof avatarSchema>;
 
 const AvatarUpdateCard = () => {
-  const { user } = useUser();
+  const { user, setIsLoading } = useUser();
   const [preview, setPreview] = useState<string | null>(user?.image || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,10 +70,11 @@ const AvatarUpdateCard = () => {
   const onSubmit = async (values: AvatarFormValues) => {
     try {
       const formData = new FormData();
-      formData.append("file", values.image);
+      formData.append("user", values.image);
 
       const result = await updateProfilePhoto(formData);
       if (result?.success) {
+        setIsLoading(true);
         SuccessToast("Profile picture updated successfully");
         // Optionally update user context if needed
       } else {
@@ -96,7 +103,7 @@ const AvatarUpdateCard = () => {
             <div className="flex flex-col items-center gap-6">
               <div className="relative group">
                 <Avatar className="size-32 border-4 border-primary/20 shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:border-primary/40">
-                  <AvatarImage src={preview || undefined} />
+                  <AvatarImage src={preview || user?.image || undefined} />
                   <AvatarFallback className="bg-primary/10 text-primary text-2xl">
                     {getInitials(user?.name || "User")}
                   </AvatarFallback>

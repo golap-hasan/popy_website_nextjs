@@ -54,13 +54,15 @@ const ShopProducts = ({ books }: ShopProductsProps) => {
               className="flex flex-1 flex-col gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
               aria-label={`View details for ${book.title}`}
             >
-              <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20">
+              <div className="relative overflow-hidden rounded-lg border border-border/40 bg-muted/20 h-64">
                 <Image
-                  src={book.coverImage}
+                  src={book.coverImage || "/placeholder-book.jpg"}
                   alt={`${book.title} cover`}
-                  width={200} 
-                  height={200}
+                  fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    e.currentTarget.src = "/placeholder-book.jpg";
+                  }}
                 />
                 <div className="pointer-events-none absolute inset-0 z-10 opacity-0 backdrop-blur-xs rounded-lg transition-opacity duration-200 group-hover:opacity-100" />
                 {book.badge ? (

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PageLayout from '@/tools/PageLayout';
@@ -80,11 +81,12 @@ const FavoritePage = () => {
               aria-label={`Select ${book.title}`}
             />
             <div className="relative h-40 w-28 overflow-hidden rounded-2xl border border-border/40 bg-muted/20">
-              <img
+              <Image
                 src={book.coverImage}
                 alt={`${book.title} cover`}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
+                fill
+                sizes="(max-width: 640px) 40vw, (max-width: 1024px) 20vw, 14vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
           </div>

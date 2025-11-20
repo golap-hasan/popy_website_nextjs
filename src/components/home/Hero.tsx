@@ -140,7 +140,7 @@ const Hero = () => {
                 onMouseLeave={autoplayPlugin.current.reset}
               >
                 <div className="relative">
-                  <CarouselContent className="p-6">
+                  <CarouselContent>
                     {bookCovers.map((book, index) => {
 
                       return (

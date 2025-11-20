@@ -96,9 +96,6 @@ const SummarySection = ({ book }: { book: Book }) => {
               >
                 <Bookmark />
               </Button>
-              {/* <Button size="lg" variant="outline" className="rounded-full px-8">
-                <Link href="#reviews">Read reviews</Link>
-              </Button> */}
             </div>
           </div>
           <Separator className="my-4" />
@@ -116,14 +113,15 @@ const SummarySection = ({ book }: { book: Book }) => {
         <div className="relative flex items-center justify-center">
           <div className="absolute -top-12 right-10 hidden size-72 rounded-full bg-primary/20 blur-3xl md:block" />
           <div className="absolute -bottom-12 left-0 hidden size-72 rounded-full bg-secondary/20 blur-3xl md:block" />
-          <div className="relative overflow-hidden rounded-4xl border border-border/40 bg-background/70 p-5 shadow-lg">
-            <div className="relative h-[420px] w-[300px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30">
+          <div className="relative aspect-3/4 overflow-hidden rounded-3xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background p-2 sm:p-3">
+            <div className="relative h-full w-full overflow-hidden rounded-2xl bg-background/80">
               <img
                 src={book.coverImage}
                 alt={`${book.title} cover`}
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-t from-background/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </div>
           </div>
         </div>

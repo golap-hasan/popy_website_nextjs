@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,9 +64,11 @@ const CartItemsTable = ({
                     <div className="flex gap-3">
                       <div className="relative hidden size-20 overflow-hidden rounded-xl border border-border/40 bg-muted/30 sm:block">
                         {item.image ? (
-                          <img
+                          <Image
                             src={item.image}
                             alt={item.title}
+                            width={80}
+                            height={80}
                             className="h-full w-full object-cover"
                           />
                         ) : (
@@ -86,7 +89,7 @@ const CartItemsTable = ({
                           className="px-0 text-xs text-muted-foreground hover:text-destructive"
                           onClick={() => onRemove(item.id)}
                         >
-                          <Trash2 className="mr-1 size-3" /> Remove
+                          <Trash2 className="size-3" /> Remove
                         </Button>
                       </div>
                     </div>

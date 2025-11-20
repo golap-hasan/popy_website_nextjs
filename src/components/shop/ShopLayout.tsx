@@ -101,7 +101,7 @@ const ShopLayout = ({
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
   const rating = searchParams.get("rating");
-  const authors = searchParams.get("authors");
+  // const authors = searchParams.get("authors");
   const publishers = searchParams.get("publishers");
 
   const priceRange: [number, number] = useMemo(
@@ -112,7 +112,7 @@ const ShopLayout = ({
     [minPrice, maxPrice]
   );
   const selectedRating = rating ? Number(rating) : 0;
-  const selectedAuthors = authors ? authors.split(",") : [];
+  // const selectedAuthors = authors ? authors.split(",") : [];
   const selectedPublishers = publishers ? publishers.split(",") : [];
 
   const [searchInput, setSearchInput] = useState(searchTerm);
@@ -155,12 +155,12 @@ const ShopLayout = ({
     updateFilter("rating", newRating > 0 ? String(newRating) : undefined);
   };
 
-  const handleAuthorChange = (newAuthors: string[]) => {
-    updateFilter(
-      "authors",
-      newAuthors.length > 0 ? newAuthors.join(",") : undefined
-    );
-  };
+  // const handleAuthorChange = (newAuthors: string[]) => {
+  //   updateFilter(
+  //     "authors",
+  //     newAuthors.length > 0 ? newAuthors.join(",") : undefined
+  //   );
+  // };
 
   const handlePublisherChange = (newPublishers: string[]) => {
     updateFilter(
@@ -181,8 +181,8 @@ const ShopLayout = ({
     onPriceChange: handlePriceChange,
     selectedRating,
     onRatingChange: handleRatingChange,
-    selectedAuthors,
-    onAuthorChange: handleAuthorChange,
+    // selectedAuthors,
+    // onAuthorChange: handleAuthorChange,
     selectedPublishers,
     onPublisherChange: handlePublisherChange,
   };

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,10 +13,7 @@ import {
 import { Book, RelatedItem } from '@/types/shop';
 
 const RelatedBooks = ({ book }: { book: Book }) => {
-  const related: RelatedItem[] =
-    ((book as unknown as { related?: RelatedItem[]; relatedBooks?: RelatedItem[] })?.related ??
-      (book as unknown as { related?: RelatedItem[]; relatedBooks?: RelatedItem[] })?.relatedBooks ??
-      []) as RelatedItem[];
+  const related = (book as Book & { relatedBooks?: RelatedItem[] }).relatedBooks || [];
   return (
     <section className="space-y-8 rounded-3xl bg-background/95">
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
@@ -42,12 +40,13 @@ const RelatedBooks = ({ book }: { book: Book }) => {
               >
                 <Card className="group h-full overflow-hidden rounded-3xl border-border/50 bg-background/92 transition-all duration-500 hover:-translate-y-1.5">
                   <CardContent className="flex h-full flex-col gap-5">
-                    <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background">
-                      <img
+                    <div className="relative h-64 overflow-hidden rounded-2xl border border-border/40 bg-linear-to-br from-primary/5 via-background to-background">
+                      <Image
                         src={relatedBook.coverImage}
                         alt={`${relatedBook.title} cover`}
-                        className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
-                        loading="lazy"
+                        fill
+                        sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                        className="object-cover transition duration-500 group-hover:scale-105"
                       />
                       <div className="absolute left-3 top-3 flex items-center gap-2">
                         <Badge className="rounded-full bg-primary/90 text-primary-foreground ">
@@ -62,9 +61,6 @@ const RelatedBooks = ({ book }: { book: Book }) => {
                       <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
                         {relatedBook.author}
                       </p>
-                      {/* <p className="text-sm font-semibold text-primary">
-                        {relatedBook.price}
-                      </p> */}
 
                       <div className="flex items-end gap-2 text-2xl font-semibold text-primary">
                         <span>৳{relatedBook.price}</span>
