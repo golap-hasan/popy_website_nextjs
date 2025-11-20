@@ -8,8 +8,8 @@ import {
   Sun,
   Mail,
   ShoppingCartIcon,
-  Info,
   Bookmark,
+  Route,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -30,8 +30,8 @@ import type { RootState } from '@/redux/store';
 const navigationItems = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Shop', href: '/shop', icon: Store },
-  { name: 'About', href: '/about', icon: Info },
   { name: 'Contact', href: '/contact', icon: Mail },
+  { name: 'Our Journey', href: '/our-journey', icon: Route },
 ];
 
 const Navbar = () => {
