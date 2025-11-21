@@ -14,6 +14,7 @@ export const isTokenExpired = async (token: string): Promise<boolean> => {
 
     return decoded.exp * 1000 < Date.now();
   } catch (err: any) {
+    // eslint-disable-next-line no-console
     console.error(err);
     return true;
   }
@@ -31,7 +32,8 @@ export const getValidAccessTokenForServerActions = async (): Promise<
     const refreshToken = cookieStore.get('refreshToken')?.value;
 
     if (!refreshToken) {
-      return logOut();
+      await logOut();
+      return;
     }
 
     const { data } = await getNewAccessToken(refreshToken);
@@ -39,7 +41,8 @@ export const getValidAccessTokenForServerActions = async (): Promise<
     accessToken = data?.accessToken;
 
     if (!data?.accessToken || !accessToken) {
-      return logOut();
+      await logOut();
+      return;
     }
 
     cookieStore.set('accessToken', accessToken);

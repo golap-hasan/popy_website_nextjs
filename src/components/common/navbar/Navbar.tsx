@@ -70,7 +70,7 @@ const Navbar = () => {
     setUser(null);
 
     if (protectedRoutes.some(route => pathname.match(route))) {
-      router.push('/');
+      router.push(`/auth/login?redirectPath=${pathname}`);
       // router.push('/auth/login');
     }
   };
