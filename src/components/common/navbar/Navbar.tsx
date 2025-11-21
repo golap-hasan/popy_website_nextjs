@@ -214,7 +214,7 @@ const Navbar = () => {
         </PageLayout>
       </div>
     </nav>
-  );
+  ); 
 };
 
 export default Navbar;
