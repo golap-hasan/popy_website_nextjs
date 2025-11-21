@@ -15,6 +15,13 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { Award, BookOpen, Star } from "lucide-react";
 
+type HomepageBook = {
+  title: string;
+  slug: string;
+  price: number;
+  coverImage: string;
+};
+
 const categories = [
   {
     name: "Academic mastery",
@@ -33,33 +40,6 @@ const categories = [
   }
 ];
 
-const bookCovers = [
-  { src: "/english.png", alt: "Popy English for Today cover" },
-  { src: "/gonit.png", alt: "Popy Mathematics guide cover" },
-  { src: "/biggan.png", alt: "Popy Science companion cover" },
-  { src: "/podartho.png", alt: "Popy Physics guide cover" },
-  { src: "/banking.png", alt: "Banking reference book cover" },
-  { src: "/tottho.png", alt: "Information technology guide cover" },
-];
-
-const readerFavourites = [
-  {
-    title: "Popy English For Today",
-    author: "Popy Publications",
-    price: "৳575",
-  },
-  {
-    title: "পপি মাধ্যমিক বিজ্ঞান",
-    author: "Popy Publications",
-    price: "৳416",
-  },
-  {
-    title: "পপি মাধ্যমিক গণিত",
-    author: "Popy Publications",
-    price: "৳648",
-  },
-];
-
 const trustSignals = [
   { label: "Happy readers", value: "58K+", helper: "Across Bangladesh" },
   { label: "Curated titles", value: "12K+", helper: "Print & digital" },
@@ -67,7 +47,11 @@ const trustSignals = [
   { label: "Support hours", value: "9am–10pm", helper: "Everyday" },
 ];
 
-const Hero = () => {
+type HeroProps = {
+  books: HomepageBook[];
+};
+
+const Hero = ({ books = [] }: HeroProps) => {
   const autoplayPlugin = React.useRef(
     Autoplay({
       delay: 3200,
@@ -141,18 +125,17 @@ const Hero = () => {
               >
                 <div className="relative">
                   <CarouselContent>
-                    {bookCovers.map((book, index) => {
-
-                      return (
-                        <CarouselItem
-                          key={book.src}
-                          className="basis-3/4 sm:basis-1/2 lg:basis-1/3"
-                        >
-                          <div className={`relative flex justify-center transition-transform duration-300`}>
+                    {books.map((book, index) => (
+                      <CarouselItem
+                        key={book.slug || book.title}
+                        className="basis-3/4 sm:basis-1/2 lg:basis-1/3"
+                      >
+                        <Link href={`/shop/${book.slug}`}>
+                          <div className="relative flex justify-center transition-transform duration-300">
                             <div className="relative aspect-3/4 w-full max-w-[210px] overflow-hidden rounded-2xl border border-border/40 bg-muted/30">
                               <Image
-                                src={book.src}
-                                alt={book.alt}
+                                src={book.coverImage}
+                                alt={`${book.title} cover`}
                                 fill
                                 sizes="(min-width: 1280px) 260px, (min-width: 1024px) 26vw, (min-width: 768px) 36vw, 70vw"
                                 className="object-contain sm:object-cover"
@@ -160,9 +143,9 @@ const Hero = () => {
                               />
                             </div>
                           </div>
-                        </CarouselItem>
-                      );
-                    })}
+                        </Link>
+                      </CarouselItem>
+                    ))}
                   </CarouselContent>
 
                   <div className="mt-4 flex items-center justify-center gap-3 md:hidden">
@@ -182,12 +165,12 @@ const Hero = () => {
                   </Link>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-3">
-                  {readerFavourites.map((book) => (
-                    <div key={book.title} className="space-y-1">
+                  {books.slice(0, 3).map((book) => (
+                    <Link key={book.title} href={`/shop/${book.slug}`} className="space-y-1">
                       <p className="text-sm font-semibold text-foreground line-clamp-2">{book.title}</p>
-                      <p className="text-xs text-muted-foreground">{book.author}</p>
+                      <p className="text-xs text-muted-foreground">Popy Publications</p>
                       <p className="text-sm font-semibold text-primary">{book.price}</p>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

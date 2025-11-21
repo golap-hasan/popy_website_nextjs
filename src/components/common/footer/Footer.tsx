@@ -32,24 +32,24 @@ const supportLinks = [
 ];
 
 const socials = [
-  { label: 'Facebook', href: 'https://facebook.com', icon: Facebook },
-  { label: 'Instagram', href: 'https://instagram.com', icon: Instagram },
-  { label: 'LinkedIn', href: 'https://linkedin.com', icon: Linkedin },
-  { label: 'YouTube', href: 'https://youtube.com', icon: Youtube },
+  { label: 'Facebook', href: 'https://www.facebook.com/popylibrary.com.bd', icon: Facebook },
+  { label: 'Instagram', href: 'https://www.instagram.com/popylibrary.com.bd', icon: Instagram },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/popylibrary.com.bd', icon: Linkedin },
+  { label: 'YouTube', href: 'https://www.youtube.com/@popylibrary.com.bd', icon: Youtube },
 ];
 
 const contactDetails = [
   {
     icon: Phone,
     label: 'Hotline',
-    value: '+880 1234-567890',
-    href: 'tel:+8801234567890',
+    value: '+880 1763662180',
+    href: 'tel:+8801763662180',
   },
   {
     icon: Mail,
     label: 'Support',
-    value: 'hello@popybooks.com',
-    href: 'mailto:hello@popybooks.com',
+    value: 'hello@popylibrary.com',
+    href: 'mailto:hello@popylibrary.com',
   },
   {
     icon: MapPin,
@@ -85,6 +85,7 @@ const Footer = () => {
                   <Link
                     key={label}
                     href={href}
+                    target='blank'
                     aria-label={label}
                     className="inline-flex size-10 items-center justify-center rounded-full border border-border/40 bg-background/80 text-muted-foreground transition-transform duration-200 hover:-translate-y-0.5 hover:text-primary"
                   >
@@ -103,6 +104,7 @@ const Footer = () => {
                   <li key={link.label}>
                     <Link
                       href={link.href}
+                      target='blank'
                       className="transition-colors hover:text-primary"
                     >
                       {link.label}

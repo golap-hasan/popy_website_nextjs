@@ -40,6 +40,24 @@ export const getCategories = async () => {
   }
 };
 
+// GET BOOKS FOR HOMEPAGE
+export const getBooksForHomepage = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/book/images/with-title-slug-price`, {
+      method: "GET",
+      next: {
+        revalidate: 300,
+        tags: ["BOOK"],
+      },
+    });
+
+    const result = await res.json();
+    return result;
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
 // GET SINGLE BOOKS
 export const getSingleBookBySlug = async (slug:string) => {
   try {
