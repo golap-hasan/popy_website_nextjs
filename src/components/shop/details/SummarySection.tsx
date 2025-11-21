@@ -8,6 +8,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { Book } from "@/types/shop";
 import Image from "next/image";
+import { replaceWhiteBackground } from "@/lib/utils";
 
 const SummarySection = ({ book }: { book: Book }) => {
   const { handleAddToWishlist } = useWishlist();
@@ -58,9 +59,7 @@ const SummarySection = ({ book }: { book: Book }) => {
               48h delivery inside Dhaka
             </div>
           </div>
-          <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-            {book.description}
-          </p>
+          <div dangerouslySetInnerHTML={{ __html: replaceWhiteBackground(book.description || "") }} />
           <div className="flex flex-wrap items-center gap-6">
             <div className="space-y-1">
               <div className="flex items-end gap-2 text-3xl font-semibold text-primary">

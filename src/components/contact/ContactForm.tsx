@@ -22,14 +22,14 @@ import {
 import PageLayout from "@/tools/PageLayout";
 import { postHelpFromAdmin } from "@/services/legal";
 import helpCenterAnimation from "../../../public/lottie/Help Center.json";
-import { ErrorToast } from "@/lib/utils";
+import { ErrorToast, SuccessToast } from "@/lib/utils";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Valid email is required" }),
   phone: z.string().min(10, { message: "Phone is required" }),
   subject: z.string().min(1, { message: "Subject is required" }),
-  message: z.string().min(1, { message: "Message is required" }),
+  message: z.string().min(20, { message: "Message must be at least 20 characters long" }),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -51,9 +51,12 @@ const ContactForm = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      await postHelpFromAdmin(values);
-      setSubmitted(true);
-      form.reset();
+      const res = await postHelpFromAdmin(values);
+      if (res.success) {
+        setSubmitted(true);
+        SuccessToast("Message sent successfully.");
+        form.reset();
+      }
     } catch (error) {
       ErrorToast(
         (error as { data?: { message?: string } })?.data?.message ||

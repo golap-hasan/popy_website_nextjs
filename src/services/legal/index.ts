@@ -20,7 +20,7 @@ export const getLegalPageData = async (type: string): Promise<any> => {
   }
 };
 
-// Get Legal Page Data
+// Post form Data
 export const postHelpFromAdmin = async (data: FieldValues) => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/contact`, {
