@@ -9,7 +9,7 @@ import { StarRating } from "@/tools/StarRating";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import Image from "next/image";
-export type SortOption = "popularity" | "newest" | "price_low_high";
+export type SortOption = "price" | "-price" | "rating" | "-rating";
 type ShopProductsProps = {
   books?: Book[];
 };

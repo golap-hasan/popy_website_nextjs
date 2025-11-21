@@ -96,7 +96,8 @@ const ShopLayout = ({
 
   const searchTerm = searchParams.get("searchTerm") ?? "";
   const selectedCategory = searchParams.get("category") ?? "";
-  const sortOption = (searchParams.get("sort") as SortOption) ?? "popularity";
+  const sortParam = searchParams.get("sort");
+  const sortOption = (sortParam as SortOption) ?? "price";
   const currentPage = Number(searchParams.get("page") ?? "1");
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
@@ -125,6 +126,14 @@ const ShopLayout = ({
   useEffect(() => {
     setPriceInput(priceRange);
   }, [priceRange]);
+
+  // Ensure a default sort is present in the URL so the Select shows a value initially
+  useEffect(() => {
+    if (!sortParam) {
+      updateFilter("sort", "price");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortParam]);
 
   const totalPages = initialMeta.totalPage ?? 1;
   const resultsCount = initialMeta.total ?? 0;
@@ -245,15 +254,14 @@ const ShopLayout = ({
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent align="end" className="text-sm">
-                    <SelectItem value="popularity">Popularity</SelectItem>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="price_low_high">
+                    <SelectItem value="price">
                       Price: Low to High
                     </SelectItem>
-                    <SelectItem value="price_high_low">
+                    <SelectItem value="-price">
                       Price: High to Low
                     </SelectItem>
-                    <SelectItem value="rating">Rating</SelectItem>
+                    <SelectItem value="rating">Rating: Low to high</SelectItem>
+                    <SelectItem value="-rating">Rating: High to low</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
