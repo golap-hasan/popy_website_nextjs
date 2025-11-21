@@ -23,6 +23,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter as DialogFooterRoot,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { ErrorToast, InfoToast, SuccessToast } from "@/lib/utils";
@@ -41,6 +49,7 @@ const divisions = [
 
 const CheckoutPage = () => {
   const items = useSelector((state: RootState) => state.cart.items);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
     division: divisions[0],
     city: "",
@@ -105,11 +114,11 @@ const CheckoutPage = () => {
     };
     try {
       const res = await placeOrder(payload);
-      if (res?.success){
-        SuccessToast("Order completed successfully")
-      }
-      else{
-        ErrorToast(res?.message)
+      if (res?.success) {
+        SuccessToast("Order completed successfully");
+        setIsSuccessOpen(true);
+      } else {
+        ErrorToast(res?.message || "Failed to place order");
       }
     } catch {
     }
@@ -117,6 +126,70 @@ const CheckoutPage = () => {
 
   return (
     <PageLayout paddingSize="small" className="screen-height">
+      <Dialog open={isSuccessOpen} onOpenChange={setIsSuccessOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Order placed successfully</DialogTitle>
+            <DialogDescription>
+              Thank you for your order. Here is a quick summary of what you just
+              placed.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 text-sm">
+            <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between gap-3 rounded-md bg-muted/60 px-3 py-2"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {item.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Qty {item.quantity}
+                    </p>
+                  </div>
+                  <span className="text-sm font-semibold text-foreground">
+                    ৳{item.price * item.quantity}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <Separator />
+            <div className="space-y-1 text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="font-medium text-foreground">
+                  ৳{totals.subtotal}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Delivery fee</span>
+                <span className="font-medium text-foreground">
+                  ৳{totals.delivery}
+                </span>
+              </div>
+              <div className="flex items-center justify-between pt-1 text-base font-semibold text-foreground">
+                <span>Total paid</span>
+                <span>৳{totals.total}</span>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooterRoot>
+            <Button variant="outline">
+              <Link href="/shop">Continue shopping</Link>
+            </Button>
+            <Button>
+              <Link href="/my-orders">Go to My Orders</Link>
+            </Button>
+          </DialogFooterRoot>
+        </DialogContent>
+      </Dialog>
+
       <div className="flex flex-col gap-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-3">
