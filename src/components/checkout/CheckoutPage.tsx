@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import PageLayout from "@/tools/PageLayout";
 import {
   Card,
@@ -127,64 +128,101 @@ const CheckoutPage = () => {
   return (
     <PageLayout paddingSize="small" className="screen-height">
       <Dialog open={isSuccessOpen} onOpenChange={setIsSuccessOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Order placed successfully</DialogTitle>
-            <DialogDescription>
-              Thank you for your order. Here is a quick summary of what you just
-              placed.
+        <DialogContent className="sm:max-w-2xl border-primary/40">
+          <DialogHeader className="space-y-3 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <CheckCircle2 className="h-8 w-8" />
+            </div>
+            <DialogTitle className="text-xl sm:text-2xl">
+              Thank you! Your order is confirmed
+            </DialogTitle>
+            <DialogDescription className="text-xs sm:text-sm">
+              Weve received your order and will start preparing your books for delivery.
+              A confirmation has been sent with all the details.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-4 text-sm">
-            <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between gap-3 rounded-md bg-muted/60 px-3 py-2"
-                >
-                  <div>
-                    <p className="text-sm font-medium text-foreground">
-                      {item.title}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Qty {item.quantity}
-                    </p>
+          <div className="grid gap-6 text-sm sm:grid-cols-[1.5fr,1fr] items-start">
+            <div className="space-y-3">
+              <p className="text-xs font-medium uppercase tracking-wide text-primary/80">
+                Order items
+              </p>
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-between gap-3 rounded-lg bg-background/80 px-3 py-2 shadow-sm ring-1 ring-border/60"
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-foreground line-clamp-2">
+                        {item.title}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Qty {item.quantity}
+                      </p>
+                    </div>
+                    <span className="text-sm font-semibold text-foreground">
+                      			৳{item.price * item.quantity}
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold text-foreground">
-                    ৳{item.price * item.quantity}
-                  </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            <Separator />
-            <div className="space-y-1 text-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-medium text-foreground">
-                  ৳{totals.subtotal}
-                </span>
+            <div className="space-y-4 rounded-xl bg-background/90 p-4 shadow-sm ring-1 ring-primary/30">
+              <div className="space-y-1">
+                <p className="text-xs font-medium uppercase tracking-wide text-primary/80">
+                  Order summary
+                </p>
+                <p className="text-2xl font-semibold text-foreground">
+                  ৳{totals.total}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Includes books and delivery charges
+                </p>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Delivery fee</span>
-                <span className="font-medium text-foreground">
-                  ৳{totals.delivery}
-                </span>
+
+              <Separator />
+
+              <div className="space-y-1 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="font-medium text-foreground">
+                    ৳{totals.subtotal}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Delivery fee</span>
+                  <span className="font-medium text-foreground">
+                    ৳{totals.delivery}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center justify-between pt-1 text-base font-semibold text-foreground">
-                <span>Total paid</span>
-                <span>৳{totals.total}</span>
+
+              <Separator />
+
+              <div className="space-y-1 text-xs text-muted-foreground">
+                <p className="font-medium text-foreground">Delivery address</p>
+                <p>
+                  {shippingInfo.addressLine && `${shippingInfo.addressLine}, `}
+                  {shippingInfo.city && `${shippingInfo.city}, `}
+                  {shippingInfo.division && `${shippingInfo.division} `}
+                  {shippingInfo.postalCode && `- ${shippingInfo.postalCode}`}
+                </p>
               </div>
             </div>
           </div>
 
-          <DialogFooterRoot>
-            <Button variant="outline">
-              <Link href="/shop">Continue shopping</Link>
+          <DialogFooterRoot className="mt-2 flex-col-reverse gap-2 sm:flex-row sm:justify-between">
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto"
+              onClick={() => setIsSuccessOpen(false)}
+            >
+              Continue browsing
             </Button>
-            <Button>
-              <Link href="/my-orders">Go to My Orders</Link>
+            <Button className="w-full sm:w-auto">
+              <Link href="/my-orders">View my orders</Link>
             </Button>
           </DialogFooterRoot>
         </DialogContent>
