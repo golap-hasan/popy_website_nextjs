@@ -207,7 +207,7 @@ const ShopLayout = ({
         />
       }
     >
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[320px_1fr]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[320px_1fr] mb-6">
         <div className="hidden lg:block lg:sticky lg:top-28 lg:h-fit">
           <FiltersSidebar {...sidebarProps} />
         </div>
