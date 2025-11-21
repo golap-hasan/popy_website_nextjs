@@ -22,6 +22,7 @@ import {
 import PageLayout from "@/tools/PageLayout";
 import { postHelpFromAdmin } from "@/services/legal";
 import helpCenterAnimation from "../../../public/lottie/Help Center.json";
+import { ErrorToast } from "@/lib/utils";
 
 const schema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -53,7 +54,12 @@ const ContactForm = () => {
       await postHelpFromAdmin(values);
       setSubmitted(true);
       form.reset();
-    } catch {}
+    } catch (error) {
+      ErrorToast(
+        (error as { data?: { message?: string } })?.data?.message ||
+          "Failed to send message."
+      );
+    }
   };
 
   return (
