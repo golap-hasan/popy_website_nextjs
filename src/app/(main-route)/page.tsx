@@ -8,9 +8,9 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <FeaturedBooks />
       <Highlights />
       <CategoryShowcase />
-      <FeaturedBooks />
       <Testimonials />
     </>
   );

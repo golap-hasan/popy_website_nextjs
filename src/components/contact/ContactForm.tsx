@@ -2,37 +2,58 @@
 
 import Lottie from "lottie-react";
 import { useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import PageLayout from "@/tools/PageLayout";
-
+import { postHelpFromAdmin } from "@/services/legal";
 import helpCenterAnimation from "../../../public/lottie/Help Center.json";
 
-const initialState = {
-  name: "",
-  email: "",
-  phone: "",
-  topic: "",
-  message: "",
-};
+const schema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Valid email is required" }),
+  phone: z.string().min(10, { message: "Phone is required" }),
+  subject: z.string().min(1, { message: "Subject is required" }),
+  message: z.string().min(1, { message: "Message is required" }),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 const ContactForm = () => {
-  const [formState, setFormState] = useState(initialState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (field: keyof typeof initialState, value: string) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
-  };
+  const form = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    },
+    mode: "onChange",
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubmitted(true);
-    setFormState(initialState);
+  const onSubmit = async (values: FormValues) => {
+    try {
+      await postHelpFromAdmin(values);
+      setSubmitted(true);
+      form.reset();
+    } catch {}
   };
 
   return (
@@ -45,84 +66,116 @@ const ContactForm = () => {
                 <CardTitle className="text-lg">Send us a message</CardTitle>
               </CardHeader>
               <CardContent>
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="contact-name">Full name</Label>
-                      <Input
-                        id="contact-name"
-                        placeholder="Your name"
-                        value={formState.name}
-                        onChange={(event) =>
-                          handleChange("name", event.target.value)
-                        }
-                        required
+                <Form {...form}>
+                  <form
+                    className="space-y-4"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                  >
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder="you@example.com"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contact-email">Email</Label>
-                      <Input
-                        id="contact-email"
-                        type="email"
-                        placeholder="you@example.com"
-                        value={formState.email}
-                        onChange={(event) =>
-                          handleChange("email", event.target.value)
-                        }
-                        required
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone number</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="tel"
+                                placeholder="01XXXXXXXXX"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="subject"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>How can we help?</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Book bundles, workshops, partnerships..."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="contact-phone">Phone number</Label>
-                      <Input
-                        id="contact-phone"
-                        type="tel"
-                        placeholder="01XXXXXXXXX"
-                        value={formState.phone}
-                        onChange={(event) =>
-                          handleChange("phone", event.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contact-topic">How can we help?</Label>
-                      <Input
-                        id="contact-topic"
-                        placeholder="Book bundles, workshops, partnerships..."
-                        value={formState.topic}
-                        onChange={(event) =>
-                          handleChange("topic", event.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="contact-message">Message</Label>
-                    <Textarea
-                      id="contact-message"
-                      placeholder="Share more details about your request or project"
-                      value={formState.message}
-                      onChange={(event) =>
-                        handleChange("message", event.target.value)
-                      }
-                      rows={5}
-                      required
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Share more details about your request or project"
+                              rows={5}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                    <Button type="submit" size="lg" className="sm:w-48">
-                      Submit message
-                    </Button>
-                    {submitted && (
-                      <p className="text-xs text-emerald-600">
-                        Thank you! Our team will get back to you within one
-                        business day.
-                      </p>
-                    )}
-                  </div>
-                </form>
+                    <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="sm:w-48"
+                        disabled={form.formState.isSubmitting}
+                        loading={form.formState.isSubmitting}
+                      >
+                        {form.formState.isSubmitting
+                          ? "Submitting..."
+                          : "Submit message"}
+                      </Button>
+                      {submitted && (
+                        <p className="text-xs text-emerald-600">
+                          Thank you! Our team will get back to you within one
+                          business day.
+                        </p>
+                      )}
+                    </div>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
             <div className="relative flex items-center justify-center rounded-3xl border border-dashed border-primary/30 bg-primary/5 px-4 py-6">
