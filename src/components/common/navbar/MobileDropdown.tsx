@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   DropdownMenu,
@@ -8,24 +8,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
-  BookMarked,
+  Bookmark,
   ListOrdered,
   LogIn,
   LogOutIcon,
   Moon,
+  ShoppingCartIcon,
   Sun,
   User,
   UserPlus,
-} from 'lucide-react';
-import Link from 'next/link';
-import { getInitials } from '@/lib/utils';
-import { useTheme } from 'next-themes';
-import { AuthUser } from '@/types';
+} from "lucide-react";
+import Link from "next/link";
+import { getInitials } from "@/lib/utils";
+import { useTheme } from "next-themes";
+import { AuthUser } from "@/types";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
 
 interface Props {
   isLoading: boolean;
@@ -34,9 +37,37 @@ interface Props {
 }
 
 const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
+  const cartCount = useSelector((state: RootState) => state.cart.totalQuantity);
+  const wishlistCount = useSelector(
+    (state: RootState) => state.wishlist.items.length
+  );
   const { setTheme, theme } = useTheme();
   return (
-    <>
+    <div className="flex gap-3 items-center">
+      <Button variant="ghost" size="icon-lg" className="relative rounded-full">
+        <Link href="/favorite">
+          <Bookmark size={18} className="opacity-80" aria-hidden="true" />
+          {wishlistCount > 0 && (
+            <span className="absolute -top-1 -right-2 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-primary-foreground shadow-sm">
+              {wishlistCount > 9 ? "9+" : wishlistCount}
+            </span>
+          )}
+        </Link>
+      </Button>
+      <Button variant="ghost" size="icon-lg" className="relative rounded-full">
+        <Link href="/cart">
+          <ShoppingCartIcon
+            size={18}
+            className="opacity-80"
+            aria-hidden="true"
+          />
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-2 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-primary-foreground shadow-sm">
+              {cartCount > 9 ? "9+" : cartCount}
+            </span>
+          )}
+        </Link>
+      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           {isLoading ? (
@@ -44,20 +75,16 @@ const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
           ) : user ? (
             <Avatar className="h-10 w-10 border">
               <AvatarImage
-                src={user?.image || ''}
-                alt={user?.name || 'User avatar'}
+                src={user?.image || ""}
+                alt={user?.name || "User avatar"}
               />
               <AvatarFallback>
-                {getInitials(user?.name || 'User')}
+                {getInitials(user?.name || "User")}
               </AvatarFallback>
             </Avatar>
           ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10 rounded-full"
-            >
-              <User className="h-5 w-5" />
+            <Button variant="ghost" size="icon-lg" className="rounded-full">
+              <User />
             </Button>
           )}
         </DropdownMenuTrigger>
@@ -71,10 +98,10 @@ const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
             <>
               <DropdownMenuLabel className="flex min-w-0 flex-col">
                 <span className="text-foreground truncate text-sm font-medium">
-                  {user?.name || 'User'}
+                  {user?.name || "User"}
                 </span>
                 <span className="text-muted-foreground truncate text-xs font-normal">
-                  {user?.email || ''}
+                  {user?.email || ""}
                 </span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -99,18 +126,12 @@ const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
                     <span>My Orders</span>
                   </Link>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem asChild>
-                  <Link href="/favorite" className="w-full flex items-center">
-                    <BookMarked
-                      size={16}
-                      className="opacity-60 mr-2"
-                      aria-hidden="true"
-                    />
-                    <span>Wishlist</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/track-order" className="w-full flex items-center">
+                  <Link
+                    href="/track-order"
+                    className="w-full flex items-center"
+                  >
                     <ListOrdered
                       size={16}
                       className="opacity-60 mr-2"
@@ -120,14 +141,14 @@ const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 >
-                  {theme === 'dark' ? (
+                  {theme === "dark" ? (
                     <Sun size={16} className="opacity-60 mr-2" />
                   ) : (
                     <Moon size={16} className="opacity-60 mr-2" />
                   )}
-                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                  <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
@@ -167,20 +188,20 @@ const MobileDropdown = ({ isLoading, user, handleLogout }: Props) => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
-                {theme === 'dark' ? (
+                {theme === "dark" ? (
                   <Sun size={16} className="opacity-60 mr-2" />
                 ) : (
                   <Moon size={16} className="opacity-60 mr-2" />
                 )}
-                <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+    </div>
   );
 };
 
