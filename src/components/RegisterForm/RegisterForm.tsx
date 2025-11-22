@@ -112,8 +112,8 @@ const RegisterForm = () => {
       <div className="pointer-events-none absolute -left-32 top-32 h-96 w-96 rounded-full bg-primary/15 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-[460px] w-[460px] translate-x-1/3 translate-y-1/3 rounded-full bg-primary/10 blur-[160px]" />
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center gap-8 px-4 py-16 sm:px-6 lg:flex-row lg:gap-12 xl:px-8">
-        <div className="flex items-center justify-center lg:w-1/2">
+      <div className="relative z-10 mx-auto md:flex min-h-screen w-full max-w-6xl flex-col justify-center gap-8 px-4 py-16 sm:px-6 lg:flex-row lg:gap-12 xl:px-8">
+        <div className="hidden md:flex items-center justify-center lg:w-1/2">
           <div className="relative w-full max-w-md rounded-4xl border border-primary/20 bg-primary/5 p-6 shadow-inner lg:max-w-[620px]">
             <div className="pointer-events-none absolute inset-5 rounded-[40px] border border-primary/10" />
             <Lottie
