@@ -1,4 +1,4 @@
-import LoginForm from '@/components/LoginForm';
+import LoginForm from '@/components/LoginForm/LoginForm';
 
 const LoginPage = async ({
   searchParams,
@@ -8,9 +8,9 @@ const LoginPage = async ({
   const { redirectPath } = await searchParams;
 
   return (
-    <div>
+    <>
       <LoginForm redirectPath={redirectPath} />
-    </div>
+    </>
   );
 };
 
